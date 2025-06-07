@@ -1,0 +1,9 @@
+{
+  "id": "1736265600000",
+  "title": "Welcome to My Blog",
+  "content": "# Welcome to My Blog\n\nThis is my first blog post! I'm excited to share my thoughts and ideas with you.\n\n## What You'll Find Here\n\n- **Technical articles** about web development\n- **Personal insights** and experiences\n- **Tutorials** and how-to guides\n- **Updates** about my projects\n\n## Getting Started\n\nThis blog is built with **Next.js 15** and features:\n\n- Full-stack functionality with API routes\n- Markdown support for rich content\n- Admin panel for easy content management\n- Responsive design that looks great on all devices\n\n### Code Example\n\nHere's a simple JavaScript function:\n\n```javascript\nfunction greetReader(name) {\n  return `Hello, ${name}! Welcome to my blog!`;\n}\n\nconsole.log(greetReader('World'));\n```\n\n## What's Next?\n\nStay tuned for more posts covering:\n\n1. **Web Development** best practices\n2. **JavaScript** tips and tricks\n3. **React** and Next.js tutorials\n4. **DevOps** and deployment strategies\n\nThanks for visiting, and I hope you find the content helpful!\n\n---\n\n*Happy coding! 🚀*",
+  "excerpt": "Welcome to my new blog! This is my first post where I introduce what you can expect to find here, including technical articles, tutorials, and personal insights about web development.",
+  "slug": "welcome-to-my-blog",
+  "createdAt": "2024-01-07T12:00:00.000Z",
+  "updatedAt": "2024-01-07T12:00:00.000Z"
+} 
