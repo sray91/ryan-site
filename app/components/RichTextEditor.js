@@ -10,7 +10,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import FontFamily from '@tiptap/extension-font-family';
-import FontSize from '@tiptap/extension-font-size';
+import { FontSize } from './FontSizeExtension';
 import { useCallback, useEffect, useState } from 'react';
 import ImageUpload from './ImageUpload';
 
@@ -43,9 +43,7 @@ export default function RichTextEditor({
       FontFamily.configure({
         types: ['textStyle'],
       }),
-      FontSize.configure({
-        types: ['textStyle'],
-      }),
+      FontSize,
     ],
     content: value || '',
     onUpdate: ({ editor }) => {
