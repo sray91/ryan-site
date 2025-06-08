@@ -6,6 +6,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 // Set up the worker for PDF.js using CDN (works better in production)
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
+// Configure PDF.js for better CORS handling
+pdfjs.GlobalWorkerOptions.disableWebAssembly = false;
+
 export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +28,23 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   const onDocumentLoadError = (error) => {
     console.error('Error loading PDF:', error);
     console.error('PDF URL:', pdfUrl);
-    setError(`Failed to load PDF: ${error.message || 'Unknown error'}`);
+    console.error('Error details:', error);
+    
+    let errorMessage = 'Unknown error';
+    if (error.message) {
+      errorMessage = error.message;
+    }
+    
+    // Check if it's a file type issue
+    if (pdfUrl && (pdfUrl.includes('.docx') || pdfUrl.includes('.doc'))) {
+      errorMessage = 'This appears to be a Word document (.docx), not a PDF. Please convert to PDF first.';
+    } else if (error.message && error.message.includes('CORS')) {
+      errorMessage = 'CORS error - unable to load PDF from storage.';
+    } else if (error.message && error.message.includes('Invalid PDF')) {
+      errorMessage = 'Invalid PDF file format.';
+    }
+    
+    setError(`Failed to load PDF: ${errorMessage}`);
     setIsLoading(false);
   };
 
@@ -38,11 +57,38 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   // Debug: Log the PDF URL when component mounts
   useEffect(() => {
     console.log('PDFCarousel mounted with URL:', pdfUrl);
+    console.log('PDF.js version:', pdfjs.version);
+    console.log('Worker src:', pdfjs.GlobalWorkerOptions.workerSrc);
+    
     if (!pdfUrl) {
       setError('No PDF URL provided');
       setIsLoading(false);
+      return;
     }
-  }, [pdfUrl]);
+    
+    // Test if the URL is accessible
+    fetch(pdfUrl, { method: 'HEAD', mode: 'cors' })
+      .then(response => {
+        console.log('PDF URL accessibility test:', response.status, response.headers);
+        if (!response.ok) {
+          console.error('PDF URL not accessible:', response.status);
+        }
+      })
+      .catch(error => {
+        console.error('PDF URL accessibility error:', error);
+      });
+    
+    // Set a timeout to catch hanging loads
+    const loadingTimeout = setTimeout(() => {
+      if (isLoading) {
+        console.error('PDF loading timeout after 15 seconds');
+        setError('PDF loading timeout - the file may be too large or corrupted');
+        setIsLoading(false);
+      }
+    }, 15000);
+    
+    return () => clearTimeout(loadingTimeout);
+  }, [pdfUrl, isLoading]);
 
   // Adjust page width based on container size
   useEffect(() => {
@@ -135,7 +181,13 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
         ) : (
           <div className="w-full h-full flex items-center justify-center p-4">
             <Document
-              file={pdfUrl}
+              file={{
+                url: pdfUrl,
+                httpHeaders: {
+                  'Access-Control-Allow-Origin': '*',
+                },
+                withCredentials: false,
+              }}
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={onDocumentLoadError}
               loading={
@@ -146,8 +198,11 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
               }
               className="flex justify-center"
               options={{
-                cMapUrl: 'https://unpkg.com/pdfjs-dist@3.11.174/cmaps/',
+                cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
                 cMapPacked: true,
+                standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/standard_fonts/`,
+                disableAutoFetch: false,
+                disableStream: false,
               }}
             >
               <Page

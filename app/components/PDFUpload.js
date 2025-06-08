@@ -10,7 +10,13 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
     if (!file) return;
 
     if (file.type !== 'application/pdf') {
-      alert('Please select a PDF file');
+      alert('Please select a PDF file only. Word documents (.docx) are not supported.');
+      return;
+    }
+    
+    // Also check the file extension
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+      alert('Please select a file with .pdf extension only.');
       return;
     }
 
