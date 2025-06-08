@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { kv } from '@vercel/kv';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 import PDFCarousel from '../../components/PDFCarousel';
+import BlogHeader from '../../components/BlogHeader';
 
 async function getBlogPost(slug) {
   try {
@@ -53,7 +54,9 @@ export default async function BlogPostPage({ params }) {
   const htmlContent = post.content;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50">
+      <BlogHeader />
+      <div className="py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <article className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-8">
@@ -114,6 +117,7 @@ export default async function BlogPostPage({ params }) {
             ← Back to Blog
           </Link>
         </div>
+      </div>
       </div>
     </div>
   );

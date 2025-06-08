@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { kv } from '@vercel/kv';
+import BlogHeader from '../components/BlogHeader';
 
 async function getBlogPosts() {
   try {
@@ -33,7 +34,9 @@ export default async function BlogPage() {
   const posts = await getBlogPosts();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50">
+      <BlogHeader />
+      <div className="py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
@@ -95,6 +98,7 @@ export default async function BlogPage() {
             ← Back to Home
           </Link>
         </div>
+      </div>
       </div>
     </div>
   );

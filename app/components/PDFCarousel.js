@@ -3,13 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
-// Set up the worker for PDF.js with fallback
-if (typeof window !== 'undefined') {
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-  ).toString();
-}
+// Set up the worker for PDF.js using CDN (works better in production)
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   const [currentPage, setCurrentPage] = useState(1);
