@@ -195,37 +195,23 @@ function ToolbarPlugin({ onChange, value }) {
   const handleImageUploaded = useCallback((url) => {
     console.log('Image uploaded, inserting into editor:', url);
     
-    editor.update(() => {
-      // Get current HTML content
-      const currentHtml = $generateHtmlFromNodes(editor, null);
-      console.log('Current HTML:', currentHtml);
-      
-      // Create image HTML
-      const imageHtml = `<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;" />`;
-      
-      // Combine current content with new image
-      const newContent = currentHtml + '<p>' + imageHtml + '</p>';
-      console.log('New content with image:', newContent);
-      
-      // Clear the editor and set new content
-      const root = $getRoot();
-      root.clear();
-      
-      // Parse the new HTML content and insert it back into the editor
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(newContent, 'text/html');
-      const newNodes = $generateNodesFromDOM(editor, doc);
-      root.append(...newNodes);
-      
-      // Update the parent form with the new content
-      onChange({ target: { name: 'content', value: newContent } });
-      
-      console.log('Editor updated with new content including image');
-    });
+    // Don't try to update the editor, just update the form content directly
+    // Get current content from the form state, not the editor
+    const currentContent = value || '';
+    
+    // Create image HTML
+    const imageHtml = `<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;" />`;
+    
+    // Add image to content
+    const newContent = currentContent + '<p>' + imageHtml + '</p>';
+    console.log('New content with image:', newContent);
+    
+    // Update the parent form directly (this will trigger InitialContentPlugin to update editor)
+    onChange({ target: { name: 'content', value: newContent } });
     
     setNotification({ type: 'success', message: 'Image uploaded and added to post!' });
     setTimeout(() => setNotification(null), 3000);
-  }, [editor, onChange]);
+  }, [value, onChange]);
 
   const handleUploadError = useCallback((error) => {
     setNotification({ type: 'error', message: error });
@@ -501,7 +487,12 @@ function OnChangePlugin({ onChange }) {
   const [editor] = useLexicalComposerContext();
   
   useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
+    return editor.registerUpdateListener(({ editorState, tags }) => {
+      // Skip updates that are triggered by our own content setting
+      if (tags.has('skip-onchange')) {
+        return;
+      }
+      
       editorState.read(() => {
         const htmlString = $generateHtmlFromNodes(editor, null);
         
@@ -522,10 +513,10 @@ function OnChangePlugin({ onChange }) {
 // Plugin to set initial content
 function InitialContentPlugin({ value }) {
   const [editor] = useLexicalComposerContext();
-  const [hasSetInitialContent, setHasSetInitialContent] = useState(false);
+  const [lastValue, setLastValue] = useState('');
 
   useEffect(() => {
-    if (value && !hasSetInitialContent) {
+    if (value && value !== lastValue) {
       editor.update(() => {
         const root = $getRoot();
         root.clear();
@@ -533,10 +524,10 @@ function InitialContentPlugin({ value }) {
         const dom = parser.parseFromString(value, 'text/html');
         const nodes = $generateNodesFromDOM(editor, dom);
         root.append(...nodes);
-      });
-      setHasSetInitialContent(true);
+      }, { tag: 'skip-onchange' });
+      setLastValue(value);
     }
-  }, [editor, value, hasSetInitialContent]);
+  }, [editor, value, lastValue]);
 
   return null;
 }
