@@ -40,6 +40,18 @@ body {
   display: block;
   margin: 1rem auto;
   border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.ProseMirror img:hover {
+  transform: scale(1.02);
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .ProseMirror blockquote {

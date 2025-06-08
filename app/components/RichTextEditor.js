@@ -8,7 +8,8 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import ImageUpload from './ImageUpload';
 
 export default function RichTextEditor({ 
   value, 
@@ -16,6 +17,8 @@ export default function RichTextEditor({
   placeholder = "Start writing your blog post...",
   height = "500px" 
 }) {
+  const [notification, setNotification] = useState(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -65,13 +68,38 @@ export default function RichTextEditor({
     }
   }, [editor]);
 
+  const handleImageUploaded = useCallback((url) => {
+    editor.chain().focus().setImage({ src: url }).run();
+    setNotification({ type: 'success', message: 'Image uploaded successfully!' });
+    setTimeout(() => setNotification(null), 3000);
+  }, [editor]);
+
+  const handleUploadError = useCallback((error) => {
+    setNotification({ type: 'error', message: error });
+    setTimeout(() => setNotification(null), 5000);
+  }, []);
+
   if (!editor) {
     return <div>Loading editor...</div>;
   }
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden">
-      {/* Toolbar */}
+    <div className="relative">
+      {/* Notification */}
+      {notification && (
+        <div className={`absolute top-0 left-0 right-0 z-10 p-3 text-sm text-center rounded-t-lg ${
+          notification.type === 'success' 
+            ? 'bg-green-100 text-green-800 border border-green-200' 
+            : 'bg-red-100 text-red-800 border border-red-200'
+        }`}>
+          {notification.message}
+        </div>
+      )}
+      
+      <div className={`border border-gray-300 rounded-lg overflow-hidden ${
+        notification ? 'mt-12' : ''
+      }`}>
+        {/* Toolbar */}
       <div className="border-b border-gray-300 bg-gray-50 p-3">
         <div className="flex flex-wrap items-center gap-1">
           {/* Text Formatting */}
@@ -242,11 +270,15 @@ export default function RichTextEditor({
                 <path d="M12.586 4.586a2 2 0 112.828 2.828L9 14.172V17h-2.828L12.586 4.586zM11 5L6 10v3h3l5-5-3-3z"/>
               </svg>
             </button>
+            <ImageUpload
+              onImageUploaded={handleImageUploaded}
+              onError={handleUploadError}
+            />
             <button
               type="button"
               onClick={insertImage}
               className="p-2 rounded hover:bg-gray-200"
-              title="Insert Image"
+              title="Insert Image from URL"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
@@ -304,11 +336,12 @@ export default function RichTextEditor({
         />
       </div>
       
-      {/* Status Bar */}
-      <div className="border-t border-gray-300 bg-gray-50 px-3 py-2 text-xs text-gray-500">
-        <div className="flex justify-between items-center">
-          <span>Rich text editor • Click toolbar buttons or use keyboard shortcuts</span>
-          <span>{editor.storage.characterCount?.characters || 0} characters</span>
+        {/* Status Bar */}
+        <div className="border-t border-gray-300 bg-gray-50 px-3 py-2 text-xs text-gray-500">
+          <div className="flex justify-between items-center">
+            <span>Rich text editor • Click toolbar buttons or use keyboard shortcuts</span>
+            <span>{editor.storage.characterCount?.characters || 0} characters</span>
+          </div>
         </div>
       </div>
     </div>
