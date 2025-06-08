@@ -11,7 +11,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(0);
-  const [pageWidth, setPageWidth] = useState(800);
+  const [pageWidth, setPageWidth] = useState(600);
 
   // Handle successful PDF load
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -30,7 +30,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   // Handle page render error
   const onPageLoadError = (error) => {
     console.error('Error loading PDF page:', error);
-    setError('Failed to load PDF page');
+    // Don't set error for individual page failures, just log them
   };
 
   // Adjust page width based on container size
@@ -38,8 +38,8 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
     const updatePageWidth = () => {
       const container = document.querySelector('.pdf-viewer-container');
       if (container) {
-        const containerWidth = container.clientWidth - 32; // Account for padding
-        setPageWidth(Math.min(containerWidth, 800));
+        const containerWidth = container.clientWidth - 64; // Account for padding and arrows
+        setPageWidth(Math.min(containerWidth, 600));
       }
     };
 
@@ -92,7 +92,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden max-w-full">
       {/* Header */}
       <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
         <div className="flex items-center justify-between">
@@ -106,7 +106,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
       </div>
 
       {/* PDF Viewer Area */}
-      <div className="relative bg-gray-100 min-h-[400px] flex items-center justify-center pdf-viewer-container">
+      <div className="relative bg-gray-100 min-h-[500px] flex items-center justify-center pdf-viewer-container">
         {isLoading ? (
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
@@ -119,40 +119,42 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={onDocumentLoadError}
               loading={
-                <div className="text-center">
+                <div className="text-center p-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                   <p className="text-gray-600">Loading PDF...</p>
                 </div>
               }
-              className="shadow-lg"
+              className="flex justify-center"
             >
               <Page
                 pageNumber={currentPage}
                 width={pageWidth}
                 onLoadError={onPageLoadError}
                 loading={
-                  <div className="bg-white border rounded p-8 text-center" style={{ width: pageWidth, minHeight: '400px', alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+                  <div className="bg-white border rounded p-8 text-center shadow-lg" style={{ width: pageWidth, minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <div>
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                       <p className="text-gray-600">Loading page...</p>
                     </div>
                   </div>
                 }
-                className="react-pdf__Page"
+                className="react-pdf__Page shadow-lg"
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
               />
             </Document>
           </div>
         )}
 
-        {/* Navigation Arrows - Only show when not loading and has multiple pages */}
+        {/* Navigation Arrows - Show when not loading and has multiple pages */}
         {!isLoading && totalPages > 1 && (
           <>
             <button
               onClick={prevPage}
               disabled={currentPage === 1}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full p-2 shadow-lg transition-all z-10"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full p-3 shadow-lg transition-all z-20 border border-gray-200"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
@@ -160,9 +162,9 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
             <button
               onClick={nextPage}
               disabled={currentPage === totalPages}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full p-2 shadow-lg transition-all z-10"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed rounded-full p-3 shadow-lg transition-all z-20 border border-gray-200"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -170,10 +172,11 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
         )}
       </div>
 
-      {/* Footer with Page Dots - Only show when not loading and has multiple pages */}
-      {!isLoading && totalPages > 1 && (
+      {/* Footer with Page Dots and Controls */}
+      {!isLoading && totalPages > 0 && (
         <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
           <div className="flex items-center justify-between">
+            {/* Page Dots */}
             <div className="flex items-center space-x-1">
               {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((page) => (
                 <button
@@ -190,6 +193,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
               {totalPages > 10 && <span className="text-xs text-gray-500 ml-2">+{totalPages - 10} more</span>}
             </div>
             
+            {/* Navigation Buttons */}
             <div className="flex items-center space-x-2">
               <button
                 onClick={prevPage}
