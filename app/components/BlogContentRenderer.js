@@ -73,8 +73,14 @@ export default function BlogContentRenderer({ content, className = '' }) {
         style={{ 
           lineHeight: '1.7',
         }}
-        className="[&_img]:max-w-full [&_img]:h-auto [&_img]:my-4 [&_img]:rounded-lg [&_img]:shadow-md [&_img]:block"
+        className="[&_img]:max-w-full [&_img]:h-auto [&_img]:my-4 [&_img]:rounded-lg [&_img]:shadow-md [&_img]:block [&_img]:border-2 [&_img]:border-red-500"
       />
+      
+      {/* Debug: Try rendering images directly to see if CSS is the issue */}
+      <div className="mt-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
+        <h4 className="font-bold mb-2">Debug: Testing image display</h4>
+        <div dangerouslySetInnerHTML={{ __html: content.replace(/<(?!img\s)[^>]+>/g, '') }} />
+      </div>
       
       {/* Render PDF carousels at the end */}
       {pdfCarousels.map((carousel, index) => (
