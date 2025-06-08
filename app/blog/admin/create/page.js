@@ -29,20 +29,40 @@ export default function CreatePostPage() {
     setLoading(true);
 
     try {
+      // Sanitize form data before submitting
+      const sanitizedData = {
+        title: formData.title?.trim() || '',
+        content: formData.content || '',
+        excerpt: formData.excerpt?.trim() || '',
+        tags: Array.isArray(formData.tags) ? formData.tags : []
+      };
+
+      console.log('Submitting form data:', sanitizedData);
+      
+      // Validate required fields
+      if (!sanitizedData.title || !sanitizedData.content) {
+        alert('Title and content are required');
+        return;
+      }
+      
       const res = await fetch('/api/blog', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(sanitizedData),
       });
 
+      console.log('Response status:', res.status);
+      
       if (res.ok) {
         const post = await res.json();
+        console.log('Post created successfully:', post);
         router.push(`/blog/${post.slug}`);
         router.refresh();
       } else {
         const error = await res.json();
+        console.error('Server error:', error);
         alert(error.error || 'Failed to create post');
       }
     } catch (error) {

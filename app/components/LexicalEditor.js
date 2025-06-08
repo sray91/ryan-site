@@ -483,7 +483,14 @@ function OnChangePlugin({ onChange }) {
     return editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const htmlString = $generateHtmlFromNodes(editor, null);
-        onChange({ target: { name: 'content', value: htmlString } });
+        
+        // Clean up empty HTML or whitespace-only content
+        const cleanedContent = htmlString
+          .replace(/<p><\/p>/g, '')
+          .replace(/<p>\s*<\/p>/g, '')
+          .replace(/^\s+|\s+$/g, '');
+        
+        onChange({ target: { name: 'content', value: cleanedContent } });
       });
     });
   }, [editor, onChange]);
