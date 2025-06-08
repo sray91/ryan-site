@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import RichTextEditor from '../../../../components/RichTextEditor';
+import LexicalEditor from '../../../../components/LexicalEditor';
 import TagInput from '../../../../components/TagInput';
 
 export default function EditPostPage() {
@@ -154,7 +154,7 @@ export default function EditPostPage() {
               <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
                 Content <span className="text-gray-500">(rich text editor)</span>
               </label>
-              <RichTextEditor
+                              <LexicalEditor
                 value={formData.content}
                 onChange={handleChange}
                 placeholder="Start writing your blog post..."
