@@ -8,6 +8,8 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
+import FontFamily from '@tiptap/extension-font-family';
 import { useCallback, useEffect, useState } from 'react';
 import ImageUpload from './ImageUpload';
 
@@ -32,6 +34,12 @@ export default function RichTextEditor({
       Underline,
       TextStyle,
       Color.configure({
+        types: ['textStyle'],
+      }),
+      Highlight.configure({
+        multicolor: true,
+      }),
+      FontFamily.configure({
         types: ['textStyle'],
       }),
     ],
@@ -144,6 +152,109 @@ export default function RichTextEditor({
             >
               S
             </button>
+          </div>
+
+          {/* Colors and Highlights */}
+          <div className="flex items-center gap-1 mr-3">
+            <div className="relative">
+              <select
+                onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
+                className="px-2 py-1 text-xs rounded border hover:bg-gray-100"
+                title="Text Color"
+                value={editor.getAttributes('textStyle').color || '#000000'}
+              >
+                <option value="#000000">⚫ Black</option>
+                <option value="#dc2626">🔴 Red</option>
+                <option value="#059669">🟢 Green</option>
+                <option value="#2563eb">🔵 Blue</option>
+                <option value="#7c3aed">🟣 Purple</option>
+                <option value="#ea580c">🟠 Orange</option>
+                <option value="#0891b2">🔷 Cyan</option>
+                <option value="#be123c">🌹 Rose</option>
+              </select>
+            </div>
+            <div className="relative">
+              <select
+                onChange={(e) => {
+                  if (e.target.value === 'none') {
+                    editor.chain().focus().unsetHighlight().run();
+                  } else {
+                    editor.chain().focus().setHighlight({ color: e.target.value }).run();
+                  }
+                }}
+                className="px-2 py-1 text-xs rounded border hover:bg-gray-100"
+                title="Highlight Color"
+                value={editor.getAttributes('highlight').color || 'none'}
+              >
+                <option value="none">🚫 No Highlight</option>
+                <option value="#fef3c7">🟡 Yellow</option>
+                <option value="#fed7d7">🩷 Pink</option>
+                <option value="#d1fae5">💚 Light Green</option>
+                <option value="#dbeafe">💙 Light Blue</option>
+                <option value="#e9d5ff">💜 Light Purple</option>
+                <option value="#fed7aa">🧡 Light Orange</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Font Styles */}
+          <div className="flex items-center gap-1 mr-3">
+            <div className="relative">
+              <select
+                onChange={(e) => {
+                  if (e.target.value === 'default') {
+                    editor.chain().focus().unsetFontFamily().run();
+                  } else {
+                    editor.chain().focus().setFontFamily(e.target.value).run();
+                  }
+                }}
+                className="px-2 py-1 text-xs rounded border hover:bg-gray-100"
+                title="Font Family"
+                value={editor.getAttributes('textStyle').fontFamily || 'default'}
+              >
+                <option value="default">Default</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="'Times New Roman', serif">Times</option>
+                <option value="'Courier New', monospace">Courier</option>
+                <option value="Helvetica, sans-serif">Helvetica</option>
+                <option value="Verdana, sans-serif">Verdana</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().setMark('textStyle', { fontSize: '0.75rem' }).run()}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-200"
+                title="Small Text"
+              >
+                Small
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().setMark('textStyle', { fontSize: '1rem' }).run()}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-200"
+                title="Normal Text"
+              >
+                Normal
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().setMark('textStyle', { fontSize: '1.25rem' }).run()}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-200"
+                title="Large Text"
+              >
+                Large
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().setMark('textStyle', { fontSize: '1.5rem' }).run()}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-200"
+                title="Extra Large Text"
+              >
+                XL
+              </button>
+            </div>
           </div>
 
           {/* Headings */}

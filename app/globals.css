@@ -125,3 +125,17 @@ body {
 .ProseMirror a:hover {
   color: #1d4ed8;
 }
+
+/* Custom text styling */
+.ProseMirror [style*="font-size"] {
+  line-height: 1.4;
+}
+
+.ProseMirror mark {
+  padding: 0.1em 0.2em;
+  border-radius: 0.25rem;
+}
+
+.ProseMirror [style*="color"] {
+  /* Ensure color styles are preserved */
+}
