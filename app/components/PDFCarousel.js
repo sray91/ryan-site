@@ -3,11 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
-// Set up the worker for PDF.js using CDN (works better in production)
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-
-// Configure PDF.js for better CORS handling
-pdfjs.GlobalWorkerOptions.disableWebAssembly = false;
+// Set up the worker for PDF.js - use a specific stable version
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@4.8.69/build/pdf.worker.min.js`;
 
 export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,11 +78,11 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
     // Set a timeout to catch hanging loads
     const loadingTimeout = setTimeout(() => {
       if (isLoading) {
-        console.error('PDF loading timeout after 15 seconds');
-        setError('PDF loading timeout - the file may be too large or corrupted');
+        console.error('PDF loading timeout after 10 seconds');
+        setError('PDF loading timeout - please try refreshing the page or check if the file is corrupted');
         setIsLoading(false);
       }
-    }, 15000);
+    }, 10000);
     
     return () => clearTimeout(loadingTimeout);
   }, [pdfUrl, isLoading]);
@@ -181,13 +178,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
         ) : (
           <div className="w-full h-full flex items-center justify-center p-4">
             <Document
-              file={{
-                url: pdfUrl,
-                httpHeaders: {
-                  'Access-Control-Allow-Origin': '*',
-                },
-                withCredentials: false,
-              }}
+              file={pdfUrl}
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={onDocumentLoadError}
               loading={
@@ -198,11 +189,8 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
               }
               className="flex justify-center"
               options={{
-                cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
+                cMapUrl: 'https://unpkg.com/pdfjs-dist@4.8.69/cmaps/',
                 cMapPacked: true,
-                standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/standard_fonts/`,
-                disableAutoFetch: false,
-                disableStream: false,
               }}
             >
               <Page
