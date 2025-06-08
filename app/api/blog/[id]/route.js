@@ -1,23 +1,19 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const BLOG_DATA_DIR = path.join(process.cwd(), 'data', 'blog');
+import { kv } from '@vercel/kv';
 
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
-    const filePath = path.join(BLOG_DATA_DIR, `${id}.json`);
+    const postKey = `blog:${id}`;
+    const post = await kv.get(postKey);
     
-    if (!fs.existsSync(filePath)) {
+    if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    const content = fs.readFileSync(filePath, 'utf8');
-    const post = JSON.parse(content);
-
     return NextResponse.json(post);
   } catch (error) {
+    console.error('Error fetching post:', error);
     return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
   }
 }
@@ -32,14 +28,12 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
     }
 
-    const filePath = path.join(BLOG_DATA_DIR, `${id}.json`);
+    const postKey = `blog:${id}`;
+    const existingPost = await kv.get(postKey);
     
-    if (!fs.existsSync(filePath)) {
+    if (!existingPost) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
-
-    const existingContent = fs.readFileSync(filePath, 'utf8');
-    const existingPost = JSON.parse(existingContent);
 
     const updatedPost = {
       ...existingPost,
@@ -50,10 +44,11 @@ export async function PUT(request, { params }) {
       updatedAt: new Date().toISOString()
     };
 
-    fs.writeFileSync(filePath, JSON.stringify(updatedPost, null, 2));
+    await kv.set(postKey, updatedPost);
 
     return NextResponse.json(updatedPost);
   } catch (error) {
+    console.error('Error updating post:', error);
     return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
   }
 }
@@ -61,16 +56,18 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
-    const filePath = path.join(BLOG_DATA_DIR, `${id}.json`);
+    const postKey = `blog:${id}`;
     
-    if (!fs.existsSync(filePath)) {
+    const existingPost = await kv.get(postKey);
+    if (!existingPost) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    fs.unlinkSync(filePath);
+    await kv.del(postKey);
 
     return NextResponse.json({ message: 'Post deleted successfully' });
   } catch (error) {
+    console.error('Error deleting post:', error);
     return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
   }
 } 

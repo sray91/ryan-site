@@ -1,30 +1,28 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { kv } from '@vercel/kv';
 import { format } from 'date-fns';
 import slugify from 'slugify';
 
-const BLOG_DATA_DIR = path.join(process.cwd(), 'data', 'blog');
-
-// Ensure blog directory exists
-if (!fs.existsSync(BLOG_DATA_DIR)) {
-  fs.mkdirSync(BLOG_DATA_DIR, { recursive: true });
-}
-
 export async function GET() {
   try {
-    const files = fs.readdirSync(BLOG_DATA_DIR);
-    const posts = files
-      .filter(file => file.endsWith('.json'))
-      .map(file => {
-        const filePath = path.join(BLOG_DATA_DIR, file);
-        const content = fs.readFileSync(filePath, 'utf8');
-        return JSON.parse(content);
-      })
+    // Get all blog post keys
+    const keys = await kv.keys('blog:*');
+    
+    if (keys.length === 0) {
+      return NextResponse.json([]);
+    }
+    
+    // Get all posts
+    const posts = await kv.mget(...keys);
+    
+    // Filter out null values and sort by creation date
+    const validPosts = posts
+      .filter(post => post !== null)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    return NextResponse.json(posts);
+    return NextResponse.json(validPosts);
   } catch (error) {
+    console.error('Error fetching posts:', error);
     return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
   }
 }
@@ -69,18 +67,21 @@ export async function POST(request) {
 
     console.log('Creating post:', { id: post.id, title: post.title, contentLength: post.content.length });
 
-    const filename = `${post.id}.json`;
-    const filePath = path.join(BLOG_DATA_DIR, filename);
-    
-    fs.writeFileSync(filePath, JSON.stringify(post, null, 2));
+    // Store in Vercel KV instead of file system
+    const postKey = `blog:${post.id}`;
+    await kv.set(postKey, post);
 
     return NextResponse.json(post, { status: 201 });
   } catch (error) {
     console.error('Error creating blog post:', error);
     console.error('Error stack:', error.stack);
+    console.error('Error name:', error.name);
+    
     return NextResponse.json({ 
       error: 'Failed to create post', 
-      details: error.message 
+      details: error.message,
+      errorName: error.name,
+      timestamp: new Date().toISOString()
     }, { status: 500 });
   }
 } 
