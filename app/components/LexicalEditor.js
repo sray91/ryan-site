@@ -194,21 +194,35 @@ function ToolbarPlugin({ onChange, value }) {
 
   const handleImageUploaded = useCallback((url) => {
     console.log('Image uploaded, inserting into editor:', url);
+    
+    // Get the current content from the editor
+    editor.getEditorState().read(() => {
+      const currentHtml = $generateHtmlFromNodes(editor, null);
+      console.log('Current HTML:', currentHtml);
+      
+      // Create image HTML
+      const imageHtml = `<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;" />`;
+      
+      // Append image to current content
+      const newContent = currentHtml + '<p>' + imageHtml + '</p>';
+      console.log('New content with image:', newContent);
+      
+      // Update the parent form directly
+      onChange({ target: { name: 'content', value: newContent } });
+    });
+    
+    // Also try to insert into the editor for immediate visual feedback
     editor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
-        const parser = new DOMParser();
-        const dom = parser.parseFromString(`<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;" />`, 'text/html');
-        const nodes = $generateNodesFromDOM(editor, dom);
-        selection.insertNodes(nodes);
-        console.log('Image nodes inserted:', nodes);
-      } else {
-        console.log('No valid selection for image insertion');
+        // Insert a placeholder text that will show in the editor
+        selection.insertText(`[Image uploaded: ${url.split('/').pop()}]`);
       }
     });
-    setNotification({ type: 'success', message: 'Image uploaded and inserted successfully!' });
+    
+    setNotification({ type: 'success', message: 'Image uploaded and added to post!' });
     setTimeout(() => setNotification(null), 3000);
-  }, [editor]);
+  }, [editor, onChange]);
 
   const handleUploadError = useCallback((error) => {
     setNotification({ type: 'error', message: error });
