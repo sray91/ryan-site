@@ -15,6 +15,9 @@ const PDFCarousel = dynamic(() => import('./PDFCarousel'), {
 });
 
 export default function BlogContentRenderer({ content, className = '' }) {
+  // Debug: Log the content being rendered
+  console.log('BlogContentRenderer received content:', content);
+  
   const { processedContent, pdfCarousels } = useMemo(() => {
     if (!content) return { processedContent: '', pdfCarousels: [] };
 
@@ -33,6 +36,9 @@ export default function BlogContentRenderer({ content, className = '' }) {
       }
     });
 
+    // Debug: Log processed content
+    console.log('Processed content HTML:', doc.body.innerHTML);
+    
     return {
       processedContent: doc.body.innerHTML,
       pdfCarousels: carousels
@@ -54,12 +60,20 @@ export default function BlogContentRenderer({ content, className = '' }) {
 
   return (
     <div className={`prose prose-sm sm:prose lg:prose-lg xl:prose-2xl max-w-none ${className}`}>
+      {/* Debug: Show raw content */}
+      <details className="mb-4 text-xs text-gray-500">
+        <summary>Debug: Raw HTML Content</summary>
+        <pre className="whitespace-pre-wrap break-all bg-gray-100 p-2 rounded mt-2">
+          {content}
+        </pre>
+      </details>
+      
       <div 
-        dangerouslySetInnerHTML={{ __html: finalContent }}
+        dangerouslySetInnerHTML={{ __html: content }}
         style={{ 
           lineHeight: '1.7',
         }}
-        className="[&_img]:max-w-full [&_img]:h-auto [&_img]:my-4 [&_img]:rounded-lg [&_img]:shadow-md"
+        className="[&_img]:max-w-full [&_img]:h-auto [&_img]:my-4 [&_img]:rounded-lg [&_img]:shadow-md [&_img]:block"
       />
       
       {/* Render PDF carousels at the end */}
