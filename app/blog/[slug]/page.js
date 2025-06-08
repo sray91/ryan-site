@@ -106,18 +106,12 @@ export default async function BlogPostPage({ params }) {
           </div>
         </article>
         
-        <div className="flex justify-between items-center mt-8">
+        <div className="mt-8">
           <Link 
             href="/blog"
             className="inline-flex items-center text-gray-600 hover:text-gray-900"
           >
             ← Back to Blog
-          </Link>
-          <Link 
-            href={`/blog/admin/edit/${post.id}`}
-            className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-          >
-            Edit Post
           </Link>
         </div>
       </div>

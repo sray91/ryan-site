@@ -3,8 +3,13 @@
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 
-// Set up the worker for PDF.js
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+// Set up the worker for PDF.js with fallback
+if (typeof window !== 'undefined') {
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.js',
+    import.meta.url,
+  ).toString();
+}
 
 export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +20,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
 
   // Handle successful PDF load
   const onDocumentLoadSuccess = ({ numPages }) => {
+    console.log('PDF loaded successfully:', { numPages, pdfUrl });
     setTotalPages(numPages);
     setIsLoading(false);
     setError(null);
@@ -23,7 +29,8 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
   // Handle PDF load error
   const onDocumentLoadError = (error) => {
     console.error('Error loading PDF:', error);
-    setError('Failed to load PDF document');
+    console.error('PDF URL:', pdfUrl);
+    setError(`Failed to load PDF: ${error.message || 'Unknown error'}`);
     setIsLoading(false);
   };
 
@@ -32,6 +39,15 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
     console.error('Error loading PDF page:', error);
     // Don't set error for individual page failures, just log them
   };
+
+  // Debug: Log the PDF URL when component mounts
+  useEffect(() => {
+    console.log('PDFCarousel mounted with URL:', pdfUrl);
+    if (!pdfUrl) {
+      setError('No PDF URL provided');
+      setIsLoading(false);
+    }
+  }, [pdfUrl]);
 
   // Adjust page width based on container size
   useEffect(() => {
@@ -91,6 +107,14 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
     );
   }
 
+  if (!pdfUrl) {
+    return (
+      <div className="bg-gray-100 border border-gray-300 rounded-lg p-6 text-center">
+        <p className="text-gray-600">No PDF URL provided</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden max-w-full">
       {/* Header */}
@@ -111,6 +135,7 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading PDF...</p>
+            <p className="text-xs text-gray-500 mt-2">URL: {pdfUrl}</p>
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center p-4">
@@ -125,6 +150,10 @@ export default function PDFCarousel({ pdfUrl, title, pdfName }) {
                 </div>
               }
               className="flex justify-center"
+              options={{
+                cMapUrl: 'https://unpkg.com/pdfjs-dist@3.11.174/cmaps/',
+                cMapPacked: true,
+              }}
             >
               <Page
                 pageNumber={currentPage}
