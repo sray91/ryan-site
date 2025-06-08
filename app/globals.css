@@ -139,3 +139,55 @@ body {
 .ProseMirror [style*="color"] {
   /* Ensure color styles are preserved */
 }
+
+/* PDF Carousel Styles */
+.pdf-carousel {
+  margin: 2rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.pdf-placeholder {
+  padding: 2rem;
+  text-align: center;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 0.5rem;
+  color: #64748b;
+}
+
+.pdf-placeholder p {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+/* React-PDF specific styles */
+.react-pdf__Page {
+  margin: 0 auto;
+  display: flex !important;
+  justify-content: center;
+}
+
+.react-pdf__Page__canvas {
+  max-width: 100%;
+  height: auto !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.react-pdf__Document {
+  display: flex;
+  justify-content: center;
+}
+
+/* Ensure PDF controls are accessible */
+.pdf-navigation-button {
+  z-index: 10;
+  transition: all 0.2s ease-in-out;
+}
+
+.pdf-navigation-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}

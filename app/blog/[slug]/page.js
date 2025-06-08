@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { marked } from 'marked';
 import { notFound } from 'next/navigation';
+import BlogContentRenderer from '../../components/BlogContentRenderer';
 
 async function getBlogPost(slug) {
   try {
@@ -79,9 +80,9 @@ export default async function BlogPostPage({ params }) {
               )}
             </div>
             
-            <div 
+            <BlogContentRenderer 
+              content={htmlContent}
               className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </div>
         </article>

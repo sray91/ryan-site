@@ -41,6 +41,7 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { LinkNode, AutoLinkNode } from '@lexical/link';
 import { CodeNode, CodeHighlightNode } from '@lexical/code';
 import ImageUpload from './ImageUpload';
+import PDFUpload from './PDFUpload';
 
 // Custom nodes for our editor
 const nodes = [
@@ -209,6 +210,26 @@ function ToolbarPlugin({ onChange, value }) {
     setNotification({ type: 'error', message: error });
     setTimeout(() => setNotification(null), 5000);
   }, []);
+
+  const handlePDFUploaded = useCallback((url) => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        const pdfHtml = `<div class="pdf-carousel" data-pdf-url="${url}">
+          <div class="pdf-placeholder">
+            <p>📄 PDF Document</p>
+            <p>Click to view PDF carousel</p>
+          </div>
+        </div>`;
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(pdfHtml, 'text/html');
+        const nodes = $generateNodesFromDOM(editor, dom);
+        selection.insertNodes(nodes);
+      }
+    });
+    setNotification({ type: 'success', message: 'PDF uploaded successfully!' });
+    setTimeout(() => setNotification(null), 3000);
+  }, [editor]);
 
   const insertImageFromUrl = () => {
     const url = window.prompt('Enter image URL');
@@ -421,6 +442,10 @@ function ToolbarPlugin({ onChange, value }) {
             >
               🖼️ URL
             </button>
+            <PDFUpload
+              onPDFUploaded={handlePDFUploaded}
+              onError={handleUploadError}
+            />
           </div>
 
           {/* More Options */}
