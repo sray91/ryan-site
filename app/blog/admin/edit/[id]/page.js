@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import LexicalEditor from '../../../../components/LexicalEditor';
 import TagInput from '../../../../components/TagInput';
+import PDFUpload from '../../../../components/PDFUpload';
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -16,7 +17,8 @@ export default function EditPostPage() {
     title: '',
     content: '',
     excerpt: '',
-    tags: []
+    tags: [],
+    pdfCarousels: []
   });
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -36,7 +38,8 @@ export default function EditPostPage() {
           title: post.title,
           content: post.content,
           excerpt: post.excerpt,
-          tags: post.tags || []
+          tags: post.tags || [],
+          pdfCarousels: post.pdfCarousels || []
         });
       } else {
         alert('Post not found');
@@ -56,6 +59,31 @@ export default function EditPostPage() {
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handlePDFUpload = (pdfData, index, isUpdate = false) => {
+    setFormData(prev => {
+      if (isUpdate && index !== undefined) {
+        const updatedCarousels = [...prev.pdfCarousels];
+        updatedCarousels[index] = pdfData;
+        return {
+          ...prev,
+          pdfCarousels: updatedCarousels
+        };
+      } else {
+        return {
+          ...prev,
+          pdfCarousels: [...prev.pdfCarousels, pdfData]
+        };
+      }
+    });
+  };
+
+  const handlePDFRemove = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      pdfCarousels: prev.pdfCarousels.filter((_, i) => i !== index)
     }));
   };
 
@@ -147,6 +175,20 @@ export default function EditPostPage() {
                 value={formData.tags}
                 onChange={handleChange}
                 placeholder="Add tags like 'technology', 'web development'..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                PDF Carousels <span className="text-gray-500">(optional)</span>
+              </label>
+              <p className="text-sm text-gray-600 mb-3">
+                Upload PDF files to create LinkedIn-style carousels that readers can navigate through with arrows.
+              </p>
+              <PDFUpload
+                onUpload={handlePDFUpload}
+                onRemove={handlePDFRemove}
+                uploadedPdfs={formData.pdfCarousels}
               />
             </div>
 

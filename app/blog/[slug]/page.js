@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
 import { kv } from '@vercel/kv';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
+import PDFCarousel from '../../components/PDFCarousel';
 
 async function getBlogPost(slug) {
   try {
@@ -86,6 +87,22 @@ export default async function BlogPostPage({ params }) {
               content={htmlContent}
               className="prose prose-lg max-w-none"
             />
+            
+            {/* PDF Carousels */}
+            {post.pdfCarousels && post.pdfCarousels.length > 0 && (
+              <div className="mt-8 space-y-6">
+                <h2 className="text-2xl font-bold text-gray-900 border-b border-gray-200 pb-2">
+                  PDF Carousels
+                </h2>
+                {post.pdfCarousels.map((pdf, index) => (
+                  <PDFCarousel
+                    key={index}
+                    pdfUrl={pdf.url}
+                    title={pdf.title}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </article>
         

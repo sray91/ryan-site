@@ -32,7 +32,7 @@ export async function POST(request) {
     const body = await request.json();
     console.log('Received request body:', JSON.stringify(body, null, 2));
     
-    const { title, content, excerpt, tags } = body;
+    const { title, content, excerpt, tags, pdfCarousels } = body;
 
     if (!title || !content) {
       return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
@@ -60,6 +60,7 @@ export async function POST(request) {
       content: String(content),
       excerpt: generatedExcerpt || '',
       tags: Array.isArray(tags) ? tags : [],
+      pdfCarousels: Array.isArray(pdfCarousels) ? pdfCarousels : [],
       slug,
       createdAt: now.toISOString(),
       updatedAt: now.toISOString()
