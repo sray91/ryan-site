@@ -58,6 +58,18 @@ export default async function BlogPage() {
                     </Link>
                   </h2>
                   <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {post.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   <Link 
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"

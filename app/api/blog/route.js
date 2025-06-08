@@ -32,7 +32,7 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { title, content, excerpt } = body;
+    const { title, content, excerpt, tags } = body;
 
     if (!title || !content) {
       return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
@@ -46,6 +46,7 @@ export async function POST(request) {
       title,
       content,
       excerpt: excerpt || content.substring(0, 150) + '...',
+      tags: tags || [],
       slug,
       createdAt: now.toISOString(),
       updatedAt: now.toISOString()

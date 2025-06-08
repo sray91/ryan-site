@@ -65,6 +65,18 @@ export default async function BlogPostPage({ params }) {
                 )}
               </div>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">{post.title}</h1>
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
             
             <div 

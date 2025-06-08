@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import RichTextEditor from '../../../components/RichTextEditor';
+import TagInput from '../../../components/TagInput';
 
 export default function CreatePostPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    excerpt: ''
+    excerpt: '',
+    tags: []
   });
   const [loading, setLoading] = useState(false);
 
@@ -88,6 +90,17 @@ export default function CreatePostPage() {
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Brief description of the post..."
+              />
+            </div>
+
+            <div>
+              <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
+                Tags <span className="text-gray-500">(optional)</span>
+              </label>
+              <TagInput
+                value={formData.tags}
+                onChange={handleChange}
+                placeholder="Add tags like 'technology', 'web development'..."
               />
             </div>
 
