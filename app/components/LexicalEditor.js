@@ -195,8 +195,7 @@ function ToolbarPlugin({ onChange, value }) {
   const handleImageUploaded = useCallback((url) => {
     console.log('Image uploaded, inserting into editor:', url);
     
-    // Don't try to update the editor, just update the form content directly
-    // Get current content from the form state, not the editor
+    // Get current content from the form state
     const currentContent = value || '';
     
     // Create image HTML
@@ -206,12 +205,27 @@ function ToolbarPlugin({ onChange, value }) {
     const newContent = currentContent + '<p>' + imageHtml + '</p>';
     console.log('New content with image:', newContent);
     
-    // Update the parent form directly (this will trigger InitialContentPlugin to update editor)
+    // Temporarily disable OnChangePlugin to prevent it from overriding our content
+    const disableOnChange = true;
+    
+    // Update the editor content directly
+    editor.update(() => {
+      const root = $getRoot();
+      root.clear();
+      
+      // Parse and insert the new content with image
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(newContent, 'text/html');
+      const nodes = $generateNodesFromDOM(editor, doc);
+      root.append(...nodes);
+    }, { tag: 'skip-onchange' });
+    
+    // Update the parent form
     onChange({ target: { name: 'content', value: newContent } });
     
     setNotification({ type: 'success', message: 'Image uploaded and added to post!' });
     setTimeout(() => setNotification(null), 3000);
-  }, [value, onChange]);
+  }, [value, onChange, editor]);
 
   const handleUploadError = useCallback((error) => {
     setNotification({ type: 'error', message: error });
