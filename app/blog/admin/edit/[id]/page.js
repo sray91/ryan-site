@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import RichTextEditor from '../../../../components/RichTextEditor';
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -137,22 +138,14 @@ export default function EditPostPage() {
 
             <div>
               <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                Content <span className="text-gray-500">(supports Markdown)</span>
+                Content <span className="text-gray-500">(rich text editor)</span>
               </label>
-              <textarea
-                id="content"
-                name="content"
+              <RichTextEditor
                 value={formData.content}
                 onChange={handleChange}
-                required
-                rows={20}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-                placeholder="Write your post content here using Markdown..."
+                placeholder="Start writing your blog post..."
+                height="600px"
               />
-              <div className="mt-2 text-sm text-gray-500">
-                <p className="mb-1"><strong>Markdown examples:</strong></p>
-                <p># Heading 1, ## Heading 2, **bold**, *italic*, [link](url), `code`</p>
-              </div>
             </div>
 
             <div className="flex justify-between items-center pt-6 border-t border-gray-200">
