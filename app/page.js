@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Header from "./components/Header";
 
 export default function Home() {
   return (
@@ -16,35 +17,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-blue-900/90 z-0"></div>
       
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-4 lg:px-16 flex-shrink-0 relative z-10">
-        <div>
-          <Image
-            src="/signature.png"
-            alt="Ryan Signature"
-            width={240}
-            height={80}
-            className="h-24 w-auto"
-            priority
-          />
-        </div>
-        <div className="hidden md:flex items-center space-x-8">
-          <Link href="/about" className="text-white/80 hover:text-white transition-colors">
-            about
-          </Link>
-          <Link href="/blog" className="text-white/80 hover:text-white transition-colors">
-            blog
-          </Link>
-          <Link href="https://axiomsystems.io" target="_blank" className="text-white/80 hover:text-white transition-colors">
-            firm
-          </Link>
-          <Link 
-            href="/newsletter" 
-            className="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-lg transition-colors"
-          >
-            newsletter
-          </Link>
-        </div>
-      </nav>
+      <Header />
 
       {/* Hero Section */}
       <div className="flex flex-col lg:flex-row items-center justify-between px-8 py-6 lg:px-16 flex-1 min-h-0 relative z-10">
@@ -76,14 +49,7 @@ export default function Home() {
 
           {/* Email Subscription Form */}
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            />
-            <button className="px-6 py-3 bg-orange-500 hover:bg-orange-600 rounded-lg font-semibold transition-colors whitespace-nowrap">
-              Subscribe
-            </button>
+          <iframe src="https://embeds.beehiiv.com/6578c794-7b30-4330-aa9c-f2d57e32a0a0?slim=true" data-test-id="beehiiv-embed" height="52" frameBorder="0" scrolling="no" style={{margin: 0, borderRadius: '0px !important', backgroundColor: 'transparent'}}></iframe>
           </div>
         </div>
       </div>

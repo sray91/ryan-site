@@ -33,14 +33,6 @@ export default async function BlogPage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
           <p className="text-xl text-gray-600">Thoughts, ideas, and updates</p>
-          <div className="mt-6">
-            <Link 
-              href="/blog/admin" 
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Admin Panel
-            </Link>
-          </div>
         </div>
 
         {posts.length === 0 ? (
