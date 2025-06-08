@@ -17,12 +17,28 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
     setUploading(true);
     
     try {
-      // Create a simple PDF data object for now
-      // In a real implementation, you'd upload to a storage service
+      // Upload PDF to Vercel Blob Storage
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', 'pdf');
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Upload failed');
+      }
+
+      const result = await response.json();
+
       const pdfData = {
         name: file.name,
         size: file.size,
-        url: URL.createObjectURL(file), // This creates a temporary URL
+        url: result.url, // Now using the permanent URL from Vercel Blob Storage
+        title: file.name.replace('.pdf', ''), // Add title field for display
         uploadedAt: new Date().toISOString()
       };
 
@@ -32,7 +48,7 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
       e.target.value = '';
     } catch (error) {
       console.error('Error uploading PDF:', error);
-      alert('Failed to upload PDF');
+      alert(`Failed to upload PDF: ${error.message}`);
     } finally {
       setUploading(false);
     }
@@ -90,6 +106,16 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
                   <p className="text-xs text-gray-500">
                     {(pdf.size / 1024 / 1024).toFixed(2)} MB
                   </p>
+                  {pdf.url && (
+                    <a 
+                      href={pdf.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-600 hover:text-blue-800"
+                    >
+                      View PDF
+                    </a>
+                  )}
                 </div>
               </div>
               <button
