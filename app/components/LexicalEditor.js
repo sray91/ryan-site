@@ -195,29 +195,32 @@ function ToolbarPlugin({ onChange, value }) {
   const handleImageUploaded = useCallback((url) => {
     console.log('Image uploaded, inserting into editor:', url);
     
-    // Get the current content from the editor
-    editor.getEditorState().read(() => {
+    editor.update(() => {
+      // Get current HTML content
       const currentHtml = $generateHtmlFromNodes(editor, null);
       console.log('Current HTML:', currentHtml);
       
       // Create image HTML
       const imageHtml = `<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;" />`;
       
-      // Append image to current content
+      // Combine current content with new image
       const newContent = currentHtml + '<p>' + imageHtml + '</p>';
       console.log('New content with image:', newContent);
       
-      // Update the parent form directly
+      // Clear the editor and set new content
+      const root = $getRoot();
+      root.clear();
+      
+      // Parse the new HTML content and insert it back into the editor
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(newContent, 'text/html');
+      const newNodes = $generateNodesFromDOM(editor, doc);
+      root.append(...newNodes);
+      
+      // Update the parent form with the new content
       onChange({ target: { name: 'content', value: newContent } });
-    });
-    
-    // Also try to insert into the editor for immediate visual feedback
-    editor.update(() => {
-      const selection = $getSelection();
-      if ($isRangeSelection(selection)) {
-        // Insert a placeholder text that will show in the editor
-        selection.insertText(`[Image uploaded: ${url.split('/').pop()}]`);
-      }
+      
+      console.log('Editor updated with new content including image');
     });
     
     setNotification({ type: 'success', message: 'Image uploaded and added to post!' });

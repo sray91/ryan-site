@@ -56,7 +56,10 @@ export default function BlogContentRenderer({ content, className = '' }) {
     <div className={`prose prose-sm sm:prose lg:prose-lg xl:prose-2xl max-w-none ${className}`}>
       <div 
         dangerouslySetInnerHTML={{ __html: finalContent }}
-        style={{ lineHeight: '1.7' }}
+        style={{ 
+          lineHeight: '1.7',
+        }}
+        className="[&_img]:max-w-full [&_img]:h-auto [&_img]:my-4 [&_img]:rounded-lg [&_img]:shadow-md"
       />
       
       {/* Render PDF carousels at the end */}
