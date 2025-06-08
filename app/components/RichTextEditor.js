@@ -10,6 +10,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import FontFamily from '@tiptap/extension-font-family';
+import FontSize from '@tiptap/extension-font-size';
 import { useCallback, useEffect, useState } from 'react';
 import ImageUpload from './ImageUpload';
 
@@ -40,6 +41,9 @@ export default function RichTextEditor({
         multicolor: true,
       }),
       FontFamily.configure({
+        types: ['textStyle'],
+      }),
+      FontSize.configure({
         types: ['textStyle'],
       }),
     ],
@@ -214,6 +218,34 @@ export default function RichTextEditor({
               <option value="Georgia, serif">Georgia</option>
               <option value="'Times New Roman', serif">Times</option>
               <option value="'Courier New', monospace">Courier</option>
+            </select>
+          </div>
+
+          {/* Font Size */}
+          <div className="flex items-center gap-1 mr-3">
+            <select
+              onChange={(e) => {
+                if (e.target.value === 'default') {
+                  editor.chain().focus().unsetFontSize().run();
+                } else {
+                  editor.chain().focus().setFontSize(e.target.value).run();
+                }
+              }}
+              className="px-2 py-1 text-xs rounded border hover:bg-gray-100"
+              title="Font Size"
+              defaultValue="default"
+            >
+              <option value="default">Default Size</option>
+              <option value="10px">10px</option>
+              <option value="12px">12px</option>
+              <option value="14px">14px</option>
+              <option value="16px">16px</option>
+              <option value="18px">18px</option>
+              <option value="20px">20px</option>
+              <option value="24px">24px</option>
+              <option value="28px">28px</option>
+              <option value="32px">32px</option>
+              <option value="36px">36px</option>
             </select>
           </div>
 
