@@ -193,16 +193,20 @@ function ToolbarPlugin({ onChange, value }) {
   };
 
   const handleImageUploaded = useCallback((url) => {
+    console.log('Image uploaded, inserting into editor:', url);
     editor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
         const parser = new DOMParser();
-        const dom = parser.parseFromString(`<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto;" />`, 'text/html');
+        const dom = parser.parseFromString(`<img src="${url}" alt="Uploaded image" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;" />`, 'text/html');
         const nodes = $generateNodesFromDOM(editor, dom);
         selection.insertNodes(nodes);
+        console.log('Image nodes inserted:', nodes);
+      } else {
+        console.log('No valid selection for image insertion');
       }
     });
-    setNotification({ type: 'success', message: 'Image uploaded successfully!' });
+    setNotification({ type: 'success', message: 'Image uploaded and inserted successfully!' });
     setTimeout(() => setNotification(null), 3000);
   }, [editor]);
 
@@ -542,10 +546,10 @@ export default function LexicalEditor({
         <div className="bg-white" style={{ height: height }}>
           <RichTextPlugin
             contentEditable={
-              <ContentEditable 
-                className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-full p-4 overflow-y-auto"
-                style={{ height: height }}
-              />
+                          <ContentEditable 
+              className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-full p-4 overflow-y-auto [&_img]:max-w-full [&_img]:h-auto [&_img]:my-4"
+              style={{ height: height }}
+            />
             }
             placeholder={
               <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">

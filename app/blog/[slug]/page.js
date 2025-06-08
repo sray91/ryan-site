@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
-import { marked } from 'marked';
 import { notFound } from 'next/navigation';
 import { kv } from '@vercel/kv';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
@@ -49,7 +48,8 @@ export default async function BlogPostPage({ params }) {
     notFound();
   }
 
-  const htmlContent = marked(post.content);
+  // Content is already HTML from LexicalEditor, no need to process with marked()
+  const htmlContent = post.content;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
