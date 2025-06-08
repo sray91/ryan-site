@@ -6,8 +6,12 @@ import BlogContentRenderer from '../../components/BlogContentRenderer';
 
 async function getBlogPost(slug) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/blog`, {
+    // Use relative URL for server-side rendering
+    const apiUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}/api/blog`
+      : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog`;
+    
+    const res = await fetch(apiUrl, {
       cache: 'no-store'
     });
     
