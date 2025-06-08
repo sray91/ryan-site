@@ -2,25 +2,23 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { marked } from 'marked';
 import { notFound } from 'next/navigation';
+import { kv } from '@vercel/kv';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 
 async function getBlogPost(slug) {
   try {
-    // Use relative URL for server-side rendering
-    const apiUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}/api/blog`
-      : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog`;
+    // Get all blog post keys and find the one with matching slug
+    const keys = await kv.keys('blog:*');
     
-    const res = await fetch(apiUrl, {
-      cache: 'no-store'
-    });
-    
-    if (!res.ok) {
-      throw new Error('Failed to fetch posts');
+    if (keys.length === 0) {
+      return null;
     }
     
-    const posts = await res.json();
-    return posts.find(post => post.slug === slug);
+    // Get all posts
+    const posts = await kv.mget(...keys);
+    
+    // Find post with matching slug
+    return posts.find(post => post && post.slug === slug);
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;

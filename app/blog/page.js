@@ -1,22 +1,23 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { kv } from '@vercel/kv';
 
 async function getBlogPosts() {
   try {
-    // Use relative URL for server-side rendering
-    const apiUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}/api/blog`
-      : `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog`;
+    // Get all blog post keys
+    const keys = await kv.keys('blog:*');
     
-    const res = await fetch(apiUrl, {
-      cache: 'no-store'
-    });
-    
-    if (!res.ok) {
-      throw new Error('Failed to fetch posts');
+    if (keys.length === 0) {
+      return [];
     }
     
-    return res.json();
+    // Get all posts
+    const posts = await kv.mget(...keys);
+    
+    // Filter out null values and sort by creation date
+    return posts
+      .filter(post => post !== null)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } catch (error) {
     console.error('Error fetching posts:', error);
     return [];
