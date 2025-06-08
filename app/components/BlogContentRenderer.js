@@ -79,7 +79,14 @@ export default function BlogContentRenderer({ content, className = '' }) {
       {/* Debug: Try rendering images directly to see if CSS is the issue */}
       <div className="mt-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
         <h4 className="font-bold mb-2">Debug: Testing image display</h4>
-        <div dangerouslySetInnerHTML={{ __html: content.replace(/<(?!img\s)[^>]+>/g, '') }} />
+        <p className="text-sm mb-2">Raw content length: {content?.length || 0}</p>
+        <p className="text-sm mb-2">Contains img tags: {content?.includes('<img') ? 'YES' : 'NO'}</p>
+        {content?.includes('<img') && (
+          <div className="border-2 border-blue-500 p-2">
+            <p className="text-xs mb-1">Direct img render:</p>
+            <div dangerouslySetInnerHTML={{ __html: content.match(/<img[^>]*>/g)?.join('') || 'No img tags found' }} />
+          </div>
+        )}
       </div>
       
       {/* Render PDF carousels at the end */}
