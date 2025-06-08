@@ -80,20 +80,12 @@ export default function ImageUpload({ onImageUploaded, onError }) {
         type="button"
         onClick={triggerFileSelect}
         disabled={uploading}
-        className={`p-2 rounded hover:bg-gray-200 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
         title="Upload Image"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
-        {uploading ? (
-          <svg className="w-4 h-4 animate-spin" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 3v3l4-4-4-4v3a8 8 0 1 0 8 8h-3a5 5 0 1 1-5-5z"/>
-          </svg>
-        ) : (
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
-          </svg>
-        )}
+        {uploading ? '⏳ Uploading...' : '📁 Upload'}
       </button>
     </>
   );

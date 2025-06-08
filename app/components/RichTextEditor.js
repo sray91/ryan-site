@@ -107,46 +107,42 @@ export default function RichTextEditor({
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm font-bold hover:bg-gray-200 ${
                 editor.isActive('bold') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Bold"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M5 4v3h5.5c1.1 0 2 .9 2 2s-.9 2-2 2H5v3h6.5c1.9 0 3.5-1.6 3.5-3.5s-1.6-3.5-3.5-3.5H5z"/>
-              </svg>
+              B
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm italic hover:bg-gray-200 ${
                 editor.isActive('italic') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Italic"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M7 4v1h2l-2 10H5v1h6v-1H9l2-10h2V4H7z"/>
-              </svg>
+              I
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleUnderline().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm underline hover:bg-gray-200 ${
                 editor.isActive('underline') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Underline"
             >
-              <span className="text-sm font-semibold underline">U</span>
+              U
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm line-through hover:bg-gray-200 ${
                 editor.isActive('strike') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Strikethrough"
             >
-              <span className="text-sm font-semibold line-through">S</span>
+              S
             </button>
           </div>
 
@@ -189,30 +185,22 @@ export default function RichTextEditor({
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive('bulletList') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Bullet List"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 7h14v2H3V7zm0 4h14v2H3v-2z"/>
-                <circle cx="3" cy="8" r="1"/>
-                <circle cx="3" cy="12" r="1"/>
-              </svg>
+              • List
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive('orderedList') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Numbered List"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M7 7h10v2H7V7zm0 4h10v2H7v-2z"/>
-                <text x="3" y="9" className="text-xs">1.</text>
-                <text x="3" y="13" className="text-xs">2.</text>
-              </svg>
+              1. List
             </button>
           </div>
 
@@ -221,38 +209,32 @@ export default function RichTextEditor({
             <button
               type="button"
               onClick={() => editor.chain().focus().setTextAlign('left').run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive({ textAlign: 'left' }) ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Align Left"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 4h16v2H2V4zm0 4h10v2H2V8zm0 4h16v2H2v-2zm0 4h10v2H2v-2z"/>
-              </svg>
+              ← Left
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().setTextAlign('center').run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive({ textAlign: 'center' }) ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Center"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 4h16v2H2V4zm3 4h10v2H5V8zm-3 4h16v2H2v-2zm3 4h10v2H5v-2z"/>
-              </svg>
+              ↔ Center
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().setTextAlign('right').run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive({ textAlign: 'right' }) ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Align Right"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 4h16v2H2V4zm6 4h10v2H8V8zm-6 4h16v2H2v-2zm6 4h10v2H8v-2z"/>
-              </svg>
+              → Right
             </button>
           </div>
 
@@ -261,14 +243,12 @@ export default function RichTextEditor({
             <button
               type="button"
               onClick={insertLink}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive('link') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Insert Link"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M12.586 4.586a2 2 0 112.828 2.828L9 14.172V17h-2.828L12.586 4.586zM11 5L6 10v3h3l5-5-3-3z"/>
-              </svg>
+              🔗 Link
             </button>
             <ImageUpload
               onImageUploaded={handleImageUploaded}
@@ -277,12 +257,10 @@ export default function RichTextEditor({
             <button
               type="button"
               onClick={insertImage}
-              className="p-2 rounded hover:bg-gray-200"
+              className="px-3 py-2 rounded text-sm hover:bg-gray-200"
               title="Insert Image from URL"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
-              </svg>
+              🖼️ URL
             </button>
           </div>
 
@@ -291,34 +269,30 @@ export default function RichTextEditor({
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive('blockquote') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Quote"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/>
-              </svg>
+              &quot; Quote
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().toggleCode().run()}
-              className={`p-2 rounded hover:bg-gray-200 ${
+              className={`px-3 py-2 rounded text-sm hover:bg-gray-200 ${
                 editor.isActive('code') ? 'bg-blue-200 text-blue-800' : ''
               }`}
               title="Inline Code"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265L11.682 9l1.267 4.684a1 1 0 01-1.898.632L9.736 10l1.315-4.316a1 1 0 011.265-.633z" clipRule="evenodd"/>
-              </svg>
+              &lt;/&gt; Code
             </button>
             <button
               type="button"
               onClick={() => editor.chain().focus().setHorizontalRule().run()}
-              className="p-2 rounded hover:bg-gray-200"
+              className="px-3 py-2 rounded text-sm hover:bg-gray-200"
               title="Horizontal Rule"
             >
-              <span className="text-sm font-bold">—</span>
+              ─── Line
             </button>
           </div>
         </div>
