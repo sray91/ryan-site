@@ -163,10 +163,8 @@ export default function RichTextEditor({
           const range = quill.getSelection();
           const index = range ? range.index : quill.getLength();
           
-          // Insert a simple PDF marker that we can replace later (encode to avoid special characters)
-          const encodedUrl = encodeURIComponent(result.url);
-          const encodedName = encodeURIComponent(file.name);
-          const pdfHtml = `<p><strong>PDF_MARKER_START_${encodedUrl}_NAME_${encodedName}_PDF_MARKER_END</strong></p>`;
+          // For now, just insert a simple link to the PDF
+          const pdfHtml = `<p><a href="${result.url}" target="_blank">${file.name}</a> (PDF uploaded)</p>`;
           
           quill.clipboard.dangerouslyPasteHTML(index, pdfHtml);
           
@@ -293,7 +291,7 @@ export default function RichTextEditor({
   const formats = [
     'header', 'bold', 'italic', 'underline', 'strike',
     'list', 'blockquote', 'code-block',
-    'link', 'align', 'image', 'iframe', 'div'
+    'link', 'align', 'image'
   ];
 
   if (!isClient) {
