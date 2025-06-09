@@ -20,7 +20,7 @@ export async function POST(request) {
     if (type === 'pdf') {
       // PDF upload for blog content
       allowedTypes = ['application/pdf'];
-      maxSize = 10 * 1024 * 1024; // 10MB max for PDFs (Vercel limit)
+      maxSize = 20 * 1024 * 1024; // 20MB max for PDFs
       folderPrefix = 'blog-carousels';
     } else {
       // Default image upload
