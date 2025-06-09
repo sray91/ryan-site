@@ -11,13 +11,28 @@ export default function BlogContentRenderer({ content, className = '' }) {
       
       // Look for PDF markers in the content
       const content = contentRef.current.innerHTML;
-      const pdfMarkerRegex = /PDF_MARKER_START:([^:]+):([^:]+):PDF_MARKER_END/g;
+      
+      // Try new format first
+      const newFormatRegex = /PDF_MARKER_START_([^_]+)_NAME_([^_]+)_PDF_MARKER_END/g;
+      // Try old format as fallback
+      const oldFormatRegex = /PDF_MARKER_START:([^:]+):([^:]+):PDF_MARKER_END/g;
+      
       let match;
       const replacements = [];
       
-      while ((match = pdfMarkerRegex.exec(content)) !== null) {
+      // Check new format
+      while ((match = newFormatRegex.exec(content)) !== null) {
+        const [fullMatch, encodedUrl, encodedName] = match;
+        const pdfUrl = decodeURIComponent(encodedUrl);
+        const fileName = decodeURIComponent(encodedName);
+        console.log('Found new PDF marker:', { pdfUrl, fileName });
+        replacements.push({ fullMatch, pdfUrl, fileName });
+      }
+      
+      // Check old format
+      while ((match = oldFormatRegex.exec(content)) !== null) {
         const [fullMatch, pdfUrl, fileName] = match;
-        console.log('Found PDF marker:', { pdfUrl, fileName });
+        console.log('Found old PDF marker:', { pdfUrl, fileName });
         replacements.push({ fullMatch, pdfUrl, fileName });
       }
       
