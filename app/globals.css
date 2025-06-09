@@ -198,6 +198,21 @@ body {
   /* Ensure color styles are preserved */
 }
 
+/* Blog Content Styles */
+.prose-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.6;
+}
+
+.prose-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  word-spacing: normal;
+  letter-spacing: normal;
+}
+
 /* PDF Carousel Styles */
 .pdf-carousel {
   margin: 2rem 0;
