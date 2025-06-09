@@ -8,10 +8,9 @@ export default function BlogContentRenderer({ content, className = '' }) {
   // If content is just plain text without HTML tags, wrap it in a paragraph
   let processedContent = content;
   if (typeof content === 'string' && !content.includes('<') && !content.includes('>')) {
-    // Split by line breaks and wrap each line in a paragraph
-    processedContent = content.split('\n').map(line => 
-      line.trim() ? `<p>${line.trim()}</p>` : ''
-    ).join('');
+    // Clean the content first - remove any weird whitespace
+    const cleanContent = content.replace(/\s+/g, ' ').trim();
+    processedContent = `<p>${cleanContent}</p>`;
   }
 
   return (
@@ -19,7 +18,12 @@ export default function BlogContentRenderer({ content, className = '' }) {
       <div 
         dangerouslySetInnerHTML={{ __html: processedContent }}
         className="prose-content [&_img]:max-w-full [&_img]:h-auto [&_img]:my-4 [&_img]:rounded-lg [&_img]:shadow-sm whitespace-normal"
-        style={{ wordBreak: 'normal', overflowWrap: 'break-word' }}
+        style={{ 
+          wordBreak: 'normal', 
+          overflowWrap: 'break-word',
+          display: 'block',
+          whiteSpace: 'normal'
+        }}
       />
     </div>
   );

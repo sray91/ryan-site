@@ -198,6 +198,8 @@ body {
   /* Ensure color styles are preserved */
 }
 
+/* Removed custom lexical styles to test basic functionality */
+
 /* Blog Content Styles */
 .prose-content {
   word-wrap: break-word;
