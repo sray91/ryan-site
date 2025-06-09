@@ -71,28 +71,55 @@ export default function About() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Education and Technical Expertise - Smaller boxes on same row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Education */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Education</h2>
-            <ul className="space-y-4 text-white/80">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-orange-400">Education</h2>
+            <ul className="space-y-3 text-white/80">
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <span className="font-semibold">M.S., Systems Engineering & Engineering Management</span>
-                  <p className="text-white/60">Case Western Reserve University</p>
+                  <p className="text-white/60 text-sm">Case Western Reserve University</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <span className="font-semibold">B.S., Electrical Engineering</span>
-                  <p className="text-white/60">Purdue University</p>
+                  <p className="text-white/60 text-sm">Purdue University</p>
                 </div>
               </li>
             </ul>
           </div>
 
+          {/* Technical Expertise & Patents */}
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-orange-400">Technical Expertise & Patents</h2>
+            <ul className="space-y-3 text-white/80">
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
+                <span className="text-sm">Holds multiple patents in industrial data analytics, AR, and cloud systems</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
+                <span className="text-sm">Fluent in manufacturing operations systems (MES, SCADA, HMI, PLC)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
+                <span className="text-sm">Broad experience in systems architecture and application across industrial verticals</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
+                <span className="text-sm">Expertise: Startup Growth & Scale, Technology Due Diligence, Business Development, Strategic Planning</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Key Achievements and Recent Engagement Highlights - Larger boxes */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Key Achievements */}
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Key Achievements</h2>
@@ -120,25 +147,25 @@ export default function About() {
             </ul>
           </div>
 
-          {/* Technical Expertise & Patents */}
+          {/* Recent Engagement Highlights */}
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Technical Expertise & Patents</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Recent Engagement Highlights</h2>
             <ul className="space-y-4 text-white/80">
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span>Holds multiple patents in industrial data analytics, AR, and cloud systems</span>
+                <span>Supported a $1B PE firm in identifying, evaluating, and integrating investments in the industrial OT technology space — providing market insight, sourcing, due diligence, and integration support.</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span>Fluent in manufacturing operations systems (MES, SCADA, HMI, PLC)</span>
+                <span>Advised multiple regional systems integrators on strategic growth, operational scaling, and ownership transition — including facilitating introductions to potential investors and buyers.</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span>Broad experience in systems architecture and application across industrial verticals</span>
+                <span>Guided a cohort of international technology startups through U.S. market entry via the JETRO program — refining messaging, go-to-market strategy, and partnerships to create immediate commercial traction.</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span>Expertise: Startup Growth & Scale, Technology Due Diligence, Business Development, Strategic Planning</span>
+                <span>Led advisory and operational engagements for manufacturers pursuing performance improvement, digital transformation, and market expansion.</span>
               </li>
             </ul>
           </div>
