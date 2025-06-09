@@ -25,6 +25,48 @@ export default function RichTextEditor({
     setIsClient(true);
   }, []);
 
+  const uploadFile = useCallback(async (file) => {
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        const quill = quillRef.current?.getEditor();
+        if (quill) {
+          const range = quill.getSelection();
+          const index = range ? range.index : quill.getLength();
+          
+          // Insert the image at cursor position
+          quill.insertEmbed(index, 'image', result.url);
+          
+          // Move cursor after the image
+          quill.setSelection(index + 1);
+        }
+        
+        setNotification({ type: 'success', message: 'Image uploaded successfully!' });
+        setTimeout(() => setNotification(null), 3000);
+      } else {
+        setNotification({ type: 'error', message: result.error || 'Upload failed' });
+        setTimeout(() => setNotification(null), 5000);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      setNotification({ type: 'error', message: 'Upload failed. Please try again.' });
+      setTimeout(() => setNotification(null), 5000);
+    } finally {
+      setUploading(false);
+    }
+  }, []);
+
   // Handle image drag-and-drop and paste events
   useEffect(() => {
     const handleDrop = async (e) => {
@@ -71,48 +113,6 @@ export default function RichTextEditor({
   const handleClear = () => {
     onChange({ target: { name: 'content', value: '' } });
   };
-
-  const uploadFile = useCallback(async (file) => {
-    setUploading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        const quill = quillRef.current?.getEditor();
-        if (quill) {
-          const range = quill.getSelection();
-          const index = range ? range.index : quill.getLength();
-          
-          // Insert the image at cursor position
-          quill.insertEmbed(index, 'image', result.url);
-          
-          // Move cursor after the image
-          quill.setSelection(index + 1);
-        }
-        
-        setNotification({ type: 'success', message: 'Image uploaded successfully!' });
-        setTimeout(() => setNotification(null), 3000);
-      } else {
-        setNotification({ type: 'error', message: result.error || 'Upload failed' });
-        setTimeout(() => setNotification(null), 5000);
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      setNotification({ type: 'error', message: 'Upload failed. Please try again.' });
-      setTimeout(() => setNotification(null), 5000);
-    } finally {
-      setUploading(false);
-    }
-  }, []);
 
   const uploadPdf = async (file) => {
     setPdfUploading(true);
