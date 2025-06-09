@@ -22,12 +22,8 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['sharp'],
   },
-  // Configure body size limits (50MB for PDFs)
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
+  // Configure for App Router - no api config needed
+  // Body size limits are handled at the route level
 };
 
 export default nextConfig;

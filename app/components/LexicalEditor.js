@@ -151,7 +151,7 @@ export default function RichTextEditor({
         console.error('Response text:', responseText);
         
         if (response.status === 413) {
-          throw new Error('File too large. Please choose a smaller PDF (max 25MB).');
+          throw new Error('File too large. Please choose a smaller PDF (max 10MB).');
         } else {
           throw new Error(`Server error ${response.status}: ${response.statusText}`);
         }
@@ -219,6 +219,18 @@ export default function RichTextEditor({
     const file = event.target.files[0];
     if (!file) return;
 
+    // Check file size before upload (5MB = 5 * 1024 * 1024 bytes)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      setNotification({ 
+        type: 'error', 
+        message: `Image file is too large (${fileSizeMB}MB). Maximum size is 5MB.` 
+      });
+      setTimeout(() => setNotification(null), 5000);
+      return;
+    }
+
     // Reset the input value so the same file can be selected again
     event.target.value = '';
 
@@ -231,6 +243,18 @@ export default function RichTextEditor({
 
     if (file.type !== 'application/pdf') {
       setNotification({ type: 'error', message: 'Please select a PDF file only.' });
+      setTimeout(() => setNotification(null), 5000);
+      return;
+    }
+
+    // Check file size before upload (10MB = 10 * 1024 * 1024 bytes)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      setNotification({ 
+        type: 'error', 
+        message: `PDF file is too large (${fileSizeMB}MB). Maximum size is 10MB.` 
+      });
       setTimeout(() => setNotification(null), 5000);
       return;
     }

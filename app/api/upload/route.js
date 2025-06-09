@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 
+// Configure route segment for larger file uploads
+export const runtime = 'nodejs';
+export const maxDuration = 30; // 30 seconds timeout
+
 export async function POST(request) {
   try {
     const data = await request.formData();
@@ -16,7 +20,7 @@ export async function POST(request) {
     if (type === 'pdf') {
       // PDF upload for blog content
       allowedTypes = ['application/pdf'];
-      maxSize = 25 * 1024 * 1024; // 25MB max for PDFs
+      maxSize = 10 * 1024 * 1024; // 10MB max for PDFs (Vercel limit)
       folderPrefix = 'blog-carousels';
     } else {
       // Default image upload
