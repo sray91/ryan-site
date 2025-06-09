@@ -14,9 +14,9 @@ export async function POST(request) {
     let allowedTypes, maxSize, folderPrefix;
 
     if (type === 'pdf') {
-      // PDF upload for LinkedIn carousel
+      // PDF upload for blog content
       allowedTypes = ['application/pdf'];
-      maxSize = 10 * 1024 * 1024; // 10MB max for PDFs
+      maxSize = 25 * 1024 * 1024; // 25MB max for PDFs
       folderPrefix = 'blog-carousels';
     } else {
       // Default image upload

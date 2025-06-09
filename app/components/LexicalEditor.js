@@ -37,7 +37,21 @@ export default function RichTextEditor({
         body: formData,
       });
 
-      const result = await response.json();
+      // Better error handling for non-JSON responses
+      let result;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        const responseText = await response.text();
+        console.error('Response text:', responseText);
+        
+        if (response.status === 413) {
+          throw new Error('File too large. Please choose a smaller image (max 5MB).');
+        } else {
+          throw new Error(`Server error ${response.status}: ${response.statusText}`);
+        }
+      }
 
       if (result.success) {
         const quill = quillRef.current?.getEditor();
@@ -127,7 +141,21 @@ export default function RichTextEditor({
         body: formData,
       });
 
-      const result = await response.json();
+      // Better error handling for non-JSON responses
+      let result;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        const responseText = await response.text();
+        console.error('Response text:', responseText);
+        
+        if (response.status === 413) {
+          throw new Error('File too large. Please choose a smaller PDF (max 25MB).');
+        } else {
+          throw new Error(`Server error ${response.status}: ${response.statusText}`);
+        }
+      }
 
       if (result.success) {
         const quill = quillRef.current?.getEditor();

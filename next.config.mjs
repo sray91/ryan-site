@@ -18,6 +18,16 @@ const nextConfig = {
       },
     ],
   },
+  // Increase request size limits for PDF uploads
+  experimental: {
+    serverComponentsExternalPackages: ['sharp'],
+  },
+  // Configure body size limits (50MB for PDFs)
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb',
+    },
+  },
 };
 
 export default nextConfig;
