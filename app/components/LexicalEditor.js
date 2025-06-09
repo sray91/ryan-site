@@ -163,12 +163,21 @@ export default function RichTextEditor({
           const range = quill.getSelection();
           const index = range ? range.index : quill.getLength();
           
-          // Insert PDF carousel HTML at cursor position
+          // Insert PDF carousel HTML with embedded viewer at cursor position
           const pdfHtml = `<div class="pdf-carousel" data-pdf-url="${result.url}">
-            <div class="pdf-placeholder border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50">
-              <div class="text-4xl text-gray-400 mb-2">📄</div>
-              <p class="text-gray-600 font-medium">${file.name}</p>
-              <p class="text-gray-500 text-sm">PDF Document - Click to view</p>
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden max-w-full my-4">
+              <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-medium text-gray-900">${file.name}</h3>
+                  <div class="flex items-center space-x-4">
+                    <a href="${result.url}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 hover:text-blue-800">Open in New Tab</a>
+                    <a href="${result.url}" download class="text-sm text-green-600 hover:text-green-800">Download</a>
+                  </div>
+                </div>
+              </div>
+              <div class="relative bg-gray-100">
+                <iframe src="${result.url}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" width="100%" height="400" style="border: none; display: block;" title="${file.name}" class="w-full" loading="lazy"></iframe>
+              </div>
             </div>
           </div>`;
           

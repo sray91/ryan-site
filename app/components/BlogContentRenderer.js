@@ -1,25 +1,30 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import PDFViewer from './PDFViewer';
 
 export default function BlogContentRenderer({ content, className = '' }) {
   const contentRef = useRef(null);
 
   useEffect(() => {
     if (contentRef.current && typeof window !== 'undefined') {
+      console.log('BlogContentRenderer: Processing content for PDFs');
+      
       // Find all PDF placeholders and replace them with proper PDF viewers
       const pdfPlaceholders = contentRef.current.querySelectorAll('.pdf-carousel[data-pdf-url]');
+      console.log('Found PDF placeholders:', pdfPlaceholders.length);
       
       pdfPlaceholders.forEach((placeholder, index) => {
         const pdfUrl = placeholder.getAttribute('data-pdf-url');
+        console.log(`Processing PDF ${index}:`, pdfUrl);
+        
         if (pdfUrl && !placeholder.classList.contains('pdf-processed')) {
           // Mark as processed to avoid re-processing
           placeholder.classList.add('pdf-processed');
           
           // Get the PDF filename from the existing content
-          const pdfNameElement = placeholder.querySelector('p');
+          const pdfNameElement = placeholder.querySelector('h3, p');
           const pdfName = pdfNameElement ? pdfNameElement.textContent : 'PDF Document';
+          console.log('PDF name:', pdfName);
           
           // Create a simpler iframe-based PDF viewer that works reliably
           const pdfViewer = document.createElement('div');
@@ -35,9 +40,6 @@ export default function BlogContentRenderer({ content, className = '' }) {
                     rel="noopener noreferrer"
                     class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors"
                   >
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
                     Open in New Tab
                   </a>
                   <a 
@@ -45,9 +47,6 @@ export default function BlogContentRenderer({ content, className = '' }) {
                     download
                     class="inline-flex items-center text-sm text-green-600 hover:text-green-800 transition-colors"
                   >
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
                     Download
                   </a>
                 </div>
@@ -55,7 +54,7 @@ export default function BlogContentRenderer({ content, className = '' }) {
             </div>
             <div class="relative bg-gray-100">
               <iframe
-                src="${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1&view=FitH"
+                src="${pdfUrl}#toolbar=1&view=FitH"
                 width="100%"
                 height="600"
                 style="border: none; display: block;"
@@ -66,6 +65,7 @@ export default function BlogContentRenderer({ content, className = '' }) {
             </div>
           `;
           
+          console.log('Replacing placeholder with PDF viewer');
           // Replace the placeholder with the actual PDF viewer
           placeholder.parentNode.replaceChild(pdfViewer, placeholder);
         }
