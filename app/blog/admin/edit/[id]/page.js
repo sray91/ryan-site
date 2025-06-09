@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import RichTextEditor from '../../../../components/LexicalEditor';
 import TagInput from '../../../../components/TagInput';
+import PDFUpload from '../../../../components/PDFUpload';
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -37,7 +38,8 @@ export default function EditPostPage() {
           title: post.title,
           content: post.content,
           excerpt: post.excerpt,
-          tags: post.tags || []
+          tags: post.tags || [],
+          pdfCarousels: post.pdfCarousels || []
         });
       } else {
         alert('Post not found');
@@ -159,11 +161,32 @@ export default function EditPostPage() {
               <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
                 Content <span className="text-gray-500">(rich text editor)</span>
               </label>
-                              <RichTextEditor
+              <RichTextEditor
                 value={formData.content}
                 onChange={handleChange}
                 placeholder="Start writing your blog post..."
                 height="600px"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                PDF Documents <span className="text-gray-500">(optional)</span>
+              </label>
+              <PDFUpload
+                uploadedPdfs={formData.pdfCarousels}
+                onUpload={(pdfData) => {
+                  setFormData(prev => ({
+                    ...prev,
+                    pdfCarousels: [...prev.pdfCarousels, pdfData]
+                  }));
+                }}
+                onRemove={(index) => {
+                  setFormData(prev => ({
+                    ...prev,
+                    pdfCarousels: prev.pdfCarousels.filter((_, i) => i !== index)
+                  }));
+                }}
               />
             </div>
 
