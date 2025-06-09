@@ -25,6 +25,45 @@ export default function RichTextEditor({
     setIsClient(true);
   }, []);
 
+  // Handle image drag-and-drop and paste events
+  useEffect(() => {
+    const handleDrop = async (e) => {
+      e.preventDefault();
+      const files = Array.from(e.dataTransfer.files);
+      const imageFile = files.find(file => file.type.startsWith('image/'));
+      
+      if (imageFile) {
+        await uploadFile(imageFile);
+      }
+    };
+
+    const handlePaste = async (e) => {
+      const items = Array.from(e.clipboardData.items);
+      const imageItem = items.find(item => item.type.startsWith('image/'));
+      
+      if (imageItem) {
+        e.preventDefault();
+        const file = imageItem.getAsFile();
+        if (file) {
+          await uploadFile(file);
+        }
+      }
+    };
+
+    const quillEditor = quillRef.current?.getEditor();
+    const editorElement = quillEditor?.root;
+    
+    if (editorElement) {
+      editorElement.addEventListener('drop', handleDrop);
+      editorElement.addEventListener('paste', handlePaste);
+      
+      return () => {
+        editorElement.removeEventListener('drop', handleDrop);
+        editorElement.removeEventListener('paste', handlePaste);
+      };
+    }
+  }, [isClient, uploadFile]); // Re-run when client is ready
+
   const handleChange = (content) => {
     onChange({ target: { name: 'content', value: content } });
   };
@@ -33,7 +72,7 @@ export default function RichTextEditor({
     onChange({ target: { name: 'content', value: '' } });
   };
 
-  const uploadFile = async (file) => {
+  const uploadFile = useCallback(async (file) => {
     setUploading(true);
 
     try {
@@ -73,7 +112,7 @@ export default function RichTextEditor({
     } finally {
       setUploading(false);
     }
-  };
+  }, []);
 
   const uploadPdf = async (file) => {
     setPdfUploading(true);
@@ -184,21 +223,29 @@ export default function RichTextEditor({
 
   // Quill modules configuration with custom toolbar
   const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['blockquote', 'code-block'],
-      ['link'],
-      [{ 'align': [] }],
-      ['clean']
-    ],
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ['blockquote', 'code-block'],
+        ['link'],
+        [{ 'align': [] }],
+        ['clean']
+      ],
+      handlers: {
+        image: () => {
+          // Redirect image operations to our custom upload button
+          triggerFileSelect();
+        }
+      }
+    },
   };
 
   const formats = [
     'header', 'bold', 'italic', 'underline', 'strike',
     'list', 'blockquote', 'code-block',
-    'link', 'align'
+    'link', 'align', 'image'
   ];
 
   if (!isClient) {
