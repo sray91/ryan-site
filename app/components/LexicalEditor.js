@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -16,8 +16,10 @@ export default function RichTextEditor({
   const [isClient, setIsClient] = useState(false);
   const [notification, setNotification] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [pdfUploading, setPdfUploading] = useState(false);
   const quillRef = useRef(null);
   const fileInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -73,6 +75,57 @@ export default function RichTextEditor({
     }
   };
 
+  const uploadPdf = async (file) => {
+    setPdfUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', 'pdf');
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        const quill = quillRef.current?.getEditor();
+        if (quill) {
+          const range = quill.getSelection();
+          const index = range ? range.index : quill.getLength();
+          
+          // Insert PDF carousel HTML at cursor position
+          const pdfHtml = `<div class="pdf-carousel" data-pdf-url="${result.url}">
+            <div class="pdf-placeholder border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50">
+              <div class="text-4xl text-gray-400 mb-2">📄</div>
+              <p class="text-gray-600 font-medium">${file.name}</p>
+              <p class="text-gray-500 text-sm">PDF Document - Click to view</p>
+            </div>
+          </div>`;
+          
+          quill.clipboard.dangerouslyPasteHTML(index, pdfHtml);
+          
+          // Move cursor after the PDF
+          quill.setSelection(index + 1);
+        }
+        
+        setNotification({ type: 'success', message: 'PDF uploaded successfully!' });
+        setTimeout(() => setNotification(null), 3000);
+      } else {
+        setNotification({ type: 'error', message: result.error || 'Upload failed' });
+        setTimeout(() => setNotification(null), 5000);
+      }
+    } catch (error) {
+      console.error('PDF upload error:', error);
+      setNotification({ type: 'error', message: 'PDF upload failed. Please try again.' });
+      setTimeout(() => setNotification(null), 5000);
+    } finally {
+      setPdfUploading(false);
+    }
+  };
+
   const handleImageUploaded = (url) => {
     const quill = quillRef.current?.getEditor();
     if (quill) {
@@ -105,86 +158,47 @@ export default function RichTextEditor({
     await uploadFile(file);
   };
 
-  const triggerFileSelect = () => {
-    fileInputRef.current?.click();
+  const handlePdfSelect = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      setNotification({ type: 'error', message: 'Please select a PDF file only.' });
+      setTimeout(() => setNotification(null), 5000);
+      return;
+    }
+
+    // Reset the input value so the same file can be selected again
+    event.target.value = '';
+
+    await uploadPdf(file);
   };
 
-  // Custom toolbar component
-  const CustomToolbar = () => (
-    <div id="toolbar" className="ql-toolbar ql-snow">
-      <span className="ql-formats">
-        <select className="ql-header" defaultValue="">
-          <option value="1">Heading 1</option>
-          <option value="2">Heading 2</option>
-          <option value="3">Heading 3</option>
-          <option value="">Normal</option>
-        </select>
-      </span>
-      
-      <span className="ql-formats">
-        <button className="ql-bold" />
-        <button className="ql-italic" />
-        <button className="ql-underline" />
-        <button className="ql-strike" />
-      </span>
-      
-      <span className="ql-formats">
-        <button className="ql-list" value="ordered" />
-        <button className="ql-list" value="bullet" />
-        <button className="ql-blockquote" />
-        <button className="ql-code-block" />
-      </span>
-      
-      <span className="ql-formats">
-        <button className="ql-link" />
-        
-        {/* Custom image upload styled like Quill button */}
-        <button 
-          type="button"
-          onClick={triggerFileSelect}
-          disabled={uploading}
-          className={`ql-image ${uploading ? 'ql-active' : ''}`}
-          title={uploading ? 'Uploading...' : 'Upload Image'}
-        >
-          <svg viewBox="0 0 18 18" width="18" height="18">
-            <rect className="ql-stroke" height="10" width="12" x="3" y="4"></rect>
-            <circle className="ql-fill" cx="6" cy="7" r="1"></circle>
-            <polyline className="ql-even ql-fill" points="5,12 5,11 7,9 8,10 11,7 13,9 13,12 5,12"></polyline>
-          </svg>
-        </button>
-        
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-      </span>
-      
-      <span className="ql-formats">
-        <select className="ql-align">
-          <option defaultValue="" />
-          <option value="center" />
-          <option value="right" />
-          <option value="justify" />
-        </select>
-        <button className="ql-clean" />
-      </span>
-    </div>
-  );
+  const triggerFileSelect = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const triggerPdfSelect = useCallback(() => {
+    pdfInputRef.current?.click();
+  }, []);
 
   // Quill modules configuration with custom toolbar
   const modules = {
-    toolbar: {
-      container: '#toolbar',
-    },
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['blockquote', 'code-block'],
+      ['link'],
+      [{ 'align': [] }],
+      ['clean']
+    ],
   };
 
   const formats = [
     'header', 'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet', 'blockquote', 'code-block',
-    'link', 'image', 'align'
+    'list', 'blockquote', 'code-block',
+    'link', 'align'
   ];
 
   if (!isClient) {
@@ -225,22 +239,72 @@ export default function RichTextEditor({
         </button>
       </div>
       
-      {/* Custom Toolbar */}
-      <CustomToolbar />
-      
-      {/* Quill Editor */}
-      <div style={{ height: `calc(${height} - 80px)` }}>
-        <ReactQuill
-          ref={quillRef}
-          theme="snow"
-          value={value || ''}
-          onChange={handleChange}
-          placeholder={placeholder}
-          modules={modules}
-          formats={formats}
-          style={{ height: '100%', border: 'none' }}
-        />
+      {/* Toolbar container with Quill toolbar and custom buttons */}
+      <div className="relative">
+        {/* Quill Editor with built-in toolbar */}
+        <div style={{ height: `calc(${height} - 40px)` }}>
+          <ReactQuill
+            ref={quillRef}
+            theme="snow"
+            value={value || ''}
+            onChange={handleChange}
+            placeholder={placeholder}
+            modules={modules}
+            formats={formats}
+            style={{ height: '100%', border: 'none' }}
+          />
+        </div>
+        
+        {/* Custom buttons overlay */}
+        <div className="absolute top-2 right-2 flex items-center gap-1 z-10">
+          {/* Image upload button */}
+          <button
+            type="button"
+            onClick={triggerFileSelect}
+            disabled={uploading}
+            className={`p-2 rounded-md bg-white shadow-sm border border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all ${uploading ? 'opacity-50' : ''}`}
+            title={uploading ? 'Uploading...' : 'Upload Image'}
+          >
+            <svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="3" y="4" width="12" height="10" />
+              <circle cx="6" cy="7" r="1" fill="currentColor" stroke="none" />
+              <path d="M5 12L7 9L8 10L11 7L13 9V12H5Z" fill="currentColor" stroke="none" />
+            </svg>
+          </button>
+
+          {/* PDF upload button */}
+          <button
+            type="button"
+            onClick={triggerPdfSelect}
+            disabled={pdfUploading}
+            className={`p-2 rounded-md bg-white shadow-sm border border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all ${pdfUploading ? 'opacity-50' : ''}`}
+            title={pdfUploading ? 'Uploading PDF...' : 'Upload PDF'}
+          >
+            <svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="4" y="2" width="10" height="12" />
+              <path d="M6 6h6M6 8h6M6 10h4" stroke="currentColor" strokeWidth="1" />
+              <path d="M8 2V1a1 1 0 011-1h4a1 1 0 011 1v3" fill="none" />
+            </svg>
+          </button>
+        </div>
       </div>
+
+      {/* Hidden file inputs */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
+
+      <input
+        ref={pdfInputRef}
+        type="file"
+        accept=".pdf"
+        onChange={handlePdfSelect}
+        className="hidden"
+      />
     </div>
   );
 } 
