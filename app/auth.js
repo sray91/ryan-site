@@ -1,26 +1,31 @@
-import NextAuth from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import { authConfig } from './auth.config';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
-export const { auth, signIn, signOut } = NextAuth({
-  ...authConfig,
-  providers: [
-    Credentials({
-      async authorize(credentials) {
-        // This is where you would typically validate against your database
-        // For demo purposes, we'll use a hardcoded username/password
-        if (
-          credentials?.username === process.env.ADMIN_USERNAME &&
-          credentials?.password === process.env.ADMIN_PASSWORD
-        ) {
-          return {
-            id: '1',
-            name: 'Admin',
-            email: 'admin@example.com',
-          };
-        }
-        return null;
-      },
-    }),
-  ],
-}); 
+const AUTH_COOKIE = 'auth_token';
+const TOKEN_VALUE = 'authenticated'; // In production, use a proper JWT
+
+export async function signIn(credentials) {
+  if (
+    credentials?.username === process.env.ADMIN_USERNAME &&
+    credentials?.password === process.env.ADMIN_PASSWORD
+  ) {
+    cookies().set(AUTH_COOKIE, TOKEN_VALUE, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+    return true;
+  }
+  return false;
+}
+
+export async function auth() {
+  const token = cookies().get(AUTH_COOKIE)?.value;
+  return token === TOKEN_VALUE;
+}
+
+export async function signOut() {
+  cookies().delete(AUTH_COOKIE);
+  return NextResponse.redirect(new URL('/login', process.env.NEXTAUTH_URL));
+} 

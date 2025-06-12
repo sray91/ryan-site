@@ -3,10 +3,10 @@ import { redirect } from 'next/navigation';
 import LoginForm from './login-form';
 
 export default async function LoginPage() {
-  const session = await auth();
+  const isAuthenticated = await auth();
   
   // Redirect to admin if already logged in
-  if (session?.user) {
+  if (isAuthenticated) {
     redirect('/blog/admin');
   }
 

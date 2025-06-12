@@ -1,17 +1,17 @@
-import { auth } from './app/auth';
+import { NextResponse } from 'next/server';
 
-export default auth((req) => {
-  // req.auth contains the session
-  const isLoggedIn = !!req.auth?.user;
-  const isOnAdmin = req.nextUrl.pathname.startsWith('/blog/admin');
+export function middleware(request) {
+  const authToken = request.cookies.get('auth_token')?.value;
+  const isAuthenticated = authToken === 'authenticated';
+  const isOnAdmin = request.nextUrl.pathname.startsWith('/blog/admin');
 
-  if (isOnAdmin && !isLoggedIn) {
-    return Response.redirect(new URL('/login', req.nextUrl));
+  if (isOnAdmin && !isAuthenticated) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
-  return null;
-});
 
-// Optionally, don't invoke Middleware on some paths
+  return NextResponse.next();
+}
+
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/blog/admin/:path*'],
 }; 

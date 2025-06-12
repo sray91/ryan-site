@@ -1,27 +1,43 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
     const formData = new FormData(event.currentTarget);
-    const response = await signIn('credentials', {
-      username: formData.get('username'),
-      password: formData.get('password'),
-      redirect: false,
-    });
+    
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.get('username'),
+          password: formData.get('password'),
+        }),
+      });
 
-    if (!response?.error) {
-      router.push('/blog/admin');
-      router.refresh();
-    } else {
-      setError('Invalid credentials');
+      if (response.ok) {
+        router.push('/blog/admin');
+        router.refresh();
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Invalid credentials');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -63,9 +79,10 @@ export default function LoginForm() {
       <div>
         <button
           type="submit"
-          className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          disabled={isLoading}
+          className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
         >
-          Sign in
+          {isLoading ? 'Signing in...' : 'Sign in'}
         </button>
       </div>
     </form>
