@@ -31,6 +31,15 @@ export default function BlogPage() {
     }
   };
 
+  // Helper function to strip HTML tags and decode HTML entities
+  const stripHtml = (html) => {
+    if (!html) return '';
+    // First, create a temporary element to decode HTML entities
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    // Then get the text content, which automatically strips HTML and decodes entities
+    return doc.body.textContent || '';
+  };
+
   const filteredPosts = posts
     .filter(post => {
       // Apply tag filter
@@ -41,12 +50,12 @@ export default function BlogPage() {
       // Apply search filter
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
-        return (
-          post.title.toLowerCase().includes(searchLower) ||
-          post.excerpt.toLowerCase().includes(searchLower) ||
-          post.content.toLowerCase().includes(searchLower) ||
-          (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchLower)))
-        );
+        const titleMatch = post.title.toLowerCase().includes(searchLower);
+        const excerptMatch = post.excerpt.toLowerCase().includes(searchLower);
+        const contentMatch = stripHtml(post.content).toLowerCase().includes(searchLower);
+        const tagMatch = post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchLower));
+        
+        return titleMatch || excerptMatch || contentMatch || tagMatch;
       }
       
       return true;
