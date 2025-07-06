@@ -159,11 +159,11 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Image size must be less than 5MB');
-      return;
-    }
+          // Validate file size (max 4MB)
+      if (file.size > 4 * 1024 * 1024) {
+        alert('Image size must be less than 4MB');
+        return;
+      }
 
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -329,7 +329,7 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
                       <p className="mt-2 text-sm text-gray-600">
                         <span className="font-medium">Click to upload</span> or drag and drop
                       </p>
-                      <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                      <p className="text-xs text-gray-500">PNG, JPG, GIF up to 4MB</p>
                       <p className="text-xs text-gray-500">Recommended: 1280x720px</p>
                     </div>
                   )}

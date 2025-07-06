@@ -19,13 +19,15 @@ export async function POST(request) {
 
     if (type === 'pdf') {
       // PDF upload for blog content
+      // NOTE: Vercel serverless functions have a 4.5MB payload limit
+      // For larger PDFs, we need to use client-side uploads
       allowedTypes = ['application/pdf'];
-      maxSize = 50 * 1024 * 1024; // 50MB max for PDFs
+      maxSize = 4 * 1024 * 1024; // 4MB max for PDFs (under Vercel's 4.5MB limit)
       folderPrefix = 'blog-carousels';
     } else {
       // Default image upload
       allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-      maxSize = 5 * 1024 * 1024; // 5MB max for images
+      maxSize = 4 * 1024 * 1024; // 4MB max for images (under Vercel's 4.5MB limit)
       folderPrefix = 'blog-images';
     }
 

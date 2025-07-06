@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import { upload } from '@vercel/blob/client';
 import 'react-quill-new/dist/quill.snow.css';
 
 // Dynamically import ReactQuill to avoid SSR issues
@@ -47,7 +48,7 @@ export default function RichTextEditor({
         console.error('Response text:', responseText);
         
         if (response.status === 413) {
-          throw new Error('File too large. Please choose a smaller image (max 5MB).');
+          throw new Error('File too large. Please choose a smaller image (max 4MB).');
         } else {
           throw new Error(`Server error ${response.status}: ${response.statusText}`);
         }
@@ -132,39 +133,64 @@ export default function RichTextEditor({
     setPdfUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', 'pdf');
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      // Better error handling for non-JSON responses
+      // Check file size to determine upload method
+      const fileSizeMB = file.size / (1024 * 1024);
+      const useClientUpload = fileSizeMB > 4; // Use client-side upload for files > 4MB
+      
       let result;
-      try {
-        result = await response.json();
-      } catch (parseError) {
-        console.error('Failed to parse response:', parseError);
-        const responseText = await response.text();
-        console.error('Response text:', responseText);
+      
+      if (useClientUpload) {
+        // Client-side upload for larger files
+        const timestamp = Date.now();
+        const filename = `blog-carousels/${timestamp}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
         
-        if (response.status === 413) {
-          throw new Error('File too large. Please choose a smaller PDF (max 20MB).');
-        } else {
-          throw new Error(`Server error ${response.status}: ${response.statusText}`);
+        const blob = await upload(filename, file, {
+          access: 'public',
+          handleUploadUrl: '/api/upload/client',
+          clientPayload: JSON.stringify({
+            fileType: 'pdf',
+            fileSize: file.size,
+            originalName: file.name
+          })
+        });
+        
+        result = { url: blob.url, success: true };
+      } else {
+        // Server-side upload for smaller files
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'pdf');
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        // Better error handling for non-JSON responses
+        try {
+          result = await response.json();
+        } catch (parseError) {
+          console.error('Failed to parse response:', parseError);
+          const responseText = await response.text();
+          console.error('Response text:', responseText);
+          
+          if (response.status === 413) {
+            throw new Error('File too large. Please choose a smaller PDF (max 4MB).');
+          } else {
+            throw new Error(`Server error ${response.status}: ${response.statusText}`);
+          }
         }
       }
 
-      if (result.success) {
+      if (result.success || result.url) {
         const quill = quillRef.current?.getEditor();
         if (quill) {
           const range = quill.getSelection();
           const index = range ? range.index : quill.getLength();
           
           // For now, just insert a simple link to the PDF
-          const pdfHtml = `<p><a href="${result.url}" target="_blank">${file.name}</a> (PDF uploaded)</p>`;
+          const uploadMethod = useClientUpload ? 'client-side' : 'server-side';
+          const pdfHtml = `<p><a href="${result.url}" target="_blank">${file.name}</a> (PDF uploaded via ${uploadMethod})</p>`;
           
           quill.clipboard.dangerouslyPasteHTML(index, pdfHtml);
           
@@ -172,7 +198,8 @@ export default function RichTextEditor({
           quill.setSelection(index + 1);
         }
         
-        setNotification({ type: 'success', message: 'PDF uploaded successfully!' });
+        const uploadMethod = useClientUpload ? 'client-side' : 'server-side';
+        setNotification({ type: 'success', message: `PDF uploaded successfully via ${uploadMethod} upload!` });
         setTimeout(() => setNotification(null), 3000);
       } else {
         setNotification({ type: 'error', message: result.error || 'Upload failed' });
@@ -180,7 +207,7 @@ export default function RichTextEditor({
       }
     } catch (error) {
       console.error('PDF upload error:', error);
-      setNotification({ type: 'error', message: 'PDF upload failed. Please try again.' });
+      setNotification({ type: 'error', message: error.message || 'PDF upload failed. Please try again.' });
       setTimeout(() => setNotification(null), 5000);
     } finally {
       setPdfUploading(false);
@@ -213,13 +240,13 @@ export default function RichTextEditor({
     const file = event.target.files[0];
     if (!file) return;
 
-    // Check file size before upload (5MB = 5 * 1024 * 1024 bytes)
-    const maxSize = 5 * 1024 * 1024;
+    // Check file size before upload (4MB = 4 * 1024 * 1024 bytes)
+    const maxSize = 4 * 1024 * 1024;
     if (file.size > maxSize) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
       setNotification({ 
         type: 'error', 
-        message: `Image file is too large (${fileSizeMB}MB). Maximum size is 5MB.` 
+        message: `Image file is too large (${fileSizeMB}MB). Maximum size is 4MB.` 
       });
       setTimeout(() => setNotification(null), 5000);
       return;
@@ -241,13 +268,13 @@ export default function RichTextEditor({
       return;
     }
 
-    // Check file size before upload (20MB = 20 * 1024 * 1024 bytes)
-    const maxSize = 20 * 1024 * 1024;
+    // Check file size before upload (100MB = 100 * 1024 * 1024 bytes for client-side uploads)
+    const maxSize = 100 * 1024 * 1024;
     if (file.size > maxSize) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
       setNotification({ 
         type: 'error', 
-        message: `PDF file is too large (${fileSizeMB}MB). Maximum size is 20MB.` 
+        message: `PDF file is too large (${fileSizeMB}MB). Maximum size is 100MB.` 
       });
       setTimeout(() => setNotification(null), 5000);
       return;

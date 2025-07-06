@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { upload } from '@vercel/blob/client';
 
 export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
   const [uploading, setUploading] = useState(false);
@@ -25,83 +26,27 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
     setUploadProgress(0);
     
     try {
-      // Upload PDF to Vercel Blob Storage using XMLHttpRequest for progress tracking
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', 'pdf');
-
-      const result = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        
-        // Track upload progress
-        xhr.upload.addEventListener('progress', (e) => {
-          if (e.lengthComputable) {
-            const percentComplete = (e.loaded / e.total) * 100;
-            setUploadProgress(Math.round(percentComplete));
-          }
-        });
-        
-        // Handle completion
-        xhr.addEventListener('load', () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            try {
-              const response = JSON.parse(xhr.responseText);
-              resolve(response);
-            } catch (parseError) {
-              console.error('Failed to parse response:', parseError);
-              console.error('Response text:', xhr.responseText);
-              
-              if (xhr.status === 413) {
-                reject(new Error('File too large. Please choose a smaller PDF (max 50MB).'));
-              } else if (xhr.status === 400) {
-                reject(new Error('Invalid file type. Please select a PDF file.'));
-              } else if (xhr.status === 500) {
-                reject(new Error('Server error. Please try again later.'));
-              } else {
-                reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
-              }
-            }
-          } else {
-            // Handle HTTP errors
-            try {
-              const errorResponse = JSON.parse(xhr.responseText);
-              reject(new Error(errorResponse.error || 'Upload failed'));
-            } catch (parseError) {
-              if (xhr.status === 413) {
-                reject(new Error('File too large. Please choose a smaller PDF (max 50MB).'));
-              } else if (xhr.status === 400) {
-                reject(new Error('Invalid file type. Please select a PDF file.'));
-              } else if (xhr.status === 500) {
-                reject(new Error('Server error. Please try again later.'));
-              } else {
-                reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
-              }
-            }
-          }
-        });
-        
-        // Handle network errors
-        xhr.addEventListener('error', () => {
-          reject(new Error('Network error. Please check your connection and try again.'));
-        });
-        
-        // Handle timeouts
-        xhr.addEventListener('timeout', () => {
-          reject(new Error('Upload timeout. Please try again.'));
-        });
-        
-        // Configure and send request
-        xhr.open('POST', '/api/upload');
-        xhr.timeout = 300000; // 5 minutes timeout
-        xhr.send(formData);
-      });
-
+      // Check file size to determine upload method
+      const fileSizeMB = file.size / (1024 * 1024);
+      const useClientUpload = fileSizeMB > 4; // Use client-side upload for files > 4MB
+      
+      let result;
+      
+      if (useClientUpload) {
+        // Use client-side upload for larger files
+        result = await handleClientUpload(file);
+      } else {
+        // Use server-side upload for smaller files
+        result = await handleServerUpload(file);
+      }
+      
       const pdfData = {
         name: file.name,
         size: file.size,
-        url: result.url, // Now using the permanent URL from Vercel Blob Storage
-        title: file.name.replace('.pdf', ''), // Add title field for display
-        uploadedAt: new Date().toISOString()
+        url: result.url,
+        title: file.name.replace('.pdf', ''),
+        uploadedAt: new Date().toISOString(),
+        uploadMethod: useClientUpload ? 'client' : 'server'
       };
 
       onUpload(pdfData);
@@ -116,6 +61,106 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
       setUploadProgress(0);
     }
   }, [onUpload]);
+
+  const handleClientUpload = useCallback(async (file) => {
+    // Client-side upload using @vercel/blob/client
+    try {
+      // Generate unique filename
+      const timestamp = Date.now();
+      const filename = `blog-carousels/${timestamp}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+      
+      const blob = await upload(filename, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload/client',
+        clientPayload: JSON.stringify({
+          fileType: 'pdf',
+          fileSize: file.size,
+          originalName: file.name
+        }),
+        onUploadProgress: (progress) => {
+          setUploadProgress(Math.round(progress.percentage));
+        }
+      });
+
+      return { url: blob.url, success: true };
+    } catch (error) {
+      console.error('Client upload error:', error);
+      throw new Error(error.message || 'Client upload failed');
+    }
+  }, []);
+
+  const handleServerUpload = useCallback(async (file) => {
+    // Server-side upload for smaller files
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', 'pdf');
+
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      
+      // Track upload progress
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          setUploadProgress(Math.round(percentComplete));
+        }
+      });
+      
+      // Handle completion
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            resolve(response);
+          } catch (parseError) {
+            console.error('Failed to parse response:', parseError);
+            console.error('Response text:', xhr.responseText);
+            
+            if (xhr.status === 413) {
+              reject(new Error('File too large. Please choose a smaller PDF (max 4MB). For larger PDFs, contact support.'));
+            } else if (xhr.status === 400) {
+              reject(new Error('Invalid file type. Please select a PDF file.'));
+            } else if (xhr.status === 500) {
+              reject(new Error('Server error. Please try again later.'));
+            } else {
+              reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+            }
+          }
+        } else {
+          // Handle HTTP errors
+          try {
+            const errorResponse = JSON.parse(xhr.responseText);
+            reject(new Error(errorResponse.error || 'Upload failed'));
+          } catch (parseError) {
+            if (xhr.status === 413) {
+              reject(new Error('File too large. Please choose a smaller PDF (max 4MB). For larger PDFs, contact support.'));
+            } else if (xhr.status === 400) {
+              reject(new Error('Invalid file type. Please select a PDF file.'));
+            } else if (xhr.status === 500) {
+              reject(new Error('Server error. Please try again later.'));
+            } else {
+              reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+            }
+          }
+        }
+      });
+      
+      // Handle network errors
+      xhr.addEventListener('error', () => {
+        reject(new Error('Network error. Please check your connection and try again.'));
+      });
+      
+      // Handle timeouts
+      xhr.addEventListener('timeout', () => {
+        reject(new Error('Upload timeout. Please try again.'));
+      });
+      
+      // Configure and send request
+      xhr.open('POST', '/api/upload');
+      xhr.timeout = 300000; // 5 minutes timeout
+      xhr.send(formData);
+    });
+  }, []);
 
   const handleRemove = useCallback((index) => {
     onRemove(index);
@@ -163,6 +208,11 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
               className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
               style={{ width: `${uploadProgress}%` }}
             />
+          </div>
+          <div className="text-xs text-gray-500 text-center">
+            {uploadProgress > 0 && uploadProgress < 100 && (
+              <span>Using {uploadProgress >= 50 ? 'secure' : 'optimized'} upload method</span>
+            )}
           </div>
         </div>
       )}
@@ -215,6 +265,8 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
       {/* Help Text */}
       <div className="text-xs text-gray-500">
         <p>• Upload PDF files to create interactive carousels</p>
+        <p>• Small files (&lt;4MB): Fast server upload</p>
+        <p>• Large files (&gt;4MB): Secure client-side upload (up to 100MB)</p>
         <p>• Each PDF will be converted to images for easy navigation</p>
         <p>• Readers can navigate through pages with arrow controls</p>
       </div>
