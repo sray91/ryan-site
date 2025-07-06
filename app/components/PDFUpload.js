@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 
 export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleFileChange = useCallback(async (e) => {
     const file = e.target.files?.[0];
@@ -21,24 +22,79 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
     }
 
     setUploading(true);
+    setUploadProgress(0);
     
     try {
-      // Upload PDF to Vercel Blob Storage
+      // Upload PDF to Vercel Blob Storage using XMLHttpRequest for progress tracking
       const formData = new FormData();
       formData.append('file', file);
       formData.append('type', 'pdf');
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
+      const result = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        
+        // Track upload progress
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            setUploadProgress(Math.round(percentComplete));
+          }
+        });
+        
+        // Handle completion
+        xhr.addEventListener('load', () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              resolve(response);
+            } catch (parseError) {
+              console.error('Failed to parse response:', parseError);
+              console.error('Response text:', xhr.responseText);
+              
+              if (xhr.status === 413) {
+                reject(new Error('File too large. Please choose a smaller PDF (max 50MB).'));
+              } else if (xhr.status === 400) {
+                reject(new Error('Invalid file type. Please select a PDF file.'));
+              } else if (xhr.status === 500) {
+                reject(new Error('Server error. Please try again later.'));
+              } else {
+                reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+              }
+            }
+          } else {
+            // Handle HTTP errors
+            try {
+              const errorResponse = JSON.parse(xhr.responseText);
+              reject(new Error(errorResponse.error || 'Upload failed'));
+            } catch (parseError) {
+              if (xhr.status === 413) {
+                reject(new Error('File too large. Please choose a smaller PDF (max 50MB).'));
+              } else if (xhr.status === 400) {
+                reject(new Error('Invalid file type. Please select a PDF file.'));
+              } else if (xhr.status === 500) {
+                reject(new Error('Server error. Please try again later.'));
+              } else {
+                reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+              }
+            }
+          }
+        });
+        
+        // Handle network errors
+        xhr.addEventListener('error', () => {
+          reject(new Error('Network error. Please check your connection and try again.'));
+        });
+        
+        // Handle timeouts
+        xhr.addEventListener('timeout', () => {
+          reject(new Error('Upload timeout. Please try again.'));
+        });
+        
+        // Configure and send request
+        xhr.open('POST', '/api/upload');
+        xhr.timeout = 300000; // 5 minutes timeout
+        xhr.send(formData);
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Upload failed');
-      }
-
-      const result = await response.json();
 
       const pdfData = {
         name: file.name,
@@ -57,6 +113,7 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
       alert(`Failed to upload PDF: ${error.message}`);
     } finally {
       setUploading(false);
+      setUploadProgress(0);
     }
   }, [onUpload]);
 
@@ -93,6 +150,22 @@ export default function PDFUpload({ onUpload, onRemove, uploadedPdfs = [] }) {
           </span>
         </label>
       </div>
+
+      {/* Upload Progress Bar */}
+      {uploading && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-sm text-gray-600">
+            <span>Uploading PDF...</span>
+            <span>{uploadProgress}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Uploaded PDFs List */}
       {uploadedPdfs.length > 0 && (
