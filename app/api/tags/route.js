@@ -19,7 +19,7 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, color, description } = body;
+    const { name, color, description, image } = body;
 
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'Tag name is required' }, { status: 400 });
@@ -39,6 +39,7 @@ export async function POST(request) {
       name: name.trim(),
       color: color || '#3B82F6', // Default blue color
       description: description || '',
+      image: image || (existingTagIndex >= 0 ? tags[existingTagIndex].image : null),
       createdAt: existingTagIndex >= 0 ? tags[existingTagIndex].createdAt : new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };

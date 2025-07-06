@@ -9,7 +9,8 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
   const [formData, setFormData] = useState({
     name: '',
     color: '#3B82F6',
-    description: ''
+    description: '',
+    image: null
   });
 
   // Predefined color options
@@ -42,6 +43,29 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
       }
     } catch (error) {
       console.error('Error fetching tags:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const migrateTags = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/tags/migrate', {
+        method: 'POST',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Migration result:', data);
+        fetchTags(); // Refresh tags after migration
+        onTagsUpdated?.();
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to migrate tags');
+      }
+    } catch (error) {
+      console.error('Error migrating tags:', error);
+      alert('Failed to migrate tags');
     } finally {
       setLoading(false);
     }
@@ -87,7 +111,8 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
     setFormData({
       name: tag.name,
       color: tag.color,
-      description: tag.description
+      description: tag.description,
+      image: tag.image
     });
   };
 
@@ -118,9 +143,74 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
     setFormData({
       name: '',
       color: '#3B82F6',
-      description: ''
+      description: '',
+      image: null
     });
     setEditingTag(null);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        // Validate dimensions
+        if (img.width !== 1280 || img.height !== 720) {
+          if (confirm(`Image dimensions are ${img.width}x${img.height}. Required dimensions are 1280x720. Do you want to resize it automatically?`)) {
+            resizeImage(img, 1280, 720);
+          }
+        } else {
+          // Image is correct dimensions, use as is
+          setFormData(prev => ({
+            ...prev,
+            image: event.target.result
+          }));
+        }
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const resizeImage = (img, targetWidth, targetHeight) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    
+    // Draw and resize the image
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+    
+    // Convert to base64
+    const resizedImage = canvas.toDataURL('image/jpeg', 0.9);
+    
+    setFormData(prev => ({
+      ...prev,
+      image: resizedImage
+    }));
+  };
+
+  const removeImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      image: null
+    }));
   };
 
   if (!isOpen) return null;
@@ -207,6 +297,52 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
                   placeholder="Optional description..."
                 />
               </div>
+              
+              {/* Image Upload Section */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Image (1280x720px)
+                </label>
+                <div className="space-y-3">
+                  {formData.image ? (
+                    <div className="relative">
+                      <img 
+                        src={formData.image} 
+                        alt="Tag preview" 
+                        className="w-full h-32 object-cover rounded-lg border border-gray-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700 transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <p className="mt-2 text-sm text-gray-600">
+                        <span className="font-medium">Click to upload</span> or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                      <p className="text-xs text-gray-500">Recommended: 1280x720px</p>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              
               <div className="flex gap-2">
                 <button
                   type="submit"
@@ -229,14 +365,28 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
 
           {/* Tags List */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Existing Tags</h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Existing Tags</h3>
+              {tags.length === 0 && (
+                <button
+                  onClick={migrateTags}
+                  disabled={loading}
+                  className="px-3 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors disabled:opacity-50 text-sm"
+                >
+                  {loading ? 'Loading...' : 'Add Default Tags'}
+                </button>
+              )}
+            </div>
             {loading ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
                 <p className="mt-2 text-gray-600">Loading tags...</p>
               </div>
             ) : tags.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">No tags created yet.</p>
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-4">No tags created yet.</p>
+                <p className="text-sm text-gray-400">Click &quot;Add Default Tags&quot; to populate with your blog categories.</p>
+              </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {tags.map((tag) => (
@@ -249,6 +399,9 @@ export default function TagManager({ isOpen, onClose, onTagsUpdated }) {
                         >
                           {tag.name}
                         </span>
+                        {tag.image && (
+                          <span className="text-xs text-gray-500">📷</span>
+                        )}
                       </div>
                       <div className="flex gap-1">
                         <button
