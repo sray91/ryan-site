@@ -156,22 +156,22 @@ export default function AdminPage() {
                           {format(new Date(post.updatedAt), 'MMM d, yyyy')}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <div className="space-x-2">
+                          <div className="flex justify-end space-x-2">
                             <Link
                               href={`/blog/${post.slug}`}
-                              className="text-blue-600 hover:text-blue-900"
+                              className="inline-flex items-center px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
                             >
                               View
                             </Link>
                             <Link
                               href={`/blog/admin/edit/${post.id}`}
-                              className="text-indigo-600 hover:text-indigo-900"
+                              className="inline-flex items-center px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
                             >
                               Edit
                             </Link>
                             <button
                               onClick={() => deletePost(post.id)}
-                              className="text-red-600 hover:text-red-900"
+                              className="inline-flex items-center px-3 py-1 text-sm bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
                             >
                               Delete
                             </button>

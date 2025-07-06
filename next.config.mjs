@@ -19,9 +19,7 @@ const nextConfig = {
     ],
   },
   // Increase request size limits for PDF uploads
-  experimental: {
-    serverComponentsExternalPackages: ['sharp'],
-  },
+  serverExternalPackages: ['sharp'],
   // Configure for App Router - no api config needed
   // Body size limits are handled at the route level
 };
