@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import TagManager from '../../components/TagManager';
 
 export default function AdminPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isTagManagerOpen, setIsTagManagerOpen] = useState(false);
 
   useEffect(() => {
     fetchPosts();
@@ -66,6 +68,15 @@ export default function AdminPage() {
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-bold text-gray-900">Blog Admin Panel</h1>
               <div className="space-x-4">
+                <button
+                  onClick={() => setIsTagManagerOpen(true)}
+                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
+                  Manage Tags
+                </button>
                 <Link 
                   href="/blog/admin/create"
                   className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -214,6 +225,16 @@ export default function AdminPage() {
           </Link>
         </div>
       </div>
+      
+      {/* Tag Manager Modal */}
+      <TagManager 
+        isOpen={isTagManagerOpen} 
+        onClose={() => setIsTagManagerOpen(false)} 
+        onTagsUpdated={() => {
+          // You can add any additional logic here if needed
+          console.log('Tags updated');
+        }}
+      />
     </div>
   );
 } 
