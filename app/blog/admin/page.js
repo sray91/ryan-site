@@ -98,19 +98,16 @@ export default function AdminPage() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Title
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Post
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                         Tags
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Created
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                        Date
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Updated
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -118,17 +115,39 @@ export default function AdminPage() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {posts.map((post) => (
                       <tr key={post.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4">
                           <div>
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium text-gray-900 line-clamp-2">
                               {post.title}
                             </div>
-                            <div className="text-sm text-gray-500 truncate max-w-xs">
+                            <div className="text-sm text-gray-500 line-clamp-1 mt-1">
                               {post.excerpt}
+                            </div>
+                            {/* Show tags on mobile */}
+                            <div className="md:hidden mt-2">
+                              {post.tags && post.tags.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {post.tags.slice(0, 2).map((tag, index) => (
+                                    <span
+                                      key={index}
+                                      className="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                  {post.tags.length > 2 && (
+                                    <span className="text-xs text-gray-500">
+                                      +{post.tags.length - 2} more
+                                    </span>
+                                  )}
+                                </div>
+                              ) : (
+                                <span className="text-xs text-gray-400">No tags</span>
+                              )}
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4 hidden md:table-cell">
                           {post.tags && post.tags.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {post.tags.slice(0, 3).map((tag, index) => (
@@ -149,29 +168,29 @@ export default function AdminPage() {
                             <span className="text-sm text-gray-400">No tags</span>
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {format(new Date(post.createdAt), 'MMM d, yyyy')}
+                        <td className="px-4 py-4 hidden lg:table-cell text-sm text-gray-500">
+                          <div>
+                            <div>Created: {format(new Date(post.createdAt), 'MMM d, yyyy')}</div>
+                            <div>Updated: {format(new Date(post.updatedAt), 'MMM d, yyyy')}</div>
+                          </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {format(new Date(post.updatedAt), 'MMM d, yyyy')}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <div className="flex justify-end space-x-2">
+                        <td className="px-4 py-4 text-right">
+                          <div className="flex flex-col sm:flex-row justify-end gap-2">
                             <Link
                               href={`/blog/${post.slug}`}
-                              className="inline-flex items-center px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                              className="inline-flex items-center justify-center px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
                             >
                               View
                             </Link>
                             <Link
                               href={`/blog/admin/edit/${post.id}`}
-                              className="inline-flex items-center px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
+                              className="inline-flex items-center justify-center px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
                             >
                               Edit
                             </Link>
                             <button
                               onClick={() => deletePost(post.id)}
-                              className="inline-flex items-center px-3 py-1 text-sm bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                              className="inline-flex items-center justify-center px-3 py-1 text-sm bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
                             >
                               Delete
                             </button>
