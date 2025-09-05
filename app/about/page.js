@@ -11,14 +11,9 @@ export default function About() {
     <div 
       className="min-h-screen text-white flex flex-col relative"
       style={{
-        backgroundImage: 'url(/bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3c 100%)'
       }}
     >
-      {/* Dark blue transparent overlay */}
-      <div className="absolute inset-0 bg-blue-900/90 z-0"></div>
       
       {/* Navigation */}
       <Header />
@@ -64,7 +59,12 @@ export default function About() {
         </div>
 
         {/* Professional Profile */}
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8 mb-8">
+        <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 sm:p-8 mb-8"
+             style={{ 
+               background: 'rgba(58, 58, 60, 0.6)',
+               backdropFilter: 'blur(20px)',
+               WebkitBackdropFilter: 'blur(20px)'
+             }}>
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-orange-400">Professional Profile</h2>
           <p className="text-white/80 leading-relaxed">
             Global executive with a proven record of driving growth, operational scale, and digital transformation across complex industrial and technology enterprises. Trusted by Fortune 500 companies to lead strategic initiatives, modernize operations, and deliver consistent shareholder value. Expert in P&L leadership, product strategy, partnership development, and executing growth agendas.
@@ -74,7 +74,12 @@ export default function About() {
         {/* Education and Technical Expertise - Smaller boxes on same row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Education */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+          <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6"
+               style={{ 
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-orange-400">Education</h2>
             <ul className="space-y-3 text-white/80">
               <li className="flex items-start gap-3">
@@ -95,7 +100,12 @@ export default function About() {
           </div>
 
           {/* Technical Expertise & Patents */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+          <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 sm:p-6"
+               style={{ 
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-orange-400">Technical Expertise & Patents</h2>
             <ul className="space-y-3 text-white/80">
               <li className="flex items-start gap-3">
@@ -121,7 +131,12 @@ export default function About() {
         {/* Key Achievements and Recent Engagement Highlights - Larger boxes */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Key Achievements */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 sm:p-8"
+               style={{ 
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Key Achievements</h2>
             <ul className="space-y-4 text-white/80">
               <li className="flex items-start gap-3">
@@ -148,7 +163,12 @@ export default function About() {
           </div>
 
           {/* Recent Engagement Highlights */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 sm:p-8"
+               style={{ 
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Recent Engagement Highlights</h2>
             <ul className="space-y-4 text-white/80">
               <li className="flex items-start gap-3">
@@ -172,7 +192,12 @@ export default function About() {
         </div>
 
         {/* Board Leadership */}
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8 mt-8">
+        <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 sm:p-8 mt-8"
+             style={{ 
+               background: 'rgba(58, 58, 60, 0.6)',
+               backdropFilter: 'blur(20px)',
+               WebkitBackdropFilter: 'blur(20px)'
+             }}>
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-orange-400">Board Leadership</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center">
@@ -206,7 +231,12 @@ export default function About() {
         </div>
 
         {/* Experience */}
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8 mt-8">
+        <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 sm:p-8 mt-8"
+             style={{ 
+               background: 'rgba(58, 58, 60, 0.6)',
+               backdropFilter: 'blur(20px)',
+               WebkitBackdropFilter: 'blur(20px)'
+             }}>
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-orange-400">Experience</h2>
           
           <div className="space-y-8">

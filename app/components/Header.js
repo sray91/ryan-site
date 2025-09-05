@@ -32,7 +32,11 @@ export default function Header() {
         </Link>
         <Link 
           href="/newsletter" 
-          className="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-lg transition-colors"
+          className="px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
+          style={{
+            background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+            boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
+          }}
         >
           newsletter
         </Link>
@@ -55,7 +59,12 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-blue-900/95 backdrop-blur-sm border-t border-white/10 md:hidden">
+        <div className="absolute top-full left-0 right-0 backdrop-blur-md border-t border-white/20 md:hidden"
+             style={{
+               background: 'rgba(58, 58, 60, 0.9)',
+               backdropFilter: 'blur(20px)',
+               WebkitBackdropFilter: 'blur(20px)'
+             }}>
           <div className="flex flex-col space-y-4 px-4 py-6">
             <Link 
               href="/about" 
@@ -81,7 +90,11 @@ export default function Header() {
             </Link>
             <Link 
               href="/newsletter" 
-              className="bg-orange-500 hover:bg-orange-600 px-4 py-3 rounded-lg transition-colors text-center"
+              className="px-4 py-3 rounded-lg transition-all duration-300 text-center hover:shadow-lg hover:shadow-blue-500/20"
+              style={{
+                background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+                boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
+              }}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               newsletter

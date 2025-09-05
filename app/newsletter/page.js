@@ -10,14 +10,9 @@ export default function Newsletter() {
     <div 
       className="min-h-screen text-white flex flex-col relative"
       style={{
-        backgroundImage: 'url(/bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3c 100%)'
       }}
     >
-      {/* Dark blue transparent overlay */}
-      <div className="absolute inset-0 bg-blue-900/90 z-0"></div>
       
       {/* Navigation */}
       <Header />
@@ -33,7 +28,12 @@ export default function Newsletter() {
           </p>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8">
+        <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-6 sm:p-8"
+             style={{ 
+               background: 'rgba(58, 58, 60, 0.6)',
+               backdropFilter: 'blur(20px)',
+               WebkitBackdropFilter: 'blur(20px)'
+             }}>
           <div className="max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 text-orange-400 text-center">
               What You&apos;ll Get
@@ -90,7 +90,12 @@ export default function Newsletter() {
             </div>
 
             {/* Newsletter Signup */}
-            <div className="bg-white/10 border border-white/20 rounded-lg p-6 text-center">
+            <div className="bg-white/10 border border-white/20 rounded-lg p-6 text-center"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.4)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
               <h3 className="text-xl font-bold mb-4">Ready to Level Up?</h3>
               <p className="text-white/80 mb-6">
                 Join the newsletter and get weekly insights delivered straight to your inbox.
@@ -131,7 +136,12 @@ export default function Newsletter() {
             </div>
 
             {/* Testimonial */}
-            <div className="mt-8 bg-white/5 border border-white/10 rounded-lg p-6">
+            <div className="mt-8 bg-white/5 border border-white/10 rounded-lg p-6"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.4)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   {[...Array(5)].map((_, i) => (

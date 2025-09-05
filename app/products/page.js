@@ -1,8 +1,8 @@
 import Header from "../components/Header";
 
 export const metadata = {
-  title: "Digital Products - Ryan Cahalane",
-  description: "Resources and tools for your manufacturing journey",
+  title: "Resources - Ryan Cahalane",
+  description: "Expert insights and resources for private equity, startups, and operations",
 };
 
 export default function Products() {
@@ -10,14 +10,9 @@ export default function Products() {
     <div 
       className="min-h-screen text-white flex flex-col relative"
       style={{
-        backgroundImage: 'url(/bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3c 100%)'
       }}
     >
-      {/* Dark blue transparent overlay */}
-      <div className="absolute inset-0 bg-blue-900/90 z-0"></div>
       
       {/* Navigation */}
       <Header />
@@ -26,172 +21,139 @@ export default function Products() {
       <div className="flex-1 px-4 sm:px-8 lg:px-16 py-8 relative z-10 max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            Digital Products
+            Resources
           </h1>
-          <p className="text-lg sm:text-xl text-white/80 leading-relaxed">
-            Resources and tools to accelerate your manufacturing transformation journey.
+          <p className="text-lg sm:text-xl leading-relaxed" style={{ color: '#a1a1a6' }}>
+            Expert insights and resources for private equity, startups, and operations.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Coming Soon Products */}
-          
-          {/* Digital Transformation Playbook */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
+          {/* Private Equity */}
+          <div className="backdrop-blur-md border border-white/20 rounded-xl p-6 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300"
+               style={{
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <div className="mb-4">
-              <div className="w-12 h-12 bg-orange-400/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
+                   style={{ background: 'rgba(0, 122, 255, 0.2)' }}>
+                <svg className="w-6 h-6" style={{ color: '#007AFF' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Digital Transformation Playbook</h3>
-              <p className="text-white/70 text-sm mb-4">
-                A comprehensive guide to planning and executing digital transformation in manufacturing. Based on real-world experience from 20+ successful transformations.
+              <h3 className="text-xl font-bold mb-2 text-white">Private Equity</h3>
+              <p className="text-sm mb-4" style={{ color: '#a1a1a6' }}>
+                Strategic insights and resources for private equity investors in manufacturing and industrial sectors. From due diligence to value creation strategies.
               </p>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-orange-400">$197</span>
-                <span className="text-white/50 line-through ml-2">$297</span>
-              </div>
-              <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
+            <div className="flex justify-end">
+              <a
+                href="/private-equity"
+                className="text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 text-sm hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
+                style={{
+                  background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+                  boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
+                }}
+              >
+                Explore Resources
+              </a>
             </div>
           </div>
 
-          {/* Manufacturing M&A Due Diligence Checklist */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
+          {/* Startups */}
+          <div className="backdrop-blur-md border border-white/20 rounded-xl p-6 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300"
+               style={{
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <div className="mb-4">
-              <div className="w-12 h-12 bg-orange-400/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">M&A Due Diligence Checklist</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Essential checklist for evaluating manufacturing technology investments. Covers technical, operational, and strategic assessment criteria.
-              </p>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-orange-400">$97</span>
-              </div>
-              <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
-            </div>
-          </div>
-
-          {/* Operations Excellence Framework */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
-            <div className="mb-4">
-              <div className="w-12 h-12 bg-orange-400/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
+                   style={{ background: 'rgba(0, 122, 255, 0.2)' }}>
+                <svg className="w-6 h-6" style={{ color: '#007AFF' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Operations Excellence Framework</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Proven methodology for achieving operational excellence. Includes templates, assessments, and implementation roadmaps.
+              <h3 className="text-xl font-bold mb-2 text-white">Startups</h3>
+              <p className="text-sm mb-4" style={{ color: '#a1a1a6' }}>
+                Essential guidance for manufacturing startups. From product development and scaling strategies to securing funding and building sustainable operations.
               </p>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-orange-400">$147</span>
-              </div>
-              <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
+            <div className="flex justify-end">
+              <a
+                href="/startups"
+                className="text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 text-sm hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
+                style={{
+                  background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+                  boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
+                }}
+              >
+                Explore Resources
+              </a>
             </div>
           </div>
 
-          {/* Industry 4.0 Readiness Assessment */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
+          {/* Operations */}
+          <div className="backdrop-blur-md border border-white/20 rounded-xl p-6 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300"
+               style={{
+                 background: 'rgba(58, 58, 60, 0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)'
+               }}>
             <div className="mb-4">
-              <div className="w-12 h-12 bg-orange-400/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
+                   style={{ background: 'rgba(0, 122, 255, 0.2)' }}>
+                <svg className="w-6 h-6" style={{ color: '#007AFF' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Industry 4.0 Readiness Assessment</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Comprehensive assessment tool to evaluate your manufacturing readiness for Industry 4.0 transformation. Includes gap analysis and recommendations.
+              <h3 className="text-xl font-bold mb-2 text-white">Operations</h3>
+              <p className="text-sm mb-4" style={{ color: '#a1a1a6' }}>
+                Operational excellence frameworks and best practices for manufacturing companies. From lean manufacturing to digital transformation strategies.
               </p>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-orange-400">$67</span>
-              </div>
-              <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
-            </div>
-          </div>
-
-          {/* Manufacturing Leadership Masterclass */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
-            <div className="mb-4">
-              <div className="w-12 h-12 bg-orange-400/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Manufacturing Leadership Masterclass</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Video series covering advanced leadership strategies for manufacturing executives. Learn from real case studies and proven methodologies.
-              </p>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-orange-400">$397</span>
-              </div>
-              <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
-            </div>
-          </div>
-
-          {/* Strategic Planning Templates */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300">
-            <div className="mb-4">
-              <div className="w-12 h-12 bg-orange-400/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Strategic Planning Templates</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Ready-to-use strategic planning templates for manufacturing companies. Includes business model canvas, SWOT analysis, and roadmap planning tools.
-              </p>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-orange-400">$47</span>
-              </div>
-              <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                Coming Soon
-              </span>
+            <div className="flex justify-end">
+              <a
+                href="/operations"
+                className="text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 text-sm hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
+                style={{
+                  background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+                  boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
+                }}
+              >
+                Explore Resources
+              </a>
             </div>
           </div>
         </div>
 
         {/* Newsletter CTA */}
-        <div className="mt-12 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Get Notified When Products Launch</h2>
-          <p className="text-white/80 mb-6">
+        <div className="mt-12 backdrop-blur-md border border-white/20 rounded-xl p-8 text-center"
+             style={{
+               background: 'rgba(58, 58, 60, 0.6)',
+               backdropFilter: 'blur(20px)',
+               WebkitBackdropFilter: 'blur(20px)'
+             }}>
+          <h2 className="text-2xl font-bold mb-4 text-white">Get Notified When Products Launch</h2>
+          <p className="mb-6" style={{ color: '#a1a1a6' }}>
             Be the first to know when new resources become available. Newsletter subscribers get early access and exclusive discounts.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
               href="/newsletter"
-              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+              className="text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
+              style={{
+                background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
+                boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
+              }}
             >
               Join Newsletter
             </a>
             <a 
               href="/contact"
-              className="border border-white/20 hover:bg-white/5 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+              className="border border-white/20 hover:border-white/30 hover:bg-white/5 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300"
             >
               Custom Solutions
             </a>

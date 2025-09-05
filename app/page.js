@@ -7,14 +7,9 @@ export default function Home() {
     <div 
       className="min-h-screen text-white flex flex-col relative"
       style={{
-        backgroundImage: 'url(/bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3c 100%)'
       }}
     >
-      {/* Dark blue transparent overlay */}
-      <div className="absolute inset-0 bg-blue-900/90 z-0"></div>
       
       {/* Navigation */}
       <Header />
@@ -43,7 +38,7 @@ export default function Home() {
             Idea man.
           </h1>
           
-          <p className="text-base sm:text-lg text-white/80 mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-light-gray mb-8 leading-relaxed" style={{ color: '#a1a1a6' }}>
             From Goodyear to Rockwell to building Axiom, I&apos;ve led teams, transformed operations, and delivered results at every scale. I love helping manufacturers and PE portfolios unlock hidden value. Join my newsletter for weekly updates!
           </p>
 
@@ -59,14 +54,19 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Blog Card */}
           <Link href="/blog" className="group">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 h-full">
+            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.6)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold">blog</h3>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="text-lg font-bold text-white">blog</h3>
+                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
+              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
                 My semi-coherent ramblings posted on an async basis.
               </p>
             </div>
@@ -74,45 +74,60 @@ export default function Home() {
 
           {/* Agency Card */}
           <Link href="https://axiomsystems.io" target="_blank" className="group">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 h-full">
+            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.6)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold">consulting firm</h3>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="text-lg font-bold text-white">consulting firm</h3>
+                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
-                Axiom Systems. Manufacturing consulting firm for smalle to mid-sized manufacturers.
+              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
+                Axiom Systems. Manufacturing consulting firm for small to mid-sized manufacturers.
               </p>
             </div>
           </Link>
 
           {/* Book a Call Card */}
           <Link href="/contact" className="group">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 h-full">
+            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.6)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold">book a call</h3>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="text-lg font-bold text-white">book a call</h3>
+                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
+              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
                 Let&apos;s chat!
               </p>
             </div>
           </Link>
 
-          {/* Digital Products Card */}
+          {/* Resources Card */}
           <Link href="/products" className="group">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300 h-full">
+            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.6)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold">digital products</h3>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="text-lg font-bold text-white">resources</h3>
+                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
-              <p className="text-white/70 text-xs leading-relaxed">
-                Resources for your online journey.
+              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
+                Expert insights and resources for private equity, startups, and operations.
               </p>
             </div>
           </Link>
