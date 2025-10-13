@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
-import { kv } from '@vercel/kv';
+import { kv } from '../../../lib/kv';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 import PDFCarousel from '../../components/PDFCarousel';
 import BlogHeader from '../../components/BlogHeader';

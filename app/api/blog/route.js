@@ -1,13 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@vercel/kv';
-import { format } from 'date-fns';
 import slugify from 'slugify';
-
-// Create KV client with custom environment variable names
-const kv = createClient({
-  url: process.env.RYAN_BLOG_KV_REST_API_URL,
-  token: process.env.RYAN_BLOG_KV_REST_API_TOKEN,
-});
+import { kv } from '../../../lib/kv';
 
 export async function GET() {
   try {
