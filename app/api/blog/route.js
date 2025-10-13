@@ -1,20 +1,26 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/kv';
 import { format } from 'date-fns';
 import slugify from 'slugify';
+
+// Create KV client with custom environment variable names
+const kv = createClient({
+  url: process.env.RYAN_BLOG_KV_REST_API_URL,
+  token: process.env.RYAN_BLOG_KV_REST_API_TOKEN,
+});
 
 export async function GET() {
   try {
     // Get all blog post keys
     const keys = await kv.keys('blog:*');
-    
+
     if (keys.length === 0) {
       return NextResponse.json([]);
     }
-    
+
     // Get all posts
     const posts = await kv.mget(...keys);
-    
+
     // Filter out null values and sort by creation date
     const validPosts = posts
       .filter(post => post !== null)
@@ -23,7 +29,16 @@ export async function GET() {
     return NextResponse.json(validPosts);
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+    console.error('Error details:', {
+      message: error.message,
+      cause: error.cause,
+      code: error.cause?.code,
+      hostname: error.cause?.hostname
+    });
+
+    // Return empty array instead of error to prevent site crashes
+    // This allows the blog page to render even if KV is unavailable
+    return NextResponse.json([]);
   }
 }
 
