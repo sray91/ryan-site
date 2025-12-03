@@ -1,11 +1,13 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
-import { client } from '../../../sanity/lib/client';
+import { PortableText } from 'next-sanity';
+import { client, urlFor } from '../../../sanity/lib/client';
 import { postBySlugQuery } from '../../../sanity/lib/queries';
-import BlogContentRenderer from '../../components/BlogContentRenderer';
 import PDFCarousel from '../../components/PDFCarousel';
 import BlogHeader from '../../components/BlogHeader';
+import BlogContentRenderer from '../../components/BlogContentRenderer';
 
 async function getBlogPost(slug) {
   try {
@@ -15,18 +17,7 @@ async function getBlogPost(slug) {
       return null;
     }
 
-    // Transform Sanity data to match the existing format
-    return {
-      id: post._id,
-      title: post.title,
-      slug: post.slug.current,
-      excerpt: post.excerpt,
-      content: post.content,
-      tags: post.tags,
-      pdfCarousels: post.pdfCarousels,
-      createdAt: post.publishedAt,
-      updatedAt: post._updatedAt,
-    };
+    return post;
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;
@@ -49,6 +40,26 @@ export async function generateMetadata({ params }) {
   };
 }
 
+const ptComponents = {
+  types: {
+    image: ({ value }) => {
+      if (!value?.asset?._ref) {
+        return null;
+      }
+      return (
+        <div className="my-8 relative w-full h-96">
+          <Image
+            src={urlFor(value).url()}
+            alt={value.alt || ' '}
+            fill
+            className="object-contain"
+          />
+        </div>
+      );
+    }
+  }
+};
+
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
@@ -57,46 +68,76 @@ export default async function BlogPostPage({ params }) {
     notFound();
   }
 
-  // Content is already HTML from LexicalEditor, no need to process with marked()
-  const htmlContent = post.content;
-
   return (
     <div className="min-h-screen bg-gray-50">
       <BlogHeader />
       <div className="py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <article className="bg-white rounded-lg shadow-md overflow-hidden">
+          {post.mainImage && (
+             <div className="relative w-full h-96">
+               <Image
+                 src={urlFor(post.mainImage).url()}
+                 alt={post.title}
+                 fill
+                 className="object-cover"
+               />
+             </div>
+          )}
           <div className="p-8">
             <div className="border-b border-gray-200 pb-6 mb-8">
               <div className="flex items-center justify-between mb-4">
                 <time className="text-sm text-gray-500">
-                  {format(new Date(post.createdAt), 'MMMM d, yyyy')}
+                  {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
                 </time>
-                {post.updatedAt !== post.createdAt && (
+                {post._updatedAt !== post.publishedAt && (
                   <span className="text-sm text-gray-500">
-                    Updated: {format(new Date(post.updatedAt), 'MMMM d, yyyy')}
+                    Updated: {format(new Date(post._updatedAt), 'MMMM d, yyyy')}
                   </span>
                 )}
               </div>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">{post.title}</h1>
-              {post.tags && post.tags.length > 0 && (
+              
+              {post.author && (
+                <div className="flex items-center mb-4">
+                  {post.author.image && (
+                    <div className="relative w-10 h-10 mr-3 rounded-full overflow-hidden">
+                      <Image 
+                        src={urlFor(post.author.image).url()} 
+                        alt={post.author.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <span className="text-gray-700 font-medium">{post.author.name}</span>
+                </div>
+              )}
+
+              {post.categories && post.categories.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag, index) => (
+                  {post.categories.map((category, index) => (
                     <span
                       key={index}
                       className="inline-flex items-center px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full"
                     >
-                      {tag}
+                      {category.title}
                     </span>
                   ))}
                 </div>
               )}
             </div>
             
-            <BlogContentRenderer 
-              content={htmlContent}
-              className="prose prose-lg max-w-none"
-            />
+            {post.body ? (
+              <div className="prose prose-lg max-w-none">
+                <PortableText value={post.body} components={ptComponents} />
+              </div>
+            ) : (
+              <BlogContentRenderer 
+                content={post.content}
+                className="prose prose-lg max-w-none"
+              />
+            )}
             
             {/* PDF Carousels */}
             {post.pdfCarousels && post.pdfCarousels.length > 0 && (
@@ -125,4 +166,4 @@ export default async function BlogPostPage({ params }) {
       </div>
     </div>
   );
-} 
+}

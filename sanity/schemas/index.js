@@ -1,4 +1,7 @@
 import post from './post';
+import author from './author';
+import category from './category';
+import blockContent from './blockContent';
 import tag from './tag';
 
-export const schemaTypes = [post, tag];
+export const schemaTypes = [post, author, category, tag, blockContent];

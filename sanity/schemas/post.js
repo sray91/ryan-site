@@ -22,22 +22,48 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: {type: 'author'},
+    }),
+    defineField({
+      name: 'mainImage',
+      title: 'Main image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+        }
+      ]
+    }),
+    defineField({
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'category'}}],
+    }),
+    defineField({
+      name: 'publishedAt',
+      title: 'Published at',
+      type: 'datetime',
+      initialValue: () => new Date().toISOString(),
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
       rows: 4,
     }),
     defineField({
-      name: 'content',
-      title: 'Content',
-      type: 'text',
-      description: 'HTML content from the blog editor',
-    }),
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [{ type: 'reference', to: { type: 'tag' } }],
+      name: 'body',
+      title: 'Body',
+      type: 'blockContent',
     }),
     defineField({
       name: 'pdfCarousels',
@@ -61,26 +87,16 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'publishedAt',
-      title: 'Published at',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-    }),
   ],
   preview: {
     select: {
       title: 'title',
-      publishedAt: 'publishedAt',
+      author: 'author.name',
+      media: 'mainImage',
     },
     prepare(selection) {
-      const { title, publishedAt } = selection;
-      return {
-        title,
-        subtitle: publishedAt
-          ? new Date(publishedAt).toLocaleDateString()
-          : 'No date',
-      };
+      const { author } = selection;
+      return { ...selection, subtitle: author && `by ${author}` };
     },
   },
   orderings: [
