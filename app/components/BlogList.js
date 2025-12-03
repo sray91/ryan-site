@@ -8,7 +8,7 @@ import BlogCategoryCards from './BlogCategoryCards';
 import BlogSearchBar from './BlogSearchBar';
 
 export default function BlogList({ posts }) {
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   // Helper function to strip HTML tags and decode HTML entities
@@ -22,9 +22,29 @@ export default function BlogList({ posts }) {
 
   const filteredPosts = posts
     .filter(post => {
-      // Apply tag filter
-      if (selectedTag && (!post.tags || !post.tags.includes(selectedTag))) {
-        return false;
+      // Apply category filter
+      if (selectedCategorySlug) {
+        const postCategories = post.categories || [];
+        // Check if any of the post's categories match the selected category slug
+        const hasCategory = postCategories.some(cat => {
+          const catSlug = cat.slug;
+          const catTitleRaw = cat.title.toLowerCase();
+          // Simple slugify for fallback
+          const catTitleSlug = catTitleRaw.replace(/\s+/g, '-');
+          
+          if (selectedCategorySlug === catSlug) return true;
+          if (selectedCategorySlug === catTitleSlug) return true;
+
+          // Handle singular/plural mismatch (simple heuristic)
+          if (selectedCategorySlug === catTitleSlug + 's') return true;
+          if (catTitleSlug === selectedCategorySlug + 's') return true;
+          
+          return false;
+        });
+        
+        if (!hasCategory) {
+          return false;
+        }
       }
       
       // Apply search filter
@@ -33,9 +53,10 @@ export default function BlogList({ posts }) {
         const titleMatch = post.title.toLowerCase().includes(searchLower);
         const excerptMatch = post.excerpt.toLowerCase().includes(searchLower);
         const contentMatch = stripHtml(post.content).toLowerCase().includes(searchLower);
-        const tagMatch = post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchLower));
+        // Search in category titles
+        const categoryMatch = post.categories && post.categories.some(cat => cat.title.toLowerCase().includes(searchLower));
         
-        return titleMatch || excerptMatch || contentMatch || tagMatch;
+        return titleMatch || excerptMatch || contentMatch || categoryMatch;
       }
       
       return true;
@@ -52,19 +73,20 @@ export default function BlogList({ posts }) {
             <p className="text-xl text-gray-600">Thoughts, ideas, and updates</p>
           </div>
 
-          <BlogCategoryCards onCategorySelect={setSelectedTag} />
+          <BlogCategoryCards onCategorySelect={setSelectedCategorySlug} />
           
           <BlogSearchBar onSearch={setSearchTerm} />
 
-          {(selectedTag || searchTerm) && (
+          {(selectedCategorySlug || searchTerm) && (
             <div className="mb-8 flex flex-wrap items-center gap-4">
-              {selectedTag && (
+              {selectedCategorySlug && (
                 <div className="flex items-center">
                   <span className="text-gray-600 mr-2">Category:</span>
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    {selectedTag}
+                    {/* Try to find the readable name from the slug if possible, or just show slug */}
+                    {selectedCategorySlug} 
                     <button
-                      onClick={() => setSelectedTag(null)}
+                      onClick={() => setSelectedCategorySlug(null)}
                       className="ml-2 focus:outline-none"
                     >
                       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,10 +118,10 @@ export default function BlogList({ posts }) {
           {filteredPosts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">
-                {selectedTag && searchTerm
-                  ? `No posts found matching "${searchTerm}" in the "${selectedTag}" category`
-                  : selectedTag
-                  ? `No posts found in the "${selectedTag}" category`
+                {selectedCategorySlug && searchTerm
+                  ? `No posts found matching "${searchTerm}" in the selected category`
+                  : selectedCategorySlug
+                  ? `No posts found in the selected category`
                   : searchTerm
                   ? `No posts found matching "${searchTerm}"`
                   : 'No blog posts yet. Check back soon!'}
@@ -124,14 +146,14 @@ export default function BlogList({ posts }) {
                       </Link>
                     </h2>
                     <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                    {post.tags && post.tags.length > 0 && (
+                    {post.categories && post.categories.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {post.tags.map((tag, index) => (
+                        {post.categories.map((cat, index) => (
                           <span
                             key={index}
                             className="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
                           >
-                            {tag}
+                            {cat.title}
                           </span>
                         ))}
                       </div>
@@ -161,4 +183,3 @@ export default function BlogList({ posts }) {
     </div>
   );
 }
-

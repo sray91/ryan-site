@@ -30,8 +30,9 @@ export default async function BlogPage() {
       excerpt: post.excerpt,
       // Convert blocks to plain text for search functionality in BlogList
       content: post.body ? toPlainText(post.body) : '', 
-      // Map categories to tags for filtering compatibility (normalize to lowercase)
-      tags: post.categories ? post.categories.map(cat => cat.title.toLowerCase()) : [], 
+      categories: post.categories || [],
+      // Provide tags for backward compatibility if needed, but we prefer categories
+      tags: post.categories ? post.categories.map(cat => cat.title) : [],
       pdfCarousels: post.pdfCarousels,
       createdAt: post.publishedAt,
       updatedAt: post._updatedAt,

@@ -9,7 +9,7 @@ export default function BlogCategoryCards({ onCategorySelect }) {
   const categories = [
     {
       name: 'Infographics',
-      tag: 'infographic',
+      tag: 'infographics',
       image: '/infographic.png',
       description: 'Visual data and information designs',
       aspectRatio: '4/3'
