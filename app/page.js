@@ -87,7 +87,7 @@ export default function Home() {
                 </svg>
               </div>
               <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
-                Axiom Systems. Manufacturing consulting firm for small to mid-sized manufacturers.
+                Axiom Systems. Manufacturing consulting firm helping growth oriented companies accelerate.
               </p>
             </div>
           </Link>
