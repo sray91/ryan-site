@@ -11,7 +11,10 @@ export const postsQuery = groq`*[_type == "post"] | order(publishedAt desc) {
   "author": author->{name, image, slug},
   "categories": categories[]->{title, "slug": slug.current, description},
   mainImage,
-  pdfCarousels,
+  "pdfCarousels": pdfCarousels[] {
+    title,
+    "url": asset->url
+  },
   publishedAt,
   _updatedAt
 }`;
@@ -27,7 +30,10 @@ export const postBySlugQuery = groq`*[_type == "post" && slug.current == $slug][
   "author": author->{name, image, slug},
   "categories": categories[]->{title, "slug": slug.current, description},
   mainImage,
-  pdfCarousels,
+  "pdfCarousels": pdfCarousels[] {
+    title,
+    "url": asset->url
+  },
   publishedAt,
   _updatedAt
 }`;

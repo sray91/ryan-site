@@ -71,13 +71,11 @@ export default defineType({
       type: 'array',
       of: [
         {
-          type: 'object',
+          type: 'file',
+          options: {
+            accept: 'application/pdf'
+          },
           fields: [
-            {
-              name: 'url',
-              title: 'PDF URL',
-              type: 'url',
-            },
             {
               name: 'title',
               title: 'Title',

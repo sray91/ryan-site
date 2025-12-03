@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { PortableText } from 'next-sanity';
 import { client, urlFor } from '../../../sanity/lib/client';
 import { postBySlugQuery } from '../../../sanity/lib/queries';
-import PDFCarousel from '../../components/PDFCarousel';
+import PDFViewer from '../../components/PDFViewer';
 import BlogHeader from '../../components/BlogHeader';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 
@@ -143,7 +143,7 @@ export default async function BlogPostPage({ params }) {
             {post.pdfCarousels && post.pdfCarousels.length > 0 && (
               <div className="mt-8 space-y-6">
                 {post.pdfCarousels.map((pdf, index) => (
-                  <PDFCarousel
+                  <PDFViewer
                     key={index}
                     pdfUrl={pdf.url}
                     title={pdf.title}
