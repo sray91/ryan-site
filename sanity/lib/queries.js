@@ -7,7 +7,7 @@ export const postsQuery = groq`*[_type == "post"] | order(publishedAt desc) {
   slug,
   excerpt,
   content,
-  tags,
+  "tags": tags[]->name,
   pdfCarousels,
   publishedAt,
   _updatedAt
@@ -20,7 +20,7 @@ export const postBySlugQuery = groq`*[_type == "post" && slug.current == $slug][
   slug,
   excerpt,
   content,
-  tags,
+  "tags": tags[]->name,
   pdfCarousels,
   publishedAt,
   _updatedAt
@@ -29,4 +29,13 @@ export const postBySlugQuery = groq`*[_type == "post" && slug.current == $slug][
 // Get all post slugs for static generation
 export const postSlugsQuery = groq`*[_type == "post"] {
   "slug": slug.current
+}`;
+
+// Get all tags
+export const tagsQuery = groq`*[_type == "tag"] | order(name asc) {
+  _id,
+  name,
+  slug,
+  color,
+  description
 }`;

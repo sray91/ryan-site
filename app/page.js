@@ -15,9 +15,9 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <div className="flex flex-col lg:flex-row items-center justify-between px-4 sm:px-8 py-8 lg:px-16 flex-1 relative z-10">
+      <div className="flex flex-col lg:flex-row items-center justify-center lg:gap-20 px-4 sm:px-8 py-8 lg:px-16 flex-1 relative z-10">
         {/* Profile Image */}
-        <div className="mb-8 lg:mb-0 lg:mr-12 flex-shrink-0">
+        <div className="mb-8 lg:mb-0 flex-shrink-0">
           <div className="relative">
             <Image
               src="/ryan-pfp.png"
