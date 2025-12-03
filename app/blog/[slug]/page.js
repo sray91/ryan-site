@@ -1,25 +1,32 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { notFound } from 'next/navigation';
-import { kv } from '../../../lib/kv';
+import { client } from '../../../sanity/lib/client';
+import { postBySlugQuery } from '../../../sanity/lib/queries';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 import PDFCarousel from '../../components/PDFCarousel';
 import BlogHeader from '../../components/BlogHeader';
 
 async function getBlogPost(slug) {
   try {
-    // Get all blog post keys and find the one with matching slug
-    const keys = await kv.keys('blog:*');
-    
-    if (keys.length === 0) {
+    const post = await client.fetch(postBySlugQuery, { slug });
+
+    if (!post) {
       return null;
     }
-    
-    // Get all posts
-    const posts = await kv.mget(...keys);
-    
-    // Find post with matching slug
-    return posts.find(post => post && post.slug === slug);
+
+    // Transform Sanity data to match the existing format
+    return {
+      id: post._id,
+      title: post.title,
+      slug: post.slug.current,
+      excerpt: post.excerpt,
+      content: post.content,
+      tags: post.tags,
+      pdfCarousels: post.pdfCarousels,
+      createdAt: post.publishedAt,
+      updatedAt: post._updatedAt,
+    };
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;
