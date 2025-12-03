@@ -56,6 +56,29 @@ const ptComponents = {
           />
         </div>
       );
+    },
+    table: ({ value }) => {
+      if (!value?.rows) return null;
+      return (
+        <div className="my-8 overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200">
+              {value.rows.map((row) => (
+                <tr key={row._key}>
+                  {row.cells.map((cell, i) => (
+                    <td
+                      key={i}
+                      className="px-6 py-4 text-sm text-gray-700 border-r border-gray-200 last:border-r-0"
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
     }
   }
 };
