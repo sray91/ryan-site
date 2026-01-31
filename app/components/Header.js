@@ -1,10 +1,30 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFocusDropdownOpen, setIsFocusDropdownOpen] = useState(false);
+  const [isMobileFocusOpen, setIsMobileFocusOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsFocusDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const focusLinks = [
+    { href: '/focus/manufacturers', label: 'For Manufacturers' },
+    { href: '/focus/tech-firms', label: 'For Tech Firms' },
+    { href: '/focus/pe-consulting', label: 'For PE & Consultancies' },
+  ];
 
   return (
     <nav className="flex items-center justify-between px-4 sm:px-8 py-4 lg:px-16 flex-shrink-0 relative z-20">
@@ -20,15 +40,61 @@ export default function Header() {
       </div>
       
       {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center space-x-8">
+      <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
         <Link href="/about" className="text-white/80 hover:text-white transition-colors">
           about
         </Link>
         <Link href="/blog" className="text-white/80 hover:text-white transition-colors">
           blog
         </Link>
-        <Link href="https://axiomsystems.io" target="_blank" className="text-white/80 hover:text-white transition-colors">
-          firm
+        <Link href="/marketplace" className="text-white/80 hover:text-white transition-colors">
+          marketplace
+        </Link>
+        
+        {/* Focus Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            className="text-white/80 hover:text-white transition-colors flex items-center gap-1"
+            onClick={() => setIsFocusDropdownOpen(!isFocusDropdownOpen)}
+            onMouseEnter={() => setIsFocusDropdownOpen(true)}
+          >
+            focus
+            <svg 
+              className={`w-4 h-4 transition-transform ${isFocusDropdownOpen ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {isFocusDropdownOpen && (
+            <div 
+              className="absolute top-full left-0 mt-2 w-56 rounded-xl overflow-hidden shadow-xl border border-white/20"
+              style={{
+                background: 'rgba(58, 58, 60, 0.95)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)'
+              }}
+              onMouseLeave={() => setIsFocusDropdownOpen(false)}
+            >
+              {focusLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                  onClick={() => setIsFocusDropdownOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <Link href="/bench" className="text-white/80 hover:text-white transition-colors">
+          bench
         </Link>
         <Link 
           href="/newsletter" 
@@ -61,36 +127,78 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 backdrop-blur-md border-t border-white/20 md:hidden"
              style={{
-               background: 'rgba(58, 58, 60, 0.9)',
+               background: 'rgba(58, 58, 60, 0.95)',
                backdropFilter: 'blur(20px)',
                WebkitBackdropFilter: 'blur(20px)'
              }}>
-          <div className="flex flex-col space-y-4 px-4 py-6">
+          <div className="flex flex-col px-4 py-6">
             <Link 
               href="/about" 
-              className="text-white/80 hover:text-white transition-colors py-2"
+              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               about
             </Link>
             <Link 
               href="/blog" 
-              className="text-white/80 hover:text-white transition-colors py-2"
+              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               blog
             </Link>
             <Link 
-              href="https://axiomsystems.io" 
-              target="_blank" 
-              className="text-white/80 hover:text-white transition-colors py-2"
+              href="/marketplace" 
+              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              firm
+              marketplace
+            </Link>
+            
+            {/* Mobile Focus Accordion */}
+            <div className="border-b border-white/10">
+              <button 
+                className="w-full text-left text-white/80 hover:text-white transition-colors py-3 flex items-center justify-between"
+                onClick={() => setIsMobileFocusOpen(!isMobileFocusOpen)}
+              >
+                focus
+                <svg 
+                  className={`w-4 h-4 transition-transform ${isMobileFocusOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isMobileFocusOpen && (
+                <div className="pl-4 pb-2">
+                  {focusLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block text-white/60 hover:text-white transition-colors py-2 text-sm"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsMobileFocusOpen(false);
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link 
+              href="/bench" 
+              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              bench
             </Link>
             <Link 
               href="/newsletter" 
-              className="px-4 py-3 rounded-lg transition-all duration-300 text-center hover:shadow-lg hover:shadow-blue-500/20"
+              className="px-4 py-3 rounded-lg transition-all duration-300 text-center hover:shadow-lg hover:shadow-blue-500/20 mt-4"
               style={{
                 background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
                 boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
@@ -104,4 +212,4 @@ export default function Header() {
       )}
     </nav>
   );
-} 
+}

@@ -33,9 +33,9 @@ export default function Home() {
         {/* Hero Content */}
         <div className="flex-1 max-w-2xl text-center lg:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-6">
-            Manufacturing executive.<br />
-            Storyteller.<br />
-            Idea man.
+            Modern manufacturing,<br />
+            practical tech,<br />
+            fewer buzzwords.
           </h1>
           
           <p className="text-base sm:text-lg text-light-gray mb-8 leading-relaxed" style={{ color: '#a1a1a6' }}>
@@ -52,6 +52,26 @@ export default function Home() {
       {/* Bottom Cards Section */}
       <div className="px-4 sm:px-8 pb-8 lg:px-16 flex-shrink-0 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Marketplace Card */}
+          <Link href="/marketplace" className="group">
+            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.6)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-bold text-white">marketplace</h3>
+                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
+                Curated directory of solutions I recommend for manufacturing transformation.
+              </p>
+            </div>
+          </Link>
+
           {/* Blog Card */}
           <Link href="/blog" className="group">
             <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
@@ -72,6 +92,26 @@ export default function Home() {
             </div>
           </Link>
 
+          {/* Bench Card */}
+          <Link href="/bench" className="group">
+            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
+                 style={{ 
+                   background: 'rgba(58, 58, 60, 0.6)',
+                   backdropFilter: 'blur(20px)',
+                   WebkitBackdropFilter: 'blur(20px)'
+                 }}>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-bold text-white">the bench</h3>
+                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
+                My personally vetted recommendations—apply to be considered.
+              </p>
+            </div>
+          </Link>
+
           {/* Agency Card */}
           <Link href="https://axiomsystems.io" target="_blank" className="group">
             <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
@@ -81,57 +121,18 @@ export default function Home() {
                    WebkitBackdropFilter: 'blur(20px)'
                  }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold text-white">consulting firm</h3>
+                <h3 className="text-lg font-bold text-white">axiom systems</h3>
                 <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
               <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
-                Axiom Systems. Manufacturing consulting firm helping growth oriented companies accelerate.
-              </p>
-            </div>
-          </Link>
-
-          {/* Book a Call Card */}
-          <Link href="/contact" className="group">
-            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
-                 style={{ 
-                   background: 'rgba(58, 58, 60, 0.6)',
-                   backdropFilter: 'blur(20px)',
-                   WebkitBackdropFilter: 'blur(20px)'
-                 }}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold text-white">book a call</h3>
-                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </div>
-              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
-                Let&apos;s chat!
-              </p>
-            </div>
-          </Link>
-
-          {/* Resources Card */}
-          <Link href="/products" className="group">
-            <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
-                 style={{ 
-                   background: 'rgba(58, 58, 60, 0.6)',
-                   backdropFilter: 'blur(20px)',
-                   WebkitBackdropFilter: 'blur(20px)'
-                 }}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold text-white">resources</h3>
-                <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </div>
-              <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
-                Expert insights and resources for private equity, startups, and operations.
+                My manufacturing consulting firm for growth-oriented companies.
               </p>
             </div>
           </Link>
         </div>
+
       </div>
 
 
