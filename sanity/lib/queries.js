@@ -59,3 +59,69 @@ export const tagsQuery = groq`*[_type == "tag"] | order(name asc) {
   color,
   description
 }`;
+
+// ============================================
+// MARKETPLACE QUERIES
+// ============================================
+
+// Get all solutions with computed community scores
+export const solutionsQuery = groq`*[_type == "solution"] | order(dateAdded desc) {
+  _id,
+  name,
+  "slug": slug.current,
+  tagline,
+  summary,
+  whyILikeIt,
+  website,
+  "logo": logo.asset->url,
+  processFocus,
+  techCategory,
+  fundingType,
+  valuesLens,
+  ryanRating,
+  ryanComment,
+  dateAdded,
+  "communityScore": {
+    "average": math::avg(*[_type == "review" && references(^._id) && status == "approved"].rating),
+    "count": count(*[_type == "review" && references(^._id) && status == "approved"])
+  }
+}`;
+
+// Get a single solution by slug with its approved reviews
+export const solutionBySlugQuery = groq`*[_type == "solution" && slug.current == $slug][0] {
+  _id,
+  name,
+  "slug": slug.current,
+  tagline,
+  summary,
+  whyILikeIt,
+  website,
+  "logo": logo.asset->url,
+  processFocus,
+  techCategory,
+  fundingType,
+  valuesLens,
+  ryanRating,
+  ryanComment,
+  dateAdded,
+  "communityScore": {
+    "average": math::avg(*[_type == "review" && references(^._id) && status == "approved"].rating),
+    "count": count(*[_type == "review" && references(^._id) && status == "approved"])
+  },
+  "reviews": *[_type == "review" && references(^._id) && status == "approved"] | order(submittedAt desc) {
+    _id,
+    rating,
+    title,
+    content,
+    reviewerName,
+    reviewerRole,
+    reviewerCompany,
+    verifiedUser,
+    submittedAt
+  }
+}`;
+
+// Get all solution slugs for static generation
+export const solutionSlugsQuery = groq`*[_type == "solution"] {
+  "slug": slug.current
+}`;
