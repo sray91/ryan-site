@@ -104,6 +104,13 @@ export const solutionBySlugQuery = groq`*[_type == "solution" && slug.current ==
   ryanRating,
   ryanComment,
   dateAdded,
+  "commonPairings": commonPairings[]->{
+    _id,
+    name,
+    "slug": slug.current,
+    tagline,
+    "logo": logo.asset->url
+  },
   "communityScore": {
     "average": math::avg(*[_type == "review" && references(^._id) && status == "approved"].rating),
     "count": count(*[_type == "review" && references(^._id) && status == "approved"])

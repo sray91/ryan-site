@@ -164,6 +164,18 @@ export default defineType({
       type: 'date',
       initialValue: () => new Date().toISOString().split('T')[0],
     }),
+    defineField({
+      name: 'commonPairings',
+      title: 'Commonly Paired With',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'solution' }],
+        },
+      ],
+      description: 'Solutions that are commonly used together with this one',
+    }),
   ],
   preview: {
     select: {

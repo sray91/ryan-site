@@ -305,6 +305,53 @@ export default function SolutionDetailClient({ solution }) {
             <p className="text-white/80 leading-relaxed">{solution.summary}</p>
           </div>
 
+          {/* Commonly Paired With */}
+          {solution.commonPairings && solution.commonPairings.length > 0 && (
+            <div
+              className="rounded-xl p-8 mb-8 border border-white/10"
+              style={{
+                background: 'rgba(58, 58, 60, 0.6)',
+                backdropFilter: 'blur(20px)',
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2">Commonly Paired With</h2>
+              <p className="text-sm text-white/50 mb-6">
+                These are common real-world pairings, not required stacks.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {solution.commonPairings.map((pairing) => (
+                  <Link
+                    key={pairing._id}
+                    href={`/marketplace/${pairing.slug}`}
+                    className="group flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {pairing.logo ? (
+                        <img
+                          src={pairing.logo}
+                          alt={`${pairing.name} logo`}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold text-white/50">
+                          {pairing.name.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <span className="font-medium group-hover:text-blue-400 transition-colors">
+                        {pairing.name}
+                      </span>
+                      {pairing.tagline && (
+                        <p className="text-xs text-white/50 line-clamp-1">{pairing.tagline}</p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Tags Section */}
           <div
             className="rounded-xl p-8 mb-8 border border-white/10"
