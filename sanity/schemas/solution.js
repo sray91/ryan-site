@@ -71,7 +71,7 @@ export default defineType({
       title: 'Tagline',
       type: 'string',
       description: 'Short one-liner describing the solution',
-      validation: (Rule) => Rule.required().max(100),
+      validation: (Rule) => Rule.max(100),
     }),
     defineField({
       name: 'summary',
@@ -79,7 +79,6 @@ export default defineType({
       type: 'text',
       rows: 3,
       description: 'Brief overview of what the company/solution does',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'whyILikeIt',
@@ -149,7 +148,7 @@ export default defineType({
       title: "Ryan's Rating",
       type: 'number',
       description: 'Rating from 1-5 (supports half points like 4.5)',
-      validation: (Rule) => Rule.required().min(1).max(5),
+      validation: (Rule) => Rule.min(1).max(5),
     }),
     defineField({
       name: 'ryanComment',

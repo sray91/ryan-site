@@ -93,9 +93,6 @@ export default function Header() {
           )}
         </div>
 
-        <Link href="/bench" className="text-white/80 hover:text-white transition-colors">
-          bench
-        </Link>
         <Link 
           href="/newsletter" 
           className="px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
@@ -189,13 +186,6 @@ export default function Header() {
               )}
             </div>
 
-            <Link 
-              href="/bench" 
-              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              bench
-            </Link>
             <Link 
               href="/newsletter" 
               className="px-4 py-3 rounded-lg transition-all duration-300 text-center hover:shadow-lg hover:shadow-blue-500/20 mt-4"

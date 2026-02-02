@@ -293,7 +293,7 @@ export default function MarketplaceClient({ solutions }) {
                 {filteredAndSortedSolutions.length !== 1 ? 's' : ''}
               </p>
               <Link
-                href="/bench/apply"
+                href="/contact"
                 className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
               >
                 Suggest a solution →
