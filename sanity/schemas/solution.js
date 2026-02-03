@@ -45,6 +45,14 @@ const valuesLensOptions = [
   { title: 'Proven in Ugly Plants', value: 'proven-ugly-plants' },
 ];
 
+const categoryTypeOptions = [
+  { title: 'OT Solution', value: 'ot-solution' },
+  { title: 'Consultant', value: 'consultant' },
+  { title: 'Systems Integrator', value: 'systems-integrator' },
+  { title: 'Tool', value: 'tool' },
+  { title: 'Off-Topic Favorite', value: 'off-topic-favorite' },
+];
+
 export default defineType({
   name: 'solution',
   title: 'Solution',
@@ -88,10 +96,60 @@ export default defineType({
       description: "Ryan's personal take on this solution",
     }),
     defineField({
+      name: 'categoryType',
+      title: 'Category Type',
+      type: 'string',
+      options: {
+        list: categoryTypeOptions,
+        layout: 'radio',
+      },
+      validation: (Rule) => Rule.required(),
+      initialValue: 'ot-solution',
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+      description: 'For consultants/SIs (e.g., "Columbus, OH")',
+      hidden: ({ document }) =>
+        !['consultant', 'systems-integrator'].includes(document?.categoryType),
+    }),
+    defineField({
       name: 'website',
       title: 'Website',
       type: 'url',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'links',
+      title: 'Additional Links',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'url',
+            },
+          },
+        },
+      ],
+      description: 'Additional links beyond main website (e.g., docs, LinkedIn, case studies)',
     }),
     defineField({
       name: 'logo',

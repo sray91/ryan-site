@@ -1,12 +1,23 @@
 import Header from '../../components/Header';
 import Link from 'next/link';
+import { client } from '@/sanity/lib/client';
+import { starterStacksByFocusQuery } from '@/sanity/lib/queries';
+
+export const revalidate = 60;
 
 export const metadata = {
   title: 'For PE & Consultancies | Ryan Cahalane',
   description: 'OT and automation diligence that actually changes the model. Value creation, post-close roadmaps, and specialist introductions.',
 };
 
-export default function PEConsultingPage() {
+async function getRelevantStacks() {
+  // Get stacks relevant to PE (value creation focus)
+  const stacks = await client.fetch(starterStacksByFocusQuery, { focusTag: 'pe-value-creation' });
+  return stacks.slice(0, 3);
+}
+
+export default async function PEConsultingPage() {
+  const relevantStacks = await getRelevantStacks();
   const whatYouGet = [
     {
       title: 'Diligence',
@@ -226,6 +237,70 @@ export default function PEConsultingPage() {
             </div>
           </div>
         </section>
+
+        {/* Recommended Starter Stacks */}
+        {relevantStacks.length > 0 && (
+          <section className="px-4 sm:px-8 lg:px-16 py-16">
+            <div className="max-w-5xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4">
+                Value Creation Starter Stacks
+              </h2>
+              <p className="text-white/60 text-center mb-8 max-w-2xl mx-auto">
+                Technology combinations that accelerate portfolio company performance.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6">
+                {relevantStacks.map((stack) => (
+                  <Link
+                    key={stack._id}
+                    href={`/marketplace/stacks/${stack.slug}`}
+                    className="group rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1"
+                    style={{
+                      background: 'rgba(58, 58, 60, 0.6)',
+                      backdropFilter: 'blur(20px)',
+                    }}
+                  >
+                    {/* Solution Logos */}
+                    <div className="flex items-center gap-2 mb-4">
+                      {stack.solutions?.slice(0, 3).map((sol) => (
+                        <div
+                          key={sol.solution?._id}
+                          className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center overflow-hidden"
+                        >
+                          {sol.solution?.logo ? (
+                            <img
+                              src={sol.solution.logo}
+                              alt={sol.solution.name}
+                              className="w-full h-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-xs font-bold text-white/50">
+                              {sol.solution?.name?.charAt(0)}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors">
+                      {stack.name}
+                    </h3>
+                    <p className="text-white/60 text-sm line-clamp-2">{stack.problemItSolves}</p>
+                  </Link>
+                ))}
+              </div>
+              <div className="text-center mt-8">
+                <Link
+                  href="/marketplace/stacks"
+                  className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  View all Starter Stacks
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* CTA Section */}
         <section className="px-4 sm:px-8 lg:px-16 py-16 lg:py-24">

@@ -74,6 +74,9 @@ export const solutionsQuery = groq`*[_type == "solution"] | order(dateAdded desc
   whyILikeIt,
   website,
   "logo": logo.asset->url,
+  categoryType,
+  location,
+  links,
   processFocus,
   techCategory,
   fundingType,
@@ -97,6 +100,9 @@ export const solutionBySlugQuery = groq`*[_type == "solution" && slug.current ==
   whyILikeIt,
   website,
   "logo": logo.asset->url,
+  categoryType,
+  location,
+  links,
   processFocus,
   techCategory,
   fundingType,
@@ -110,6 +116,12 @@ export const solutionBySlugQuery = groq`*[_type == "solution" && slug.current ==
     "slug": slug.current,
     tagline,
     "logo": logo.asset->url
+  },
+  "starterStacks": *[_type == "starterStack" && references(^._id)] {
+    _id,
+    name,
+    "slug": slug.current,
+    whoItsFor
   },
   "communityScore": {
     "average": math::avg(*[_type == "review" && references(^._id) && status == "approved"].rating),
@@ -131,4 +143,102 @@ export const solutionBySlugQuery = groq`*[_type == "solution" && slug.current ==
 // Get all solution slugs for static generation
 export const solutionSlugsQuery = groq`*[_type == "solution"] {
   "slug": slug.current
+}`;
+
+// ============================================
+// STARTER STACKS QUERIES
+// ============================================
+
+// Get all starter stacks with solutions expanded
+export const starterStacksQuery = groq`*[_type == "starterStack"] | order(order asc) {
+  _id,
+  name,
+  "slug": slug.current,
+  whoItsFor,
+  problemItSolves,
+  whyThisComboWorks,
+  notAFitIf,
+  relevantFocusTags,
+  order,
+  "solutions": solutions[] {
+    role,
+    "solution": solution->{
+      _id,
+      name,
+      "slug": slug.current,
+      tagline,
+      "logo": logo.asset->url,
+      categoryType
+    }
+  }
+}`;
+
+// Get a single starter stack by slug
+export const starterStackBySlugQuery = groq`*[_type == "starterStack" && slug.current == $slug][0] {
+  _id,
+  name,
+  "slug": slug.current,
+  whoItsFor,
+  problemItSolves,
+  whyThisComboWorks,
+  notAFitIf,
+  relevantFocusTags,
+  order,
+  "solutions": solutions[] {
+    role,
+    "solution": solution->{
+      _id,
+      name,
+      "slug": slug.current,
+      tagline,
+      summary,
+      whyILikeIt,
+      website,
+      "logo": logo.asset->url,
+      categoryType,
+      ryanRating
+    }
+  }
+}`;
+
+// Get all starter stack slugs for static generation
+export const starterStackSlugsQuery = groq`*[_type == "starterStack"] {
+  "slug": slug.current
+}`;
+
+// Get starter stacks by focus tag
+export const starterStacksByFocusQuery = groq`*[_type == "starterStack" && $focusTag in relevantFocusTags] | order(order asc) {
+  _id,
+  name,
+  "slug": slug.current,
+  whoItsFor,
+  problemItSolves,
+  relevantFocusTags,
+  "solutions": solutions[] {
+    role,
+    "solution": solution->{
+      _id,
+      name,
+      "slug": slug.current,
+      "logo": logo.asset->url
+    }
+  }
+}`;
+
+// ============================================
+// THINGS WE LIKE QUERIES
+// ============================================
+
+// Get all things we like
+export const thingsWeLikeQuery = groq`*[_type == "thingsWeLike"] | order(categoryType asc, order asc) {
+  _id,
+  name,
+  "slug": slug.current,
+  oneLiner,
+  categoryType,
+  subCategory,
+  whyRyanLikesIt,
+  "image": image.asset->url,
+  links,
+  order
 }`;

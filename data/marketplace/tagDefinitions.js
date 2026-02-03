@@ -42,6 +42,37 @@ export const tagDefinitions = {
     'no-data-hostage': "Doesn't Hostage Your Data",
     'proven-ugly-plants': 'Proven in Ugly Plants',
   },
+  categoryType: {
+    'ot-solution': 'OT Solution',
+    'consultant': 'Consultant',
+    'systems-integrator': 'Systems Integrator',
+    'tool': 'Tool',
+    'off-topic-favorite': 'Off-Topic Favorite',
+  },
+  stackFocus: {
+    'brownfield': 'Brownfield',
+    'greenfield': 'Greenfield',
+    'mid-market': 'Mid-Market',
+    'enterprise': 'Enterprise',
+    'reliability-first': 'Reliability-First',
+    'data-first': 'Data-First',
+    'pe-value-creation': 'PE Value Creation',
+    'operator-enablement': 'Operator Enablement',
+    'visualization': 'Visualization',
+    'asset-heavy': 'Asset-Heavy',
+  },
+  thingsWeLikeCategoryType: {
+    'off-topic-favorite': 'Off-Topic Favorite',
+    'cool-tool': 'Cool Tool',
+  },
+  coolToolSubCategory: {
+    'electrical': 'Electrical',
+    'networking': 'Networking',
+    'commissioning': 'Commissioning',
+    'maintenance': 'Maintenance',
+    'safety': 'Safety',
+    'lifestyle': 'Lifestyle',
+  },
 };
 
 export const reviewThreshold = 5;

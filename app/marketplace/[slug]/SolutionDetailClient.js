@@ -83,7 +83,7 @@ export default function SolutionDetailClient({ solution }) {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Marketplace
+            Back to The Bench
           </Link>
 
           {/* Header Section */}
@@ -111,8 +111,18 @@ export default function SolutionDetailClient({ solution }) {
               </div>
 
               <div className="flex-1">
-                <h1 className="text-3xl font-bold mb-2">{solution.name}</h1>
-                <p className="text-xl text-white/70 mb-4">{solution.tagline}</p>
+                <div className="flex items-center gap-3 mb-2">
+                  <h1 className="text-3xl font-bold">{solution.name}</h1>
+                  {solution.categoryType && solution.categoryType !== 'ot-solution' && (
+                    <span className="px-3 py-1 text-sm rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                      {tagDefinitions.categoryType[solution.categoryType]}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xl text-white/70 mb-2">{solution.tagline}</p>
+                {solution.location && (
+                  <p className="text-white/50 mb-4">{solution.location}</p>
+                )}
 
                 {/* Values lens tags */}
                 <div className="flex flex-wrap gap-2">
@@ -304,6 +314,52 @@ export default function SolutionDetailClient({ solution }) {
             <h2 className="text-xl font-bold mb-4">About {solution.name}</h2>
             <p className="text-white/80 leading-relaxed">{solution.summary}</p>
           </div>
+
+          {/* Appears in Starter Stacks */}
+          {solution.starterStacks && solution.starterStacks.length > 0 && (
+            <div
+              className="rounded-xl p-8 mb-8 border border-blue-500/30"
+              style={{
+                background: 'rgba(0, 122, 255, 0.1)',
+              }}
+            >
+              <h2 className="text-xl font-bold mb-2">Appears in Starter Stacks</h2>
+              <p className="text-sm text-white/50 mb-6">
+                Pre-configured technology combinations featuring {solution.name}.
+              </p>
+              <div className="grid gap-3">
+                {solution.starterStacks.map((stack) => (
+                  <Link
+                    key={stack._id}
+                    href={`/marketplace/stacks/${stack.slug}`}
+                    className="group flex items-center justify-between px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
+                  >
+                    <div>
+                      <span className="font-medium group-hover:text-blue-400 transition-colors">
+                        {stack.name}
+                      </span>
+                      {stack.whoItsFor && (
+                        <p className="text-xs text-white/50 line-clamp-1 mt-1">{stack.whoItsFor}</p>
+                      )}
+                    </div>
+                    <svg
+                      className="w-4 h-4 text-white/40 group-hover:text-blue-400 group-hover:translate-x-1 transition-all flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Commonly Paired With */}
           {solution.commonPairings && solution.commonPairings.length > 0 && (

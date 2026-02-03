@@ -6,14 +6,20 @@ import { useState, useRef, useEffect } from "react";
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isFocusDropdownOpen, setIsFocusDropdownOpen] = useState(false);
+  const [isMarketplaceDropdownOpen, setIsMarketplaceDropdownOpen] = useState(false);
   const [isMobileFocusOpen, setIsMobileFocusOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [isMobileMarketplaceOpen, setIsMobileMarketplaceOpen] = useState(false);
+  const focusDropdownRef = useRef(null);
+  const marketplaceDropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (focusDropdownRef.current && !focusDropdownRef.current.contains(event.target)) {
         setIsFocusDropdownOpen(false);
+      }
+      if (marketplaceDropdownRef.current && !marketplaceDropdownRef.current.contains(event.target)) {
+        setIsMarketplaceDropdownOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -24,6 +30,12 @@ export default function Header() {
     { href: '/focus/manufacturers', label: 'For Manufacturers' },
     { href: '/focus/tech-firms', label: 'For Tech Firms' },
     { href: '/focus/pe-consulting', label: 'For PE & Consultancies' },
+  ];
+
+  const benchLinks = [
+    { href: '/marketplace', label: 'All Solutions' },
+    { href: '/marketplace/stacks', label: 'Starter Stacks' },
+    { href: '/marketplace/things-we-like', label: 'Things We Like' },
   ];
 
   return (
@@ -47,12 +59,50 @@ export default function Header() {
         <Link href="/blog" className="text-white/80 hover:text-white transition-colors">
           blog
         </Link>
-        <Link href="/marketplace" className="text-white/80 hover:text-white transition-colors">
-          marketplace
-        </Link>
-        
+        {/* The Bench Dropdown */}
+        <div className="relative" ref={marketplaceDropdownRef}>
+          <button
+            className="text-white/80 hover:text-white transition-colors flex items-center gap-1"
+            onClick={() => setIsMarketplaceDropdownOpen(!isMarketplaceDropdownOpen)}
+            onMouseEnter={() => setIsMarketplaceDropdownOpen(true)}
+          >
+            the bench
+            <svg
+              className={`w-4 h-4 transition-transform ${isMarketplaceDropdownOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {isMarketplaceDropdownOpen && (
+            <div
+              className="absolute top-full left-0 mt-2 w-48 rounded-xl overflow-hidden shadow-xl border border-white/20"
+              style={{
+                background: 'rgba(58, 58, 60, 0.95)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)'
+              }}
+              onMouseLeave={() => setIsMarketplaceDropdownOpen(false)}
+            >
+              {benchLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                  onClick={() => setIsMarketplaceDropdownOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Focus Dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={focusDropdownRef}>
           <button 
             className="text-white/80 hover:text-white transition-colors flex items-center gap-1"
             onClick={() => setIsFocusDropdownOpen(!isFocusDropdownOpen)}
@@ -143,14 +193,41 @@ export default function Header() {
             >
               blog
             </Link>
-            <Link 
-              href="/marketplace" 
-              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              marketplace
-            </Link>
-            
+            {/* Mobile The Bench Accordion */}
+            <div className="border-b border-white/10">
+              <button
+                className="w-full text-left text-white/80 hover:text-white transition-colors py-3 flex items-center justify-between"
+                onClick={() => setIsMobileMarketplaceOpen(!isMobileMarketplaceOpen)}
+              >
+                the bench
+                <svg
+                  className={`w-4 h-4 transition-transform ${isMobileMarketplaceOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isMobileMarketplaceOpen && (
+                <div className="pl-4 pb-2">
+                  {benchLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block text-white/60 hover:text-white transition-colors py-2 text-sm"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsMobileMarketplaceOpen(false);
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Mobile Focus Accordion */}
             <div className="border-b border-white/10">
               <button 

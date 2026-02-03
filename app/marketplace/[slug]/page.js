@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${solution.name} | Marketplace`,
+    title: `${solution.name} | The Bench`,
     description: solution.summary,
   };
 }

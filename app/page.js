@@ -52,16 +52,16 @@ export default function Home() {
       {/* Bottom Cards Section */}
       <div className="px-4 sm:px-8 pb-8 lg:px-16 flex-shrink-0 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Marketplace Card */}
+          {/* The Bench Card */}
           <Link href="/marketplace" className="group">
             <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
-                 style={{ 
+                 style={{
                    background: 'rgba(58, 58, 60, 0.6)',
                    backdropFilter: 'blur(20px)',
                    WebkitBackdropFilter: 'blur(20px)'
                  }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold text-white">marketplace</h3>
+                <h3 className="text-lg font-bold text-white">the bench</h3>
                 <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>

@@ -36,6 +36,7 @@ function getScoreLabel(solution) {
 
 export default function MarketplaceClient({ solutions }) {
   const [sortBy, setSortBy] = useState('composite-score');
+  const [selectedCategoryType, setSelectedCategoryType] = useState('all');
   const [selectedTags, setSelectedTags] = useState({
     processFocus: [],
     techCategory: [],
@@ -47,13 +48,18 @@ export default function MarketplaceClient({ solutions }) {
 
   const filteredAndSortedSolutions = useMemo(() => {
     let filtered = solutions.filter((solution) => {
+      // Category type filter
+      if (selectedCategoryType !== 'all') {
+        if (solution.categoryType !== selectedCategoryType) return false;
+      }
+
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matchesSearch =
           solution.name.toLowerCase().includes(query) ||
-          solution.tagline.toLowerCase().includes(query) ||
-          solution.summary.toLowerCase().includes(query);
+          solution.tagline?.toLowerCase().includes(query) ||
+          solution.summary?.toLowerCase().includes(query);
         if (!matchesSearch) return false;
       }
 
@@ -92,7 +98,7 @@ export default function MarketplaceClient({ solutions }) {
     }
 
     return filtered;
-  }, [solutions, sortBy, selectedTags, searchQuery]);
+  }, [solutions, sortBy, selectedTags, searchQuery, selectedCategoryType]);
 
   const toggleTag = (category, tag) => {
     setSelectedTags((prev) => ({
@@ -111,9 +117,10 @@ export default function MarketplaceClient({ solutions }) {
       valuesLens: [],
     });
     setSearchQuery('');
+    setSelectedCategoryType('all');
   };
 
-  const hasActiveFilters = Object.values(selectedTags).some((arr) => arr.length > 0) || searchQuery;
+  const hasActiveFilters = Object.values(selectedTags).some((arr) => arr.length > 0) || searchQuery || selectedCategoryType !== 'all';
   const activeFilterCount = Object.values(selectedTags).flat().length;
 
   const FilterSection = ({ category, label, description }) => (
@@ -150,6 +157,36 @@ export default function MarketplaceClient({ solutions }) {
           placeholder="Search solutions..."
           className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
         />
+      </div>
+
+      {/* Category Type Filter */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium mb-2">Type</label>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedCategoryType('all')}
+            className={`px-3 py-1.5 text-xs rounded-full transition-all ${
+              selectedCategoryType === 'all'
+                ? 'bg-blue-500 text-white'
+                : 'bg-white/10 text-white/70 hover:bg-white/20'
+            }`}
+          >
+            All
+          </button>
+          {Object.entries(tagDefinitions.categoryType).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setSelectedCategoryType(key)}
+              className={`px-3 py-1.5 text-xs rounded-full transition-all ${
+                selectedCategoryType === key
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-white/10 text-white/70 hover:bg-white/20'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Sort */}
@@ -200,7 +237,7 @@ export default function MarketplaceClient({ solutions }) {
       <main className="flex-1 px-4 sm:px-8 lg:px-16 py-8">
         {/* Page Header */}
         <div className="max-w-7xl mx-auto mb-8">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Marketplace</h1>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">The Bench</h1>
           <p className="text-lg text-white/70 max-w-3xl">
             A curated directory of solutions for manufacturing transformation. No pay-to-play, no
             affiliate links—just honest recommendations based on what actually works in real plants.
@@ -333,10 +370,20 @@ export default function MarketplaceClient({ solutions }) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-4 mb-2">
                             <div className="min-w-0">
-                              <h3 className="text-xl font-bold group-hover:text-blue-400 transition-colors truncate">
-                                {solution.name}
-                              </h3>
+                              <div className="flex items-center gap-2 mb-1">
+                                <h3 className="text-xl font-bold group-hover:text-blue-400 transition-colors truncate">
+                                  {solution.name}
+                                </h3>
+                                {solution.categoryType && solution.categoryType !== 'ot-solution' && (
+                                  <span className="px-2 py-0.5 text-xs rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 flex-shrink-0">
+                                    {tagDefinitions.categoryType[solution.categoryType]}
+                                  </span>
+                                )}
+                              </div>
                               <p className="text-white/60 text-sm">{solution.tagline}</p>
+                              {solution.location && (
+                                <p className="text-white/40 text-xs mt-1">{solution.location}</p>
+                              )}
                             </div>
                             <div className="flex flex-col items-end flex-shrink-0">
                               <div className="flex items-center gap-1 text-yellow-400">
