@@ -53,7 +53,7 @@ export default function Home() {
       <div className="px-4 sm:px-8 pb-8 lg:px-16 flex-shrink-0 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* The Bench Card */}
-          <Link href="/marketplace" className="group">
+          <Link href="/bench" className="group">
             <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
                  style={{
                    background: 'rgba(58, 58, 60, 0.6)',

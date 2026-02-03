@@ -41,7 +41,7 @@ export default function StarterStackDetailClient({ stack }) {
         <div className="max-w-4xl mx-auto">
           {/* Breadcrumb */}
           <Link
-            href="/marketplace/stacks"
+            href="/bench/stacks"
             className="inline-flex items-center text-white/60 hover:text-white mb-8 transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,7 +181,7 @@ export default function StarterStackDetailClient({ stack }) {
               {stack.solutions?.map((sol) => (
                 <Link
                   key={sol.solution?._id}
-                  href={`/marketplace/${sol.solution?.slug}`}
+                  href={`/bench/${sol.solution?.slug}`}
                   className="group flex items-start gap-4 p-4 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
                 >
                   <div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -290,7 +290,7 @@ export default function StarterStackDetailClient({ stack }) {
                 Book a Fit Check
               </Link>
               <Link
-                href="/marketplace/stacks"
+                href="/bench/stacks"
                 className="px-6 py-3 rounded-lg font-medium border border-white/30 hover:bg-white/10 transition-all"
               >
                 Browse Other Stacks

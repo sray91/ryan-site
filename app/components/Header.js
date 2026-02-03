@@ -33,9 +33,9 @@ export default function Header() {
   ];
 
   const benchLinks = [
-    { href: '/marketplace', label: 'All Solutions' },
-    { href: '/marketplace/stacks', label: 'Starter Stacks' },
-    { href: '/marketplace/things-we-like', label: 'Things We Like' },
+    { href: '/bench', label: 'All Solutions' },
+    { href: '/bench/stacks', label: 'Starter Stacks' },
+    { href: '/bench/things-we-like', label: 'Things We Like' },
   ];
 
   return (

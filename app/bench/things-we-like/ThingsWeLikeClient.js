@@ -94,7 +94,7 @@ export default function ThingsWeLikeClient({ items }) {
         {/* Page Header */}
         <div className="max-w-5xl mx-auto mb-12">
           <Link
-            href="/marketplace"
+            href="/bench"
             className="inline-flex items-center text-white/60 hover:text-white mb-6 transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

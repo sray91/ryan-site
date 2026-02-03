@@ -343,7 +343,7 @@ export default function MarketplaceClient({ solutions }) {
                 const scoreLabel = getScoreLabel(solution);
 
                 return (
-                  <Link key={solution._id} href={`/marketplace/${solution.slug}`} className="group">
+                  <Link key={solution._id} href={`/bench/${solution.slug}`} className="group">
                     <div
                       className="rounded-xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1"
                       style={{

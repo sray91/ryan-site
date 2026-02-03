@@ -252,7 +252,7 @@ export default async function PEConsultingPage() {
                 {relevantStacks.map((stack) => (
                   <Link
                     key={stack._id}
-                    href={`/marketplace/stacks/${stack.slug}`}
+                    href={`/bench/stacks/${stack.slug}`}
                     className="group rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1"
                     style={{
                       background: 'rgba(58, 58, 60, 0.6)',
@@ -289,7 +289,7 @@ export default async function PEConsultingPage() {
               </div>
               <div className="text-center mt-8">
                 <Link
-                  href="/marketplace/stacks"
+                  href="/bench/stacks"
                   className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
                 >
                   View all Starter Stacks

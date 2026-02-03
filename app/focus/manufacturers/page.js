@@ -267,7 +267,7 @@ export default async function ManufacturersPage() {
                 {relevantStacks.map((stack) => (
                   <Link
                     key={stack._id}
-                    href={`/marketplace/stacks/${stack.slug}`}
+                    href={`/bench/stacks/${stack.slug}`}
                     className="group rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1"
                     style={{
                       background: 'rgba(58, 58, 60, 0.6)',
@@ -304,7 +304,7 @@ export default async function ManufacturersPage() {
               </div>
               <div className="text-center mt-8">
                 <Link
-                  href="/marketplace/stacks"
+                  href="/bench/stacks"
                   className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   View all Starter Stacks
@@ -324,7 +324,7 @@ export default async function ManufacturersPage() {
               Want to explore solutions on your own?
             </p>
             <Link
-              href="/marketplace"
+              href="/bench"
               className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
             >
               Browse The Bench

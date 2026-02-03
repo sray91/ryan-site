@@ -38,7 +38,7 @@ export default function StarterStacksClient({ stacks }) {
         {/* Page Header */}
         <div className="max-w-5xl mx-auto mb-8">
           <Link
-            href="/marketplace"
+            href="/bench"
             className="inline-flex items-center text-white/60 hover:text-white mb-6 transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +92,7 @@ export default function StarterStacksClient({ stacks }) {
         <div className="max-w-5xl mx-auto">
           <div className="grid gap-6">
             {filteredStacks.map((stack) => (
-              <Link key={stack._id} href={`/marketplace/stacks/${stack.slug}`} className="group">
+              <Link key={stack._id} href={`/bench/stacks/${stack.slug}`} className="group">
                 <div
                   className="rounded-xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1"
                   style={{

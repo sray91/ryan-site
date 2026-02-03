@@ -50,7 +50,6 @@ function StarRating({ rating, size = 'md' }) {
 
 export default function SolutionDetailClient({ solution }) {
   const [showIntroForm, setShowIntroForm] = useState(false);
-  const [showReviewForm, setShowReviewForm] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const compositeScore = getCompositeScore(solution);
@@ -72,7 +71,7 @@ export default function SolutionDetailClient({ solution }) {
         <div className="max-w-4xl mx-auto">
           {/* Breadcrumb */}
           <Link
-            href="/marketplace"
+            href="/bench"
             className="inline-flex items-center text-white/60 hover:text-white mb-8 transition-colors"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,7 +330,7 @@ export default function SolutionDetailClient({ solution }) {
                 {solution.starterStacks.map((stack) => (
                   <Link
                     key={stack._id}
-                    href={`/marketplace/stacks/${stack.slug}`}
+                    href={`/bench/stacks/${stack.slug}`}
                     className="group flex items-center justify-between px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
                   >
                     <div>
@@ -378,7 +377,7 @@ export default function SolutionDetailClient({ solution }) {
                 {solution.commonPairings.map((pairing) => (
                   <Link
                     key={pairing._id}
-                    href={`/marketplace/${pairing.slug}`}
+                    href={`/bench/${pairing.slug}`}
                     className="group flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
                   >
                     <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -470,139 +469,7 @@ export default function SolutionDetailClient({ solution }) {
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold">Community Reviews</h2>
-              <button
-                onClick={() => setShowReviewForm(!showReviewForm)}
-                className="px-4 py-2 text-sm rounded-lg border border-white/30 hover:bg-white/10 transition-all"
-              >
-                Write a Review
-              </button>
             </div>
-
-            {/* Review Form */}
-            {showReviewForm && (
-              <div className="mb-8 p-6 rounded-lg bg-white/5 border border-white/10">
-                <h3 className="font-semibold mb-4">Share Your Experience</h3>
-                <p className="text-sm text-white/60 mb-4">
-                  Sign in with your email to post a review. One review per solution.
-                </p>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Your Email (for verification)
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="you@company.com"
-                      className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Overall Rating</label>
-                    <div className="flex gap-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          className="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
-                        >
-                          <span className="text-lg">{star}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">What I used it for</label>
-                    <textarea
-                      placeholder="Describe your use case and experience..."
-                      rows={4}
-                      className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-blue-500 resize-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Quick Ratings (optional)</label>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {['Implementation Effort', 'Support Quality', 'ROI Clarity', 'Integration Ease'].map(
-                        (metric) => (
-                          <div
-                            key={metric}
-                            className="flex items-center justify-between p-3 rounded-lg bg-white/5"
-                          >
-                            <span className="text-sm text-white/70">{metric}</span>
-                            <select className="bg-transparent text-sm text-white/70 focus:outline-none">
-                              <option value="">—</option>
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                            </select>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Industry (optional)</label>
-                      <select className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-blue-500">
-                        <option value="" className="bg-gray-800">
-                          Prefer not to say
-                        </option>
-                        <option value="automotive" className="bg-gray-800">
-                          Automotive
-                        </option>
-                        <option value="food-bev" className="bg-gray-800">
-                          Food & Beverage
-                        </option>
-                        <option value="pharma" className="bg-gray-800">
-                          Pharma / Life Sciences
-                        </option>
-                        <option value="aerospace" className="bg-gray-800">
-                          Aerospace & Defense
-                        </option>
-                        <option value="cpg" className="bg-gray-800">
-                          CPG
-                        </option>
-                        <option value="chemicals" className="bg-gray-800">
-                          Chemicals
-                        </option>
-                        <option value="metals" className="bg-gray-800">
-                          Metals & Mining
-                        </option>
-                        <option value="other" className="bg-gray-800">
-                          Other
-                        </option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Plant Size (optional)</label>
-                      <select className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-blue-500">
-                        <option value="" className="bg-gray-800">
-                          Prefer not to say
-                        </option>
-                        <option value="small" className="bg-gray-800">
-                          Small (&lt;50 employees)
-                        </option>
-                        <option value="medium" className="bg-gray-800">
-                          Medium (50-250)
-                        </option>
-                        <option value="large" className="bg-gray-800">
-                          Large (250-1000)
-                        </option>
-                        <option value="enterprise" className="bg-gray-800">
-                          Enterprise (1000+)
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <button className="w-full py-3 rounded-lg bg-blue-500 hover:bg-blue-600 transition-colors font-medium">
-                    Submit Review
-                  </button>
-                  <p className="text-xs text-white/40 text-center">
-                    Reviews are moderated. We'll send a magic link to verify your email.
-                  </p>
-                </div>
-              </div>
-            )}
 
             {/* Reviews from Sanity */}
             <div className="space-y-4">
