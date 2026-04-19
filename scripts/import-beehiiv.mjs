@@ -16,7 +16,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 const BEEHIIV_API_KEY = process.env.BEEHIIV_API_KEY;
-const PUBLICATION_ID = 'pub_b90dbb2e-1603-4aa5-a5e6-0c441654055e';
+const PUBLICATION_ID = process.env.BEEHIIV_PUBLICATION_ID || 'pub_b90dbb2e-1603-4aa5-a5e6-0c441654055e';
 const BEEHIIV_API_BASE = 'https://api.beehiiv.com/v2';
 
 const SANITY_PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
