@@ -66,6 +66,12 @@ export default defineType({
       type: 'blockContent',
     }),
     defineField({
+      name: 'content',
+      title: 'HTML Content',
+      type: 'text',
+      description: 'Raw HTML content (used for imported posts, e.g. from Beehiiv)',
+    }),
+    defineField({
       name: 'pdfCarousels',
       title: 'PDF Carousels',
       type: 'array',
