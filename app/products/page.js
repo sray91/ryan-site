@@ -25,6 +25,12 @@ const projects = [
     description: "A browser-based simulation game where you evolve organisms, mutate genomes, and watch natural selection play out in real time.",
     screenshot: "/screenshots/genomesim.png",
   },
+  {
+    href: "/products/everymans-playbook",
+    title: "the everyman's playbook",
+    description: "A plain-language operations guide for leaders who want to fix their shop floor before it breaks.",
+    screenshot: "/screenshots/everymans-playbook.png",
+  },
 ];
 
 export default function Products() {
@@ -35,7 +41,7 @@ export default function Products() {
     >
       <Header />
 
-      <div className="flex-1 px-4 sm:px-8 lg:px-16 py-12 relative z-10 max-w-5xl mx-auto w-full">
+      <div className="flex-1 px-4 sm:px-8 lg:px-16 py-12 relative z-10 max-w-7xl mx-auto w-full">
         <div className="mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">cool stuff I&apos;m building</h1>
           <p className="text-lg leading-relaxed" style={{ color: '#a1a1a6' }}>
@@ -43,13 +49,13 @@ export default function Products() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {projects.map((project) => (
             <a
               key={project.href}
               href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={project.href.startsWith("http") ? "_blank" : "_self"}
+              rel={project.href.startsWith("http") ? "noopener noreferrer" : undefined}
               className="group backdrop-blur-md border border-white/20 rounded-xl overflow-hidden hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 flex flex-col"
               style={{
                 background: 'rgba(58, 58, 60, 0.6)',
@@ -57,14 +63,28 @@ export default function Products() {
                 WebkitBackdropFilter: 'blur(20px)',
               }}
             >
-              {/* Screenshot preview */}
+              {/* Screenshot or placeholder preview */}
               <div className="relative w-full h-44 overflow-hidden border-b border-white/10">
-                <Image
-                  src={project.screenshot}
-                  alt={`${project.title} screenshot`}
-                  fill
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                />
+                {project.screenshot ? (
+                  <Image
+                    src={project.screenshot}
+                    alt={`${project.title} screenshot`}
+                    fill
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div
+                    className="w-full h-full flex items-center justify-center"
+                    style={{ background: `linear-gradient(135deg, ${project.placeholder.from} 0%, ${project.placeholder.to} 100%)` }}
+                  >
+                    <span
+                      className="text-4xl font-bold tracking-widest uppercase opacity-80"
+                      style={{ color: project.placeholder.accent, fontFamily: 'Georgia, serif', letterSpacing: '0.15em' }}
+                    >
+                      playbook
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Card body */}

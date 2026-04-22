@@ -1,0 +1,353 @@
+/* Reset at page root */
+.root {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 1.75;
+  color: #1a1a1a;
+  background: #f9f6f0;
+  min-height: 100vh;
+}
+
+/* ── Cover ─────────────────────────────────────────── */
+.cover {
+  background: #1c1c1c;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.coverLabel {
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #f0a500;
+  margin-bottom: 32px;
+}
+
+.cover h1 {
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+}
+
+.cover h1 span {
+  color: #f0a500;
+}
+
+.coverSubtitle {
+  font-size: 20px;
+  color: #aaa;
+  font-style: italic;
+  max-width: 520px;
+  line-height: 1.5;
+  margin-bottom: 48px;
+}
+
+.coverRule {
+  width: 60px;
+  height: 3px;
+  background: #f0a500;
+  margin: 0 auto 32px;
+}
+
+.coverAuthors {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.coverByline {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #666;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── Table of Contents ─────────────────────────────── */
+.toc {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 40px;
+}
+
+.toc h2 {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #f0a500;
+  margin-bottom: 40px;
+}
+
+.tocItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+.tocItem:hover {
+  color: #f0a500;
+}
+
+.tocChapter {
+  font-size: 13px;
+  font-family: Arial, sans-serif;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.tocTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ── Chapter ───────────────────────────────────────── */
+.chapter {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  page-break-before: always;
+}
+
+.chapterNumber {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #f0a500;
+  margin-bottom: 16px;
+}
+
+.chapter h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.chapterPlay {
+  background: #1c1c1c;
+  color: #f0a500;
+  padding: 20px 28px;
+  border-left: 4px solid #f0a500;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 32px 0 48px;
+  border-radius: 0 4px 4px 0;
+}
+
+.chapterPlay strong {
+  color: #fff;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.chapter h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 56px 0 20px;
+  padding-top: 8px;
+  border-top: 2px solid #1c1c1c;
+}
+
+.chapter p {
+  margin-bottom: 22px;
+}
+
+.chapter ul,
+.chapter ol {
+  margin: 0 0 22px 24px;
+}
+
+.chapter li {
+  margin-bottom: 10px;
+}
+
+/* ── Pull Quote ────────────────────────────────────── */
+.pullQuote {
+  font-size: 22px;
+  font-style: italic;
+  color: #1c1c1c;
+  border-left: 4px solid #f0a500;
+  padding: 16px 28px;
+  margin: 40px 0;
+  line-height: 1.4;
+}
+
+/* ── Exercise ──────────────────────────────────────── */
+.exercise {
+  background: #fff;
+  border: 2px solid #1c1c1c;
+  padding: 32px 36px;
+  margin: 48px 0;
+  border-radius: 2px;
+}
+
+.exerciseLabel {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #f0a500;
+  margin-bottom: 12px;
+}
+
+.exercise h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.exerciseStep {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  border-left: 3px solid #e0e0e0;
+}
+
+.exerciseStep strong {
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #1c1c1c;
+  margin-bottom: 6px;
+}
+
+/* ── Key Term ──────────────────────────────────────── */
+.keyTerm {
+  display: inline-block;
+  background: #1c1c1c;
+  color: #f0a500;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Chapter Divider ───────────────────────────────── */
+.chapterDivider {
+  text-align: center;
+  margin: 48px 0;
+  color: #ccc;
+  font-size: 24px;
+  letter-spacing: 12px;
+}
+
+/* ── Conclusion ────────────────────────────────────── */
+.conclusion {
+  background: #1c1c1c;
+  color: #e8e0d0;
+  padding: 80px 40px;
+}
+
+.conclusionInner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.conclusion .chapterNumber {
+  color: #f0a500;
+}
+
+.conclusion h2 {
+  color: #fff;
+  font-size: clamp(28px, 4vw, 42px);
+  margin-bottom: 40px;
+}
+
+.conclusion h3 {
+  color: #f0a500;
+  font-size: 20px;
+  margin: 48px 0 20px;
+  border-top: 1px solid #333;
+  padding-top: 8px;
+}
+
+.conclusion p {
+  margin-bottom: 22px;
+  color: #c8c0b0;
+}
+
+.conclusion .pullQuote {
+  color: #fff;
+  border-color: #f0a500;
+}
+
+.conclusion ul {
+  margin: 0 0 22px 24px;
+  color: #c8c0b0;
+}
+
+.conclusion li {
+  margin-bottom: 10px;
+}
+
+.finalLines {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 2px solid #f0a500;
+}
+
+.finalLines p {
+  font-size: 20px;
+  color: #fff !important;
+  font-weight: bold;
+  margin-bottom: 12px !important;
+  line-height: 1.4;
+}
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 600px) {
+  .chapter,
+  .toc {
+    padding: 48px 24px;
+  }
+
+  .exercise {
+    padding: 24px 20px;
+  }
+
+  .conclusion {
+    padding: 48px 24px;
+  }
+}
+
+@media print {
+  .chapter {
+    page-break-before: always;
+  }
+
+  .root {
+    background: white;
+  }
+
+  .cover {
+    min-height: auto;
+    padding: 80px 40px;
+  }
+}
