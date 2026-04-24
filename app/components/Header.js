@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 
-export default function Header() {
+export default function Header({ variant = "dark" }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isFocusDropdownOpen, setIsFocusDropdownOpen] = useState(false);
   const [isMarketplaceDropdownOpen, setIsMarketplaceDropdownOpen] = useState(false);
@@ -11,6 +11,11 @@ export default function Header() {
   const [isMobileMarketplaceOpen, setIsMobileMarketplaceOpen] = useState(false);
   const focusDropdownRef = useRef(null);
   const marketplaceDropdownRef = useRef(null);
+
+  const isLight = variant === "light";
+  const logoClass = isLight ? "text-gray-900 hover:text-gray-700" : "text-white hover:text-white/90";
+  const linkClass = isLight ? "text-gray-700 hover:text-gray-900" : "text-white/80 hover:text-white";
+  const mobileBtnClass = isLight ? "text-gray-700 hover:text-gray-900" : "text-white/80 hover:text-white";
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -41,8 +46,8 @@ export default function Header() {
   return (
     <nav className="flex items-center justify-between px-4 sm:px-8 py-4 lg:px-16 flex-shrink-0 relative z-20">
       <div>
-        <Link href="/" className="text-white hover:text-white/90 transition-colors">
-          <h1 
+        <Link href="/" className={`${logoClass} transition-colors`}>
+          <h1
             className="text-2xl sm:text-3xl lg:text-4xl tracking-tight uppercase"
             style={{ fontFamily: 'BDO Grotesk, sans-serif', fontWeight: 900 }}
           >
@@ -53,16 +58,16 @@ export default function Header() {
       
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-        <Link href="/about" className="text-white/80 hover:text-white transition-colors">
+        <Link href="/about" className={`${linkClass} transition-colors`}>
           about
         </Link>
-        <Link href="/blog" className="text-white/80 hover:text-white transition-colors">
+        <Link href="/blog" className={`${linkClass} transition-colors`}>
           blog
         </Link>
         {/* The Bench Dropdown */}
         <div className="relative" ref={marketplaceDropdownRef}>
           <button
-            className="text-white/80 hover:text-white transition-colors flex items-center gap-1"
+            className={`${linkClass} transition-colors flex items-center gap-1`}
             onClick={() => setIsMarketplaceDropdownOpen(!isMarketplaceDropdownOpen)}
             onMouseEnter={() => setIsMarketplaceDropdownOpen(true)}
           >
@@ -103,8 +108,8 @@ export default function Header() {
 
         {/* Focus Dropdown */}
         <div className="relative" ref={focusDropdownRef}>
-          <button 
-            className="text-white/80 hover:text-white transition-colors flex items-center gap-1"
+          <button
+            className={`${linkClass} transition-colors flex items-center gap-1`}
             onClick={() => setIsFocusDropdownOpen(!isFocusDropdownOpen)}
             onMouseEnter={() => setIsFocusDropdownOpen(true)}
           >
@@ -156,8 +161,8 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu Button */}
-      <button 
-        className="md:hidden text-white/80 hover:text-white p-2"
+      <button
+        className={`md:hidden ${mobileBtnClass} p-2`}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle mobile menu"
       >
