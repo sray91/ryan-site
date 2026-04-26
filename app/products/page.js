@@ -26,10 +26,18 @@ const projects = [
     screenshot: "/screenshots/genomesim.png",
   },
   {
+    href: "https://dungeoncrawler.ryancahalane.com",
+    title: "dungeon crawler",
+    description: "A browser-based dungeon crawler game. Explore procedurally generated levels, battle enemies, and collect loot.",
+    placeholder: { from: "#1a0a2e", to: "#4a1060", accent: "#c084fc" },
+    label: "dungeon",
+  },
+  {
     href: "/products/everymans-playbook",
     title: "the everyman's playbook",
     description: "A plain-language operations guide for leaders who want to fix their shop floor before it breaks.",
     screenshot: "/screenshots/everymans-playbook.png",
+    label: "playbook",
   },
 ];
 
@@ -81,7 +89,7 @@ export default function Products() {
                       className="text-4xl font-bold tracking-widest uppercase opacity-80"
                       style={{ color: project.placeholder.accent, fontFamily: 'Georgia, serif', letterSpacing: '0.15em' }}
                     >
-                      playbook
+                      {project.label || project.title}
                     </span>
                   </div>
                 )}
