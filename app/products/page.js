@@ -8,6 +8,13 @@ export const metadata = {
 
 const projects = [
   {
+    href: "https://storyforge.ryancahalane.com",
+    title: "storyforge",
+    description: "An AI-powered interactive storybook for kids. Choose your own adventure with custom characters, illustrated scenes, and puzzles woven into every chapter.",
+    placeholder: { from: "#2d1b69", to: "#4c1d95", accent: "#f59e0b" },
+    label: "📖",
+  },
+  {
     href: "https://portfolio.ryancahalane.com",
     title: "portfolio",
     description: "An AI tool for tracking, analyzing, and surfacing insights across investment portfolio companies.",
