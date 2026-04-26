@@ -33,6 +33,13 @@ const projects = [
     label: "dungeon",
   },
   {
+    href: "https://drive.google.com/file/d/1bC6RYlVYgxU6lBNJOG1soD0_Fzwk9bFz/view?usp=drivesdk",
+    title: "beatrice and the big honey crisis",
+    description: "A children's illustrated story about supply chain risk, early warning signals, and the scout bee nobody listened to — until it was too late.",
+    placeholder: { from: "#2d1a00", to: "#7c4a00", accent: "#f59e0b" },
+    label: "book",
+  },
+  {
     href: "/products/everymans-playbook",
     title: "the everyman's playbook",
     description: "A plain-language operations guide for leaders who want to fix their shop floor before it breaks.",
