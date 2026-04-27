@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Header from "../components/Header";
 
-// Work around production static routing mismatch for /projects.
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Projects - Ryan Cahalane",
   description: "Side projects, tools, and experiments Ryan Cahalane is working on.",
@@ -50,7 +47,7 @@ const projects = [
     label: "book",
   },
   {
-    href: "/projects/everymans-playbook",
+    href: "/projects-home/everymans-playbook",
     title: "the everyman's playbook",
     description: "A plain-language operations guide for leaders who want to fix their shop floor before it breaks.",
     screenshot: "/screenshots/everymans-playbook.png",
@@ -58,7 +55,7 @@ const projects = [
   },
 ];
 
-export default function Products() {
+export default function ProjectsHomePage() {
   return (
     <div
       className="min-h-screen text-white flex flex-col relative"
@@ -88,7 +85,6 @@ export default function Products() {
                 WebkitBackdropFilter: 'blur(20px)',
               }}
             >
-              {/* Screenshot or placeholder preview */}
               <div className="relative w-full h-44 overflow-hidden border-b border-white/10">
                 {project.screenshot ? (
                   <Image
@@ -112,7 +108,6 @@ export default function Products() {
                 )}
               </div>
 
-              {/* Card body */}
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-bold text-white">{project.title}</h3>
