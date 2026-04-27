@@ -27,6 +27,7 @@
     "@sanity/table": "^2.0.0",
     "@tailwindcss/typography": "^0.5.16",
     "@uiw/react-md-editor": "^4.0.7",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^1.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
