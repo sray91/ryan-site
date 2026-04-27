@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Header from "../components/Header";
 
+// Work around production static routing mismatch for /projects.
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Projects - Ryan Cahalane",
   description: "Side projects, tools, and experiments Ryan Cahalane is working on.",
