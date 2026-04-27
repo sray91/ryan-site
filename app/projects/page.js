@@ -47,7 +47,7 @@ const projects = [
     label: "book",
   },
   {
-    href: "/products/everymans-playbook",
+    href: "/projects/everymans-playbook",
     title: "the everyman's playbook",
     description: "A plain-language operations guide for leaders who want to fix their shop floor before it breaks.",
     screenshot: "/screenshots/everymans-playbook.png",

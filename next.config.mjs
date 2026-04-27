@@ -1,11 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {},
-  async redirects() {
-    return [
-      { source: '/products', destination: '/projects', permanent: true },
-    ];
-  },
   // Allow external domains for PDF files
   images: {
     remotePatterns: [
