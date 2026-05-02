@@ -39,7 +39,7 @@ export default function Home() {
           </h1>
           
           <p className="text-base sm:text-lg text-light-gray mb-8 leading-relaxed" style={{ color: '#a1a1a6' }}>
-            From Goodyear to Rockwell to building Axiom, I&apos;ve led teams, transformed operations, and delivered results at every scale. I love helping manufacturers and PE portfolios unlock hidden value. Join my newsletter for weekly updates!
+            From Goodyear to Rockwell to building Axiom, and now The COO Council, I&apos;ve led teams, transformed operations, and delivered results at every scale. I love helping manufacturers and PE portfolios unlock hidden value. Join my newsletter for weekly updates!
           </p>
 
           {/* Email Subscription Form */}
@@ -52,8 +52,8 @@ export default function Home() {
       {/* Bottom Cards Section */}
       <div className="px-4 sm:px-8 pb-8 lg:px-16 flex-shrink-0 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* The Bench Card */}
-          <Link href="/bench" className="group">
+          {/* The COO Council Card */}
+          <Link href="https://www.lnsresearch.com/-the-coo-council" target="_blank" className="group">
             <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl p-4 hover:bg-white/10 hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 h-full"
                  style={{
                    background: 'rgba(58, 58, 60, 0.6)',
@@ -61,13 +61,13 @@ export default function Home() {
                    WebkitBackdropFilter: 'blur(20px)'
                  }}>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-bold text-white">the bench</h3>
+                <h3 className="text-lg font-bold text-white">the coo council</h3>
                 <svg className="w-5 h-5 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>
               <p className="text-xs leading-relaxed" style={{ color: '#a1a1a6' }}>
-                Curated directory of solutions I recommend for manufacturing transformation.
+                A peer community of operations leaders driving industrial transformation.
               </p>
             </div>
           </Link>
