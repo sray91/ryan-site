@@ -8,6 +8,13 @@ export const metadata = {
 
 const projects = [
   {
+    href: "/projects/agent-factory",
+    title: "agent factory",
+    description: "A multi-agent debate system: Claude, Gemini, local models argue both sides of a question, a Red Team challenges the consensus, and you approve or reject the final recommendation.",
+    placeholder: { from: "#0f172a", to: "#1e3a5f", accent: "#60a5fa" },
+    label: "⚡",
+  },
+  {
     href: "https://storyforge.ryancahalane.com",
     title: "storyforge",
     description: "An AI-powered interactive storybook for kids. Choose your own adventure with custom characters, illustrated scenes, and puzzles woven into every chapter.",
