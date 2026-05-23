@@ -8,18 +8,19 @@ const PRO_ADVISORS = ADVISORS.filter(a => ["cfo","cmo","cto","coo","gc","cpo","u
 const FUN_ADVISORS = ADVISORS.filter(a => ["grandma","teenager","neighbor","intern","shark"].includes(a.id));
 
 function AdvisorCard({ id, name, icon, color, status, content }) {
+  const isError = status === "error";
   return (
     <div
       className="rounded-2xl p-5 border transition-all duration-300"
       style={{
-        background: "rgba(255,255,255,0.04)",
-        borderColor: status === "loading" ? color : "rgba(255,255,255,0.12)",
+        background: isError ? "rgba(239,68,68,0.06)" : "rgba(255,255,255,0.04)",
+        borderColor: isError ? "rgba(239,68,68,0.4)" : status === "loading" ? color : "rgba(255,255,255,0.12)",
         boxShadow: status === "loading" ? `0 0 20px ${color}30` : "none",
       }}
     >
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-xl">{icon}</span>
-        <span className="font-semibold text-white text-sm tracking-wide uppercase">{name}</span>
+        <span className="text-xl">{isError ? "⚠️" : icon}</span>
+        <span className="font-semibold text-sm tracking-wide uppercase" style={{ color: isError ? "#f87171" : "white" }}>{name}</span>
         {status === "loading" && (
           <span className="ml-auto flex gap-1">
             {[0,1,2].map(i => (
@@ -29,7 +30,7 @@ function AdvisorCard({ id, name, icon, color, status, content }) {
         )}
       </div>
       {content && (
-        <p className="text-white/75 text-sm leading-relaxed whitespace-pre-wrap">{content}</p>
+        <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: isError ? "rgba(248,113,113,0.85)" : "rgba(255,255,255,0.75)" }}>{content}</p>
       )}
     </div>
   );
@@ -149,6 +150,11 @@ export default function BoardPage() {
       setError(err.message);
     } finally {
       setRunning(false);
+      // If stream ended without synthesis, surface an incomplete warning
+      setSynthesis(prev => {
+        if (prev.status === "loading") return { status: "done", content: "⚠️ Stream ended before synthesis completed. Try again." };
+        return prev;
+      });
     }
   }
 
@@ -246,7 +252,7 @@ export default function BoardPage() {
                 boxShadow: running ? "none" : "0 4px 15px rgba(16,185,129,0.3)",
               }}
             >
-              {running ? "Assembling the board…" : "Assemble the Board"}
+              {!running ? "Assemble the Board" : synthesis.status === "loading" ? "Synthesizing…" : cards.length > 0 ? `Hearing advisors… (${cards.filter(c => c.status === "done" || c.status === "error").length}/${cards.length})` : "Assembling the board…"}
             </button>
             {selected.length > 0 && (
               <button onClick={() => setSelected([])} className="text-white/30 hover:text-white/60 text-xs transition-colors">
