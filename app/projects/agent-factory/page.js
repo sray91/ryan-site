@@ -28,7 +28,7 @@ export default function AgentFactoryPage() {
       <section className="max-w-5xl mx-auto px-6 pt-24 pb-16 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-8"
           style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#a5b4fc" }}>
-          ⚙️ Open Source · github.com/LNS-Research/ai-skills
+          ⚙️ Open Source · github.com/rdcahalane/ai-skills
         </div>
         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6" style={{ letterSpacing: "-1.5px" }}>
           Agent Factory
@@ -40,13 +40,13 @@ export default function AgentFactoryPage() {
           Runs locally. Uses subscription CLI tools — Claude, Gemini, Codex — so there are no per-query API costs. Works in Discord or as a simple local markdown file.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <a href="https://github.com/LNS-Research/ai-skills/tree/main/agent-factory"
+          <a href="https://github.com/rdcahalane/ai-skills/tree/main/agent-factory"
             target="_blank" rel="noopener noreferrer"
             className="px-6 py-3 rounded-xl font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg"
             style={{ background: "linear-gradient(135deg, #6366f1, #4f46e5)", boxShadow: "0 4px 16px rgba(99,102,241,0.3)" }}>
             View on GitHub →
           </a>
-          <a href="https://github.com/LNS-Research/ai-skills/raw/main/agent-factory/agent-factory-setup.pdf"
+          <a href="https://github.com/rdcahalane/ai-skills/raw/main/agent-factory/agent-factory-setup.pdf"
             target="_blank" rel="noopener noreferrer"
             className="px-6 py-3 rounded-xl font-semibold transition-all hover:-translate-y-0.5"
             style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", color: "#e5e7eb" }}>
@@ -230,19 +230,19 @@ export default function AgentFactoryPage() {
             After cloning the repo, open Claude Code in the <code className="text-xs px-1 py-0.5 rounded" style={{ background: "rgba(255,255,255,0.08)", color: "#a5b4fc" }}>agent-factory/</code> directory and run the setup skill. Claude will ask which agents you have, which interface you want, walk through Discord bot creation step-by-step, set up your database, write your .env, and run the first test.
           </p>
           <pre className="rounded-xl p-4 text-sm mb-5 overflow-x-auto" style={{ background: "rgba(0,0,0,0.4)", color: "#e2e8f0", fontFamily: "monospace" }}>
-{`git clone https://github.com/LNS-Research/ai-skills.git
+{`git clone https://github.com/rdcahalane/ai-skills.git
 cd ai-skills/agent-factory
 claude          # opens Claude Code
 # then type:  /setup-agent-factory`}
           </pre>
           <div className="flex flex-wrap gap-3">
-            <a href="https://github.com/LNS-Research/ai-skills/tree/main/agent-factory"
+            <a href="https://github.com/rdcahalane/ai-skills/tree/main/agent-factory"
               target="_blank" rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
               style={{ background: "linear-gradient(135deg, #6366f1, #4f46e5)" }}>
               View on GitHub
             </a>
-            <a href="https://github.com/LNS-Research/ai-skills/raw/main/agent-factory/agent-factory-setup.pdf"
+            <a href="https://github.com/rdcahalane/ai-skills/raw/main/agent-factory/agent-factory-setup.pdf"
               target="_blank" rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5"
               style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", color: "#e5e7eb" }}>
