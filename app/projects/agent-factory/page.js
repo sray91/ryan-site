@@ -5,6 +5,23 @@ export const metadata = {
   description: "A multi-agent AI system that debates your ideas through a configurable board of advisors — CFO, CMO, CTO, and more. Open source.",
 };
 
+const proAdvisors = [
+  { id: "cfo",  icon: "💰", name: "CFO",              color: "#16a34a", desc: "Unit economics, burn rate, ROI timelines. Skeptical of optimistic projections." },
+  { id: "cmo",  icon: "📣", name: "CMO",              color: "#2563eb", desc: "Who's the customer and why do they buy? GTM sequencing, competitive position." },
+  { id: "cto",  icon: "⚙️", name: "CTO",              color: "#7c3aed", desc: "Build vs buy, feasibility, what breaks at 10x scale." },
+  { id: "coo",  icon: "🗂️", name: "COO",              color: "#d97706", desc: "Who owns this? By when? What's blocking us?" },
+  { id: "cpo",  icon: "🎯", name: "CPO",              color: "#db2777", desc: "Are we solving a real pain? For whom? How do we know?" },
+  { id: "gc",   icon: "⚖️", name: "General Counsel",  color: "#64748b", desc: "What's the legal exposure? What's missing from the contracts?" },
+];
+
+const funAdvisors = [
+  { id: "grandma",  icon: "👵", name: "Grandma",              color: "#f59e0b", desc: "Warm, practical, completely unimpressed by buzzwords. Will real people actually use this?" },
+  { id: "teenager", icon: "🙄", name: "Teenage Daughter",     color: "#ec4899", desc: "Brutally honest Gen Z radar for cringe. Is this actually cool or are you trying too hard?" },
+  { id: "neighbor", icon: "😤", name: "Cranky Neighbor",      color: "#6b7280", desc: "Seen every scheme fail for 30 years. What's the obvious way this goes wrong?" },
+  { id: "intern",   icon: "🚀", name: "The Intern",           color: "#06b6d4", desc: "Maximum enthusiasm, zero cynicism. What if we just automated the whole thing?" },
+  { id: "shark",    icon: "🦈", name: "Shark Tank Investor",  color: "#ef4444", desc: "What are your numbers? No patience for vanity metrics or TAM hallucinations." },
+];
+
 const agents = [
   { icon: "🧠", name: "Claude CLI",   badge: "Max sub",  color: "#d97706", desc: "Anthropic's Claude via CLI. Uses your existing Max subscription — no per-query cost." },
   { icon: "✨", name: "Gemini CLI",   badge: "Free",     color: "#16a34a", desc: "Google Gemini via CLI. Authenticates with your Google account. No API key needed." },
@@ -124,6 +141,51 @@ export default function AgentFactoryPage() {
         </div>
       </section>
 
+      {/* ── Board of Advisors ── */}
+      <section className="max-w-5xl mx-auto px-6 pb-16">
+        <h2 className="text-2xl font-bold mb-2">Your board of advisors</h2>
+        <p className="mb-3 text-sm" style={{ color: "#6b7280" }}>
+          Type <code className="text-xs px-1.5 py-0.5 rounded" style={{ background: "rgba(255,255,255,0.08)", color: "#a5b4fc" }}>!board: topic</code> and the system picks which advisors are relevant based on the topic. Or force specific ones: <code className="text-xs px-1.5 py-0.5 rounded" style={{ background: "rgba(255,255,255,0.08)", color: "#a5b4fc" }}>!board cfo cmo: topic</code>
+        </p>
+        <p className="mb-8 text-sm" style={{ color: "#6b7280" }}>Advisors also work in debates: <code className="text-xs px-1.5 py-0.5 rounded" style={{ background: "rgba(255,255,255,0.08)", color: "#a5b4fc" }}>!debate cfo vs cmo: Should we raise prices?</code></p>
+
+        <div className="mb-3 text-xs font-semibold uppercase tracking-widest" style={{ color: "#4b5563" }}>Professional</div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+          {proAdvisors.map(a => (
+            <div key={a.id} className="rounded-xl p-4 flex gap-3" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div className="text-2xl flex-shrink-0">{a.icon}</div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-sm text-white">{a.name}</span>
+                  <code className="text-xs px-1.5 py-0.5 rounded" style={{ background: `${a.color}20`, color: a.color }}>!{a.id}</code>
+                </div>
+                <p className="text-xs leading-relaxed" style={{ color: "#6b7280" }}>{a.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mb-3 text-xs font-semibold uppercase tracking-widest" style={{ color: "#4b5563" }}>Just for fun</div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+          {funAdvisors.map(a => (
+            <div key={a.id} className="rounded-xl p-4 flex gap-3" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+              <div className="text-2xl flex-shrink-0">{a.icon}</div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-sm text-white">{a.name}</span>
+                  <code className="text-xs px-1.5 py-0.5 rounded" style={{ background: `${a.color}20`, color: a.color }}>!{a.id}</code>
+                </div>
+                <p className="text-xs leading-relaxed" style={{ color: "#6b7280" }}>{a.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-xl px-5 py-3 text-xs" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", color: "#4b5563" }}>
+          Add your own via <code style={{ color: "#a1a1a6" }}>ADVISORS_JSON</code> in .env — any persona, any lens, any voice.
+        </div>
+      </section>
+
       {/* ── Two interfaces ── */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
         <h2 className="text-2xl font-bold mb-2">Two ways to use it</h2>
@@ -189,17 +251,19 @@ export default function AgentFactoryPage() {
             </thead>
             <tbody>
               {[
-                ["What is X?",                                   "Auto-routed to best available agent"],
-                ["!claude: prompt",                              "Force Claude CLI"],
-                ["!gemini: prompt",                              "Force Gemini CLI"],
-                ["!local: prompt",                              "Force local Ollama model"],
-                ["!debate: topic",                              "2-agent debate, default agents"],
-                ["!debate claude vs gemini: topic",             "Explicit agents"],
-                ["!debate claude vs gemini 3: topic",           "3 cycles per agent"],
-                ["!debate claude vs gemini --red gemini: topic","Gemini plays Red Team"],
-                ["!approve (file) / ✅ button (Discord)",       "Execute the proposed action"],
-                ["!reject (file) / ❌ button (Discord)",        "Dismiss — no action"],
-                ["!ask (file) / 🔍 button (Discord)",           "Ask Claude to elaborate on open questions"],
+                ["What is X?",                                        "Auto-routed to best available agent"],
+                ["!claude: prompt",                                   "Force Claude CLI"],
+                ["!gemini: prompt",                                   "Force Gemini CLI"],
+                ["!board: topic",                                     "Auto-select relevant advisors by topic"],
+                ["!board cfo cmo: topic",                            "Force specific advisors"],
+                ["!board grandma shark: topic",                      "Mix professional + fun advisors"],
+                ["!debate: topic",                                    "2-agent debate, default agents"],
+                ["!debate cfo vs cmo: topic",                        "Advisor debate — CFO vs CMO personas"],
+                ["!debate claude vs gemini --red gemini: topic",     "Gemini plays Red Team"],
+                ["!debate claude vs gemini --socratic cfo: topic",   "CFO plays Socratic Examiner"],
+                ["!approve (file) / ✅ button (Discord)",            "Execute the proposed action"],
+                ["!reject (file) / ❌ button (Discord)",             "Dismiss — no action"],
+                ["!ask (file) / 🔍 button (Discord)",                "Ask Claude to elaborate"],
               ].map(([cmd, desc], i) => (
                 <tr key={i} style={{ background: i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                   <td className="px-5 py-2.5"><code className="text-xs" style={{ color: "#a5b4fc" }}>{cmd}</code></td>
