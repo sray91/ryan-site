@@ -9,7 +9,7 @@ export const metadata = {
 const projects = [
   {
     href: "/projects/agent-factory",
-    title: "board of advisor agents",
+    title: "agent advisory board",
     description: "A configurable board of AI advisors — CFO, CMO, CTO, and more — that debate your ideas, stress-test assumptions, and surface a verdict you can act on.",
     placeholder: { from: "#0f172a", to: "#1e3a5f", accent: "#60a5fa" },
     label: "⚡",

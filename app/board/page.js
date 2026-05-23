@@ -168,7 +168,7 @@ export default function BoardPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-3" style={{ fontFamily: "BDO Grotesk, sans-serif" }}>
-            Board of Advisor Agents
+            Agent Advisory Board
           </h1>
           <p className="text-white/50 text-lg max-w-xl mx-auto">
             Bring a question to the board. Get CFO, CMO, CTO, and more to weigh in — then a synthesis with a proposed action.

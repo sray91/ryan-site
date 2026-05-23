@@ -1,7 +1,7 @@
 import Header from "../../components/Header";
 
 export const metadata = {
-  title: "Board of Advisor Agents — Ryan Cahalane",
+  title: "Agent Advisory Board — Ryan Cahalane",
   description: "A multi-agent AI system that debates your ideas through a configurable board of advisors — CFO, CMO, CTO, and more. Open source.",
 };
 
@@ -49,7 +49,7 @@ export default function AgentFactoryPage() {
           ⚙️ Open Source · github.com/rdcahalane/ai-skills
         </div>
         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6" style={{ letterSpacing: "-1.5px" }}>
-          Board of Advisor Agents
+          Agent Advisory Board
         </h1>
         <p className="text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed mb-4" style={{ color: "#a1a1a6" }}>
           A multi-agent system that debates your ideas, stress-tests assumptions with a built-in adversary, and surfaces a verdict you can act on.
@@ -92,7 +92,7 @@ export default function AgentFactoryPage() {
           </div>
           <div className="mt-8 pt-6" style={{ borderTop: "1px solid rgba(99,102,241,0.2)" }}>
             <p className="text-base" style={{ color: "#c7d2fe" }}>
-              <strong className="text-white">Board of Advisor Agents routes your question to the right advisors automatically,</strong> forces one to argue against the consensus, then synthesizes — so the output already reflects the best case and the worst case. You get a verdict, not a draft.
+              <strong className="text-white">Agent Advisory Board routes your question to the right advisors automatically,</strong> forces one to argue against the consensus, then synthesizes — so the output already reflects the best case and the worst case. You get a verdict, not a draft.
             </p>
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function AgentFactoryPage() {
       {/* ── Agents ── */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
         <h2 className="text-2xl font-bold mb-2">Agents — no API key costs</h2>
-        <p className="mb-8 text-sm" style={{ color: "#6b7280" }}>Board of Advisor Agents uses CLI tools that authenticate with your existing subscriptions. Configure only what you have — unconfigured agents are skipped automatically.</p>
+        <p className="mb-8 text-sm" style={{ color: "#6b7280" }}>Agent Advisory Board uses CLI tools that authenticate with your existing subscriptions. Configure only what you have — unconfigured agents are skipped automatically.</p>
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
           {agents.map(a => (
             <div key={a.name} className="rounded-xl p-5" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
