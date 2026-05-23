@@ -58,17 +58,25 @@ export default function AgentFactoryPage() {
           Runs locally. Uses subscription CLI tools — Claude, Gemini, Codex — so there are no per-query API costs. Works in Discord or as a simple local markdown file.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
+          <a href="/board"
+            className="px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:-translate-y-0.5 hover:shadow-xl text-lg"
+            style={{ background: "linear-gradient(135deg, #10b981, #059669)", boxShadow: "0 4px 20px rgba(16,185,129,0.35)" }}>
+            Try the Web UI — no setup required ⚡
+          </a>
+        </div>
+        <p className="text-sm mt-4 mb-6" style={{ color: "#4b5563" }}>No API key. No install. Runs on Groq free tier.</p>
+        <div className="flex flex-wrap gap-3 justify-center">
           <a href="https://github.com/rdcahalane/ai-skills/tree/main/agent-factory"
             target="_blank" rel="noopener noreferrer"
-            className="px-6 py-3 rounded-xl font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg"
-            style={{ background: "linear-gradient(135deg, #6366f1, #4f46e5)", boxShadow: "0 4px 16px rgba(99,102,241,0.3)" }}>
+            className="px-5 py-2.5 rounded-xl font-semibold text-white transition-all hover:-translate-y-0.5"
+            style={{ background: "rgba(99,102,241,0.2)", border: "1px solid rgba(99,102,241,0.35)", color: "#a5b4fc" }}>
             View on GitHub →
           </a>
           <a href="https://github.com/rdcahalane/ai-skills/raw/main/agent-factory/agent-factory-setup.pdf"
             target="_blank" rel="noopener noreferrer"
-            className="px-6 py-3 rounded-xl font-semibold transition-all hover:-translate-y-0.5"
-            style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", color: "#e5e7eb" }}>
-            Download Setup Guide (PDF)
+            className="px-5 py-2.5 rounded-xl font-semibold transition-all hover:-translate-y-0.5"
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", color: "#9ca3af" }}>
+            Setup Guide (PDF)
           </a>
         </div>
       </section>
