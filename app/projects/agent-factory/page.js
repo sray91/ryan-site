@@ -195,11 +195,26 @@ export default function AgentFactoryPage() {
         </div>
       </section>
 
-      {/* ── Two interfaces ── */}
+      {/* ── Three interfaces ── */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
-        <h2 className="text-2xl font-bold mb-2">Two ways to use it</h2>
+        <h2 className="text-2xl font-bold mb-2">Three ways to use it</h2>
         <p className="mb-8 text-sm" style={{ color: "#6b7280" }}>Same engine, same agents, same debates. Pick whichever interface fits how you work.</p>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="rounded-2xl p-7" style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)" }}>
+            <div className="text-3xl mb-4">⚡</div>
+            <h3 className="text-lg font-bold mb-2">Web UI</h3>
+            <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>No install. No API key. Open your browser and start a debate. Runs on Groq free tier — fast, free, and shareable.</p>
+            <ul className="text-sm space-y-1.5 mb-5" style={{ color: "#6ee7b7" }}>
+              <li>✓ No setup required</li>
+              <li>✓ Works on any device</li>
+              <li>✓ Full advisor board</li>
+              <li>✓ Free forever</li>
+            </ul>
+            <a href="/board" className="inline-block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
+              style={{ background: "rgba(16,185,129,0.2)", border: "1px solid rgba(16,185,129,0.4)", color: "#6ee7b7" }}>
+              Open Web UI →
+            </a>
+          </div>
           <div className="rounded-2xl p-7" style={{ background: "rgba(88,101,242,0.1)", border: "1px solid rgba(88,101,242,0.25)" }}>
             <div className="text-3xl mb-4">💬</div>
             <h3 className="text-lg font-bold mb-2">Discord bot</h3>
@@ -211,7 +226,7 @@ export default function AgentFactoryPage() {
               <li>✓ Webhook notifications per round</li>
             </ul>
           </div>
-          <div className="rounded-2xl p-7" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)" }}>
+          <div className="rounded-2xl p-7" style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.15)" }}>
             <div className="text-3xl mb-4">📝</div>
             <h3 className="text-lg font-bold mb-2">Local markdown file</h3>
             <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>No Discord account needed. Two files: <code className="text-xs px-1 py-0.5 rounded" style={{ background: "rgba(255,255,255,0.08)" }}>inbox.md</code> (you type here) and <code className="text-xs px-1 py-0.5 rounded" style={{ background: "rgba(255,255,255,0.08)" }}>conversation.md</code> (growing log). Open side-by-side in VS Code or Obsidian.</p>
@@ -224,7 +239,7 @@ export default function AgentFactoryPage() {
           </div>
         </div>
         <div className="mt-4 rounded-xl px-5 py-3 text-sm" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", color: "#6b7280" }}>
-          Set <code className="text-xs" style={{ color: "#a1a1a6" }}>TRANSPORT=both</code> in your .env to run both simultaneously.
+          Set <code className="text-xs" style={{ color: "#a1a1a6" }}>TRANSPORT=both</code> in your .env to run Discord bot + local markdown simultaneously.
         </div>
       </section>
 
