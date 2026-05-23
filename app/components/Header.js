@@ -64,6 +64,9 @@ export default function Header({ variant = "dark" }) {
         <Link href="/blog" className={`${linkClass} transition-colors`}>
           blog
         </Link>
+        <Link href="/projects-home" className={`${linkClass} transition-colors`}>
+          cool projects
+        </Link>
         {/* The Bench Dropdown */}
         <div className="relative" ref={marketplaceDropdownRef}>
           <button
@@ -191,12 +194,19 @@ export default function Header({ variant = "dark" }) {
             >
               about
             </Link>
-            <Link 
-              href="/blog" 
+            <Link
+              href="/blog"
               className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               blog
+            </Link>
+            <Link
+              href="/projects-home"
+              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              cool projects
             </Link>
             {/* Mobile The Bench Accordion */}
             <div className="border-b border-white/10">
