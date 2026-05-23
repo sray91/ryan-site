@@ -9,8 +9,8 @@ export const metadata = {
 const projects = [
   {
     href: "/projects/agent-factory",
-    title: "agent factory",
-    description: "A multi-agent debate system: Claude, Gemini, local models argue both sides of a question, a Red Team challenges the consensus, and you approve or reject the final recommendation.",
+    title: "board of advisor agents",
+    description: "A configurable board of AI advisors — CFO, CMO, CTO, and more — that debate your ideas, stress-test assumptions, and surface a verdict you can act on.",
     placeholder: { from: "#0f172a", to: "#1e3a5f", accent: "#60a5fa" },
     label: "⚡",
   },
