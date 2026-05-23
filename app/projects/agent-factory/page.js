@@ -12,6 +12,7 @@ const proAdvisors = [
   { id: "coo",  icon: "🗂️", name: "COO",              color: "#d97706", desc: "Who owns this? By when? What's blocking us?" },
   { id: "cpo",  icon: "🎯", name: "CPO",              color: "#db2777", desc: "Are we solving a real pain? For whom? How do we know?" },
   { id: "gc",   icon: "⚖️", name: "General Counsel",  color: "#64748b", desc: "What's the legal exposure? What's missing from the contracts?" },
+  { id: "ux",   icon: "🖱️", name: "UX Expert",        color: "#0891b2", desc: "Has anyone watched a real user try this? Where do they hesitate? What do they read first?" },
 ];
 
 const funAdvisors = [
