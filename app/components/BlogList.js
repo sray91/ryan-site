@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import BlogHeader from './BlogHeader';
+import Header from './Header';
 import BlogCategoryCards from './BlogCategoryCards';
 import BlogSearchBar from './BlogSearchBar';
 
@@ -65,7 +65,7 @@ export default function BlogList({ posts }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <BlogHeader />
+      <Header variant="light" />
       <div className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">

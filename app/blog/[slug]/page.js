@@ -6,7 +6,7 @@ import { PortableText } from 'next-sanity';
 import { client, urlFor } from '../../../sanity/lib/client';
 import { postBySlugQuery } from '../../../sanity/lib/queries';
 import PDFViewer from '../../components/PDFViewer';
-import BlogHeader from '../../components/BlogHeader';
+import Header from '../../components/Header';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 
 async function getBlogPost(slug) {
@@ -93,7 +93,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <BlogHeader />
+      <Header variant="light" />
       <div className="py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <article className="bg-white rounded-lg shadow-md overflow-hidden">
