@@ -15,6 +15,13 @@ const projects = [
     label: "⚡",
   },
   {
+    href: "https://continuity-app-jet.vercel.app",
+    title: "continuity",
+    description: "A private recovery companion for stroke and brain injury survivors. Daily check-ins, care team, treatment tracker, and an energy journal — works offline, everything stays on your device.",
+    placeholder: { from: "#0d3330", to: "#0d9488", accent: "#5eead4" },
+    label: "C",
+  },
+  {
     href: "https://storyforge.ryancahalane.com",
     title: "storyforge",
     description: "An AI-powered interactive storybook for kids. Choose your own adventure with custom characters, illustrated scenes, and puzzles woven into every chapter.",
