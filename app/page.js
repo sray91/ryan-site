@@ -33,9 +33,9 @@ export default function Home() {
         {/* Hero Content */}
         <div className="flex-1 max-w-2xl text-center lg:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-6">
-            Modern manufacturing,<br />
-            practical tech,<br />
-            fewer buzzwords.
+            Industrially grounded<br />
+            strategy and product.<br />
+            Work that matters.
           </h1>
           
           <p className="text-base sm:text-lg text-light-gray mb-8 leading-relaxed" style={{ color: '#a1a1a6' }}>
