@@ -36,7 +36,7 @@ const projects = [
     label: "📖",
   },
   {
-    href: "https://portfolio.ryancahalane.com",
+    href: "https://portfolio.ryancahalane.com/portfolio",
     title: "portfolio",
     description: "An AI tool for tracking, analyzing, and surfacing insights across investment portfolio companies.",
     screenshot: "/screenshots/portfolio.png",
