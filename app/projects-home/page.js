@@ -15,11 +15,18 @@ const projects = [
     label: "⚡",
   },
   {
-    href: "https://continuity-app-jet.vercel.app",
+    href: "https://coach.civops.io",
+    title: "conversation coach",
+    description: "Real-time AI coaching for conversations. Listens to system audio, transcribes with Whisper, and streams live feedback cards — vibe checks, clarifying questions, and pace alerts — via Claude.",
+    placeholder: { from: "#0f2027", to: "#1a3a4a", accent: "#38bdf8" },
+    label: "🎙",
+  },
+  {
+    href: "https://continuity.ryancahalane.com",
     title: "continuity",
     description: "A private recovery companion for stroke and brain injury survivors. Daily check-ins, care team, treatment tracker, and an energy journal — works offline, everything stays on your device.",
     placeholder: { from: "#0d3330", to: "#0d9488", accent: "#5eead4" },
-    label: "C",
+    label: "◎",
   },
   {
     href: "https://storyforge.ryancahalane.com",
