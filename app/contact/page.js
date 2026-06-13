@@ -46,7 +46,7 @@ export default function Contact() {
                 </p>
                 
                 <a 
-                  href="https://calendly.com/axiomsystemsio/1-on-1"
+                  href="https://calendly.com/rdcahalane/1-on-1"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors text-lg"
