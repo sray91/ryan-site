@@ -28,6 +28,8 @@ const agents = [
   { icon: "🧠", name: "Claude (API)",      badge: "API key", color: "#d97706", desc: "Anthropic's Claude via API. Used for complex reasoning, long context, injection-suspicious prompts, non-English input, and deep analysis." },
   { icon: "✨", name: "Gemini CLI",        badge: "Free",    color: "#2563eb", desc: "Google Gemini via CLI. Auth with your Google account. No separate API key needed." },
   { icon: "⌨️", name: "Codex CLI",        badge: "OAI sub", color: "#7c3aed", desc: "OpenAI Codex via desktop app. Code-focused tasks. Requires an OpenAI subscription." },
+  { icon: "🛶", name: "Second local node (Ollama)", badge: "Free",   color: "#16a34a", desc: "A dedicated box on your LAN/Tailscale running a distinct local model. Gives multi-agent debates genuine model diversity at $0/query." },
+  { icon: "🌙", name: "Kimi (OpenRouter)",  badge: "Paid",    color: "#8b5cf6", desc: "Optional frontier-class debater via OpenRouter. Adds a strong independent voice when you want it; everything else stays free." },
 ];
 
 const newFeatures = [
@@ -73,6 +75,17 @@ const newFeatures = [
       "Externally written or test-seeded entries silently excluded",
       "Confirmed by adversarial test suite — blocks crafted injection via conversation file",
       "Prompt cache deduplicates identical prompts within 60s to save API cost",
+    ],
+  },
+  {
+    icon: "🎭",
+    title: "Multi-model debate panel",
+    color: "#6366f1",
+    items: [
+      "!debate all spans up to six distinct models — Claude, two+ local nodes, Gemini, Codex, and (optionally) Kimi — so positions come from genuinely different reasoning, not one model arguing with itself",
+      "Resilient: if any agent is unavailable (auth, offline, timeout) it's skipped with a one-line note and the debate continues — one bad agent never kills the session",
+      "!board all convenes the full advisor panel (CFO, CMO, CTO, COO, GC, CPO, UX + the fun ones); a token budget caps cost on large panels",
+      "Readable rounds: full positions rendered cleanly (no truncated clips, no runaway markdown headers)",
     ],
   },
 ];
