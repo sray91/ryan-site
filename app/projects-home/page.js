@@ -42,12 +42,6 @@ const projects = [
     screenshot: "/screenshots/portfolio.png",
   },
   {
-    href: "https://ops-maturity.ryancahalane.com",
-    title: "ops maturity tool",
-    description: "A self-assessment tool that benchmarks where your manufacturing operation stands and tells you what to fix first.",
-    screenshot: "/screenshots/ops-maturity.png",
-  },
-  {
     href: "https://genomesim.ryancahalane.com",
     title: "genome sim",
     description: "A browser-based simulation game where you evolve organisms, mutate genomes, and watch natural selection play out in real time.",
