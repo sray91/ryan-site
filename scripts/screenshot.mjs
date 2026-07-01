@@ -2,7 +2,6 @@ import puppeteer from 'puppeteer';
 
 const sites = [
   { url: 'https://portfolio.ryancahalane.com', file: 'portfolio.png' },
-  { url: 'https://ops-maturity.ryancahalane.com', file: 'ops-maturity.png' },
   { url: 'https://genomesim.ryancahalane.com', file: 'genomesim.png' },
 ];
 
