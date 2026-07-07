@@ -44,7 +44,7 @@ const projects = [
   {
     href: "https://studio.civops.io/game",
     title: "genome sim",
-    description: "A browser-based simulation game where you evolve organisms, mutate genomes, and watch natural selection play out in real time.",
+    description: "A browser-based strategy game built on the Genome engine: operational pressure cascades through an industrial network, and you act on nodes and edges to contain the failure before it spreads. Scenario-based, scored, with an arena you can pit an LLM against.",
     screenshot: "/screenshots/genomesim.png",
   },
   {
