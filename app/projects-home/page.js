@@ -42,7 +42,7 @@ const projects = [
     screenshot: "/screenshots/portfolio.png",
   },
   {
-    href: "https://genomesim.ryancahalane.com",
+    href: "https://studio.civops.io/game",
     title: "genome sim",
     description: "A browser-based simulation game where you evolve organisms, mutate genomes, and watch natural selection play out in real time.",
     screenshot: "/screenshots/genomesim.png",
