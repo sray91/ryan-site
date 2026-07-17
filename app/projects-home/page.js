@@ -11,7 +11,7 @@ const projects = [
     href: "https://read.theonedegreedispatch.com",
     title: "the one-degree dispatch",
     description: "A cinematic, interactive essay on decision architecture — five WWII cases on why some organizations win a technology shift while others merely adopt it. Scroll-driven visuals, authentic archival imagery, and a plain-English reading mode. With Mike Carroll & Sudeep Kesh.",
-    screenshot: "/screenshots/one-degree-dispatch.png",
+    screenshot: "/screenshots/one-degree-dispatch-card.png",
     label: "1°",
   },
   {
