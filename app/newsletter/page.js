@@ -1,35 +1,20 @@
-import Header from "../components/Header";
+import PageShell from "../components/PageShell";
 
 export const metadata = {
-  title: "Newsletter - Ryan Cahalane",
-  description: "Join Ryan's weekly newsletter for manufacturing insights and updates",
+  title: "Newsletter",
+  description: "A weekly note from Ryan Cahalane on operations, software and what he's building.",
 };
 
 export default function Newsletter() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#f3f4f6' }}>
-      <Header variant="light" />
-
-      <div className="flex-1 px-4 sm:px-8 lg:px-16 py-8 max-w-2xl mx-auto w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
-            Join my newsletter!
-          </h1>
-        </div>
-
-        <iframe
-          src="https://embeds.beehiiv.com/6578c794-7b30-4330-aa9c-f2d57e32a0a0"
-          data-test-id="beehiiv-embed"
-          width="100%"
-          height="320"
-          style={{
-            margin: 0,
-            border: 0,
-            borderRadius: '4px',
-            backgroundColor: 'transparent'
-          }}
-        />
-      </div>
-    </div>
+    <PageShell>
+      <section className="rc-wrap pt-14 sm:pt-20 max-w-2xl">
+        <div className="rc-eyebrow mb-4">The newsletter</div>
+        <h1 className="rc-serif text-5xl sm:text-6xl font-semibold tracking-tight">One note a week</h1>
+        <p className="mt-5 text-lg leading-relaxed" style={{ color: "var(--rc-muted)" }}>A note every week on operations, software and whatever I&apos;m building at the time. You can leave whenever you like, and I won&apos;t take it personally.</p>
+        <iframe src="https://embeds.beehiiv.com/6578c794-7b30-4330-aa9c-f2d57e32a0a0" data-test-id="beehiiv-embed" title="Subscribe to the newsletter"
+          width="100%" height="320" className="mt-8" style={{ margin: 0, border: 0, borderRadius: 8, backgroundColor: "transparent" }} />
+      </section>
+    </PageShell>
   );
 }

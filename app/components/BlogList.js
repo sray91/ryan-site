@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import Header from './Header';
+import PageShell from './PageShell';
 import BlogCategoryCards from './BlogCategoryCards';
 import BlogSearchBar from './BlogSearchBar';
 
@@ -64,13 +64,13 @@ export default function BlogList({ posts }) {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header variant="light" />
-      <div className="py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
-            <p className="text-xl text-gray-600">Thoughts, ideas, and updates</p>
+    <PageShell>
+      <div className="pt-14 sm:pt-20 pb-12">
+        <div className="max-w-4xl mx-auto px-5">
+          <div className="mb-12">
+            <div className="rc-eyebrow mb-4">Writing</div>
+            <h1 className="rc-serif text-5xl sm:text-6xl font-semibold tracking-tight">Writing</h1>
+            <p className="mt-5 text-lg" style={{ color: "var(--rc-muted)" }}>Operations, industrial software and the people stuck between them.</p>
           </div>
 
           <BlogCategoryCards onCategorySelect={setSelectedCategorySlug} />
@@ -130,28 +130,28 @@ export default function BlogList({ posts }) {
           ) : (
             <div className="grid gap-8">
               {filteredPosts.map((post) => (
-                <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <article key={post.id} className="rc-card overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <time className="text-sm text-gray-500">
+                      <time className="rc-eyebrow">
                         {format(new Date(post.createdAt), 'MMMM d, yyyy')}
                       </time>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                    <h2 className="rc-serif text-2xl sm:text-3xl font-semibold leading-tight mb-3">
                       <Link 
                         href={`/blog/${post.slug}`}
-                        className="hover:text-blue-600 transition-colors"
+                        className="hover:text-[var(--rc-copper)] transition-colors"
                       >
                         {post.title}
                       </Link>
                     </h2>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                    <p className="mb-4 leading-relaxed" style={{ color: "var(--rc-muted)" }}>{post.excerpt}</p>
                     {post.categories && post.categories.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.categories.map((cat, index) => (
                           <span
                             key={index}
-                            className="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                            className="inline-flex items-center px-2.5 py-1 text-xs rounded-full" style={{ background: "var(--rc-copper-soft)", color: "#7a4319" }}
                           >
                             {cat.title}
                           </span>
@@ -160,7 +160,7 @@ export default function BlogList({ posts }) {
                     )}
                     <Link 
                       href={`/blog/${post.slug}`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                      className="inline-flex items-center font-semibold hover:text-[var(--rc-copper)]"
                     >
                       Read more →
                     </Link>
@@ -170,16 +170,8 @@ export default function BlogList({ posts }) {
             </div>
           )}
           
-          <div className="text-center mt-12">
-            <Link 
-              href="/"
-              className="inline-flex items-center text-gray-600 hover:text-gray-900"
-            >
-              ← Back to Home
-            </Link>
-          </div>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

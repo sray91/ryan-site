@@ -1,22 +1,14 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const serif = Fraunces({ variable: "--font-serif", subsets: ["latin"], axes: ["opsz", "SOFT"] });
+const sans = Inter({ variable: "--font-sans", subsets: ["latin"] });
 
 export const metadata = {
-  title: "Ryan's Site",
-  description: "Personal website and blog",
-  keywords: "blog, personal website, thoughts, ideas",
-  author: "Ryan",
+  title: { default: "Ryan Cahalane", template: "%s · Ryan Cahalane" },
+  description: "Ryan Cahalane on manufacturing operations and the software sold to them: writing, projects and interactive demos.",
+  authors: [{ name: "Ryan Cahalane" }],
 };
 
 export default function RootLayout({ children }) {
@@ -25,9 +17,7 @@ export default function RootLayout({ children }) {
       <head>
         <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${serif.variable} ${sans.variable} rc antialiased`}>
         {children}
         <Analytics />
       </body>

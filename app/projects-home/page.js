@@ -1,150 +1,44 @@
 import Image from "next/image";
-import Header from "../components/Header";
+import PageShell from "../components/PageShell";
+import { projects } from "../../lib/projects";
 
 export const metadata = {
-  title: "Projects - Ryan Cahalane",
-  description: "Side projects, tools, and experiments Ryan Cahalane is working on.",
+  title: "Projects",
+  description: "Side projects, tools and experiments Ryan Cahalane has built.",
 };
 
-const projects = [
-  {
-    href: "https://read.theonedegreedispatch.com",
-    title: "the one-degree dispatch",
-    description: "A cinematic, interactive essay on decision architecture — five WWII cases on why some organizations win a technology shift while others merely adopt it. Scroll-driven visuals, authentic archival imagery, and a plain-English reading mode. With Mike Carroll & Sudeep Kesh.",
-    screenshot: "/screenshots/one-degree-dispatch-card.png",
-    label: "1°",
-  },
-  {
-    href: "/projects/agent-factory",
-    title: "agent advisory board",
-    description: "A configurable board of AI advisors — CFO, CMO, CTO, and more — that debate your ideas, stress-test assumptions, and surface a verdict you can act on.",
-    placeholder: { from: "#0f172a", to: "#1e3a5f", accent: "#60a5fa" },
-    label: "⚡",
-  },
-  {
-    href: "https://coach.civops.io",
-    title: "conversation coach",
-    description: "Real-time AI coaching for conversations. Listens to system audio, transcribes with Whisper, and streams live feedback cards — vibe checks, clarifying questions, and pace alerts — via Claude.",
-    placeholder: { from: "#0f2027", to: "#1a3a4a", accent: "#38bdf8" },
-    label: "🎙",
-  },
-  {
-    href: "https://continuity.ryancahalane.com",
-    title: "continuity",
-    description: "A private recovery companion for stroke and brain injury survivors. Daily check-ins, care team, treatment tracker, and an energy journal — works offline, everything stays on your device.",
-    placeholder: { from: "#0d3330", to: "#0d9488", accent: "#5eead4" },
-    label: "◎",
-  },
-  {
-    href: "https://storyforge.ryancahalane.com",
-    title: "storyforge",
-    description: "An AI-powered interactive storybook for kids. Choose your own adventure with custom characters, illustrated scenes, and puzzles woven into every chapter.",
-    placeholder: { from: "#2d1b69", to: "#4c1d95", accent: "#f59e0b" },
-    label: "📖",
-  },
-  {
-    href: "https://portfolio.ryancahalane.com/portfolio",
-    title: "portfolio",
-    description: "An AI tool for tracking, analyzing, and surfacing insights across investment portfolio companies.",
-    screenshot: "/screenshots/portfolio.png",
-  },
-  {
-    href: "https://studio.civops.io/game",
-    title: "genome sim",
-    description: "A browser-based strategy game built on the Genome engine: operational pressure cascades through an industrial network, and you act on nodes and edges to contain the failure before it spreads. Scenario-based, scored, with an arena you can pit an LLM against.",
-    screenshot: "/screenshots/genomesim.png",
-  },
-  {
-    href: "https://dungeoncrawler.ryancahalane.com",
-    title: "dungeon crawler",
-    description: "A browser-based dungeon crawler game. Explore procedurally generated levels, battle enemies, and collect loot.",
-    placeholder: { from: "#1a0a2e", to: "#4a1060", accent: "#c084fc" },
-    label: "dungeon",
-  },
-  {
-    href: "https://drive.google.com/file/d/1bC6RYlVYgxU6lBNJOG1soD0_Fzwk9bFz/view?usp=drivesdk",
-    title: "beatrice and the big honey crisis",
-    description: "A children's illustrated story about supply chain risk, early warning signals, and the scout bee nobody listened to — until it was too late.",
-    placeholder: { from: "#2d1a00", to: "#7c4a00", accent: "#f59e0b" },
-    label: "book",
-  },
-  {
-    href: "/projects-home/everymans-playbook",
-    title: "the everyman's playbook",
-    description: "A plain-language operations guide for leaders who want to fix their shop floor before it breaks.",
-    screenshot: "/screenshots/everymans-playbook.png",
-    label: "playbook",
-  },
-];
-
-export default function ProjectsHomePage() {
+export default function Projects() {
   return (
-    <div
-      className="min-h-screen text-white flex flex-col relative"
-      style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3c 100%)' }}
-    >
-      <Header />
+    <PageShell>
+      <section className="rc-wrap pt-14 sm:pt-20">
+        <div className="rc-eyebrow mb-4">Projects</div>
+        <h1 className="rc-serif text-5xl sm:text-6xl font-semibold tracking-tight">Things I&apos;ve built</h1>
+        <p className="mt-5 text-lg max-w-2xl" style={{ color: "var(--rc-muted)" }}>Mostly after hours, a few of them with friends. Some are serious, and one is about bees.</p>
 
-      <div className="flex-1 px-4 sm:px-8 lg:px-16 py-12 relative z-10 max-w-7xl mx-auto w-full">
-        <div className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">cool stuff I&apos;m building</h1>
-          <p className="text-lg leading-relaxed" style={{ color: '#a1a1a6' }}>
-            Side projects, tools, and experiments I&apos;m working on.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {projects.map((project) => (
-            <a
-              key={project.href}
-              href={project.href}
-              target={project.href.startsWith("http") ? "_blank" : "_self"}
-              rel={project.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="group backdrop-blur-md border border-white/20 rounded-xl overflow-hidden hover:border-white/30 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 flex flex-col"
-              style={{
-                background: 'rgba(58, 58, 60, 0.6)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-              }}
-            >
-              <div className="relative w-full h-44 overflow-hidden border-b border-white/10">
-                {project.screenshot ? (
-                  <Image
-                    src={project.screenshot}
-                    alt={`${project.title} screenshot`}
-                    fill
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div
-                    className="w-full h-full flex items-center justify-center"
-                    style={{ background: `linear-gradient(135deg, ${project.placeholder.from} 0%, ${project.placeholder.to} 100%)` }}
-                  >
-                    <span
-                      className="text-4xl font-bold tracking-widest uppercase opacity-80"
-                      style={{ color: project.placeholder.accent, fontFamily: 'Georgia, serif', letterSpacing: '0.15em' }}
-                    >
-                      {project.label || project.title}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <div className="p-5 flex flex-col flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-bold text-white">{project.title}</h3>
-                  <svg className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:text-blue-400 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p) => {
+            const ext = p.href.startsWith("http");
+            return (
+              <a key={p.href} href={p.href} target={ext ? "_blank" : undefined} rel={ext ? "noopener noreferrer" : undefined} className="rc-card group overflow-hidden flex flex-col">
+                <div className="relative h-44 border-b" style={{ borderColor: "var(--rc-rule)" }}>
+                  {p.screenshot ? (
+                    <Image src={p.screenshot} alt="" fill sizes="(max-width: 640px) 100vw, 360px" className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${p.placeholder.from}, ${p.placeholder.to})` }}>
+                      <span className="rc-serif text-4xl font-semibold" style={{ color: p.placeholder.accent }}>{p.label || p.title}</span>
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm leading-relaxed" style={{ color: '#a1a1a6' }}>
-                  {project.description}
-                </p>
-              </div>
-            </a>
-          ))}
+                <div className="p-6 flex flex-col flex-1">
+                  <h2 className="rc-serif text-2xl font-semibold leading-tight">{p.title}</h2>
+                  <p className="mt-2 text-[15px] leading-relaxed" style={{ color: "var(--rc-muted)" }}>{p.description}</p>
+                  <span className="mt-auto pt-5 text-sm font-semibold">{ext ? "Visit" : "Open"} <span className="rc-arrow inline-block">→</span></span>
+                </div>
+              </a>
+            );
+          })}
         </div>
-      </div>
-    </div>
+      </section>
+    </PageShell>
   );
 }

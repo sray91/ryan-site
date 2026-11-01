@@ -1,297 +1,59 @@
 'use client';
 
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import Monogram from "./Monogram";
 
-export default function Header({ variant = "dark" }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isFocusDropdownOpen, setIsFocusDropdownOpen] = useState(false);
-  const [isMarketplaceDropdownOpen, setIsMarketplaceDropdownOpen] = useState(false);
-  const [isMobileFocusOpen, setIsMobileFocusOpen] = useState(false);
-  const [isMobileMarketplaceOpen, setIsMobileMarketplaceOpen] = useState(false);
-  const focusDropdownRef = useRef(null);
-  const marketplaceDropdownRef = useRef(null);
+const NAV = [
+  { href: "/blog", label: "Writing" },
+  { href: "/projects-home", label: "Projects" },
+  { href: "/demos", label: "Demos" },
+  { href: "/about", label: "About" },
+];
 
-  const isLight = variant === "light";
-  const logoClass = isLight ? "text-gray-900 hover:text-gray-700" : "text-white hover:text-white/90";
-  const linkClass = isLight ? "text-gray-700 hover:text-gray-900" : "text-white/80 hover:text-white";
-  const mobileBtnClass = isLight ? "text-gray-700 hover:text-gray-900" : "text-white/80 hover:text-white";
-
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (focusDropdownRef.current && !focusDropdownRef.current.contains(event.target)) {
-        setIsFocusDropdownOpen(false);
-      }
-      if (marketplaceDropdownRef.current && !marketplaceDropdownRef.current.contains(event.target)) {
-        setIsMarketplaceDropdownOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const focusLinks = [
-    { href: '/focus/manufacturers', label: 'For Manufacturers' },
-    { href: '/focus/tech-firms', label: 'For Tech Firms' },
-    { href: '/focus/pe-consulting', label: 'For PE & Consultancies' },
-  ];
-
-  const benchLinks = [
-    { href: '/bench', label: 'All Solutions' },
-    { href: '/bench/stacks', label: 'Starter Stacks' },
-    { href: '/bench/things-we-like', label: 'Things We Like' },
-  ];
+// `variant` is accepted for older pages that still pass it; the header is the same everywhere now.
+export default function Header() {
+  const [open, setOpen] = useState(false);
+  const path = usePathname() || "/";
+  const active = (href) => path === href || path.startsWith(href + "/");
 
   return (
-    <nav className="flex items-center justify-between px-4 sm:px-8 py-4 lg:px-16 flex-shrink-0 relative z-20">
-      <div>
-        <Link href="/" className={`${logoClass} transition-colors`}>
-          <h1
-            className="text-2xl sm:text-3xl lg:text-4xl tracking-tight uppercase"
-            style={{ fontFamily: 'BDO Grotesk, sans-serif', fontWeight: 900 }}
-          >
-            Ryan Cahalane
-          </h1>
+    <header className="relative z-30 border-b" style={{ borderColor: "var(--rc-rule)", background: "var(--rc-paper)", color: "var(--rc-ink)" }}>
+      <div className="rc-wrap flex items-center justify-between py-4">
+        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+          <Monogram size={36} />
+          <span className="rc-serif text-xl sm:text-[22px] font-semibold tracking-tight">Ryan Cahalane</span>
         </Link>
-      </div>
-      
-      {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-        <Link href="/about" className={`${linkClass} transition-colors`}>
-          about
-        </Link>
-        <Link href="/blog" className={`${linkClass} transition-colors`}>
-          blog
-        </Link>
-        <Link href="/projects-home" className={`${linkClass} transition-colors`}>
-          cool projects
-        </Link>
-        {/* The Bench Dropdown */}
-        <div className="relative" ref={marketplaceDropdownRef}>
-          <button
-            className={`${linkClass} transition-colors flex items-center gap-1`}
-            onClick={() => setIsMarketplaceDropdownOpen(!isMarketplaceDropdownOpen)}
-            onMouseEnter={() => setIsMarketplaceDropdownOpen(true)}
-          >
-            the bench
-            <svg
-              className={`w-4 h-4 transition-transform ${isMarketplaceDropdownOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
 
-          {isMarketplaceDropdownOpen && (
-            <div
-              className="absolute top-full left-0 mt-2 w-48 rounded-xl overflow-hidden shadow-xl border border-white/20"
-              style={{
-                background: 'rgba(58, 58, 60, 0.95)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)'
-              }}
-              onMouseLeave={() => setIsMarketplaceDropdownOpen(false)}
-            >
-              {benchLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-                  onClick={() => setIsMarketplaceDropdownOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
+        <nav className="hidden md:flex items-center gap-7 text-[15px]" aria-label="Main">
+          {NAV.map((n) => (
+            <Link key={n.href} href={n.href} className="transition-colors hover:text-[var(--rc-copper)]"
+              style={{ color: active(n.href) ? "var(--rc-copper)" : "var(--rc-ink)" }} aria-current={active(n.href) ? "page" : undefined}>
+              {n.label}
+            </Link>
+          ))}
+          <Link href="/newsletter" className="rc-btn rc-btn-solid !py-2 !px-4 !text-sm">Newsletter</Link>
+        </nav>
 
-        {/* Focus Dropdown */}
-        <div className="relative" ref={focusDropdownRef}>
-          <button
-            className={`${linkClass} transition-colors flex items-center gap-1`}
-            onClick={() => setIsFocusDropdownOpen(!isFocusDropdownOpen)}
-            onMouseEnter={() => setIsFocusDropdownOpen(true)}
-          >
-            focus
-            <svg 
-              className={`w-4 h-4 transition-transform ${isFocusDropdownOpen ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          
-          {isFocusDropdownOpen && (
-            <div 
-              className="absolute top-full left-0 mt-2 w-56 rounded-xl overflow-hidden shadow-xl border border-white/20"
-              style={{
-                background: 'rgba(58, 58, 60, 0.95)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)'
-              }}
-              onMouseLeave={() => setIsFocusDropdownOpen(false)}
-            >
-              {focusLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-                  onClick={() => setIsFocusDropdownOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <Link 
-          href="/newsletter" 
-          className="px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5"
-          style={{
-            background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
-            boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
-          }}
-        >
-          newsletter
-        </Link>
+        <button className="md:hidden p-2 -mr-2" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {open ? <path strokeLinecap="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeWidth={2} d="M4 7h16M4 12h16M4 17h16" />}
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile Menu Button */}
-      <button
-        className={`md:hidden ${mobileBtnClass} p-2`}
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        aria-label="Toggle mobile menu"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          {isMobileMenuOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
-      </button>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 backdrop-blur-md border-t border-white/20 md:hidden"
-             style={{
-               background: 'rgba(58, 58, 60, 0.95)',
-               backdropFilter: 'blur(20px)',
-               WebkitBackdropFilter: 'blur(20px)'
-             }}>
-          <div className="flex flex-col px-4 py-6">
-            <Link 
-              href="/about" 
-              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              about
-            </Link>
-            <Link
-              href="/blog"
-              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              blog
-            </Link>
-            <Link
-              href="/projects-home"
-              className="text-white/80 hover:text-white transition-colors py-3 border-b border-white/10"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              cool projects
-            </Link>
-            {/* Mobile The Bench Accordion */}
-            <div className="border-b border-white/10">
-              <button
-                className="w-full text-left text-white/80 hover:text-white transition-colors py-3 flex items-center justify-between"
-                onClick={() => setIsMobileMarketplaceOpen(!isMobileMarketplaceOpen)}
-              >
-                the bench
-                <svg
-                  className={`w-4 h-4 transition-transform ${isMobileMarketplaceOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {isMobileMarketplaceOpen && (
-                <div className="pl-4 pb-2">
-                  {benchLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block text-white/60 hover:text-white transition-colors py-2 text-sm"
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        setIsMobileMarketplaceOpen(false);
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Mobile Focus Accordion */}
-            <div className="border-b border-white/10">
-              <button 
-                className="w-full text-left text-white/80 hover:text-white transition-colors py-3 flex items-center justify-between"
-                onClick={() => setIsMobileFocusOpen(!isMobileFocusOpen)}
-              >
-                focus
-                <svg 
-                  className={`w-4 h-4 transition-transform ${isMobileFocusOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {isMobileFocusOpen && (
-                <div className="pl-4 pb-2">
-                  {focusLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block text-white/60 hover:text-white transition-colors py-2 text-sm"
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        setIsMobileFocusOpen(false);
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <Link 
-              href="/newsletter" 
-              className="px-4 py-3 rounded-lg transition-all duration-300 text-center hover:shadow-lg hover:shadow-blue-500/20 mt-4"
-              style={{
-                background: 'linear-gradient(135deg, #007AFF 0%, #0056CC 100%)',
-                boxShadow: '0 4px 15px rgba(0, 122, 255, 0.3)'
-              }}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              newsletter
-            </Link>
+      {open && (
+        <nav className="md:hidden absolute top-full left-0 right-0 border-b shadow-lg" style={{ background: "var(--rc-paper)", borderColor: "var(--rc-rule)" }} aria-label="Main">
+          <div className="rc-wrap flex flex-col py-3">
+            {NAV.concat([{ href: "/newsletter", label: "Newsletter" }]).map((n) => (
+              <Link key={n.href} href={n.href} className="py-3 border-b last:border-0 text-lg" style={{ borderColor: "var(--rc-rule)" }} onClick={() => setOpen(false)}>
+                {n.label}
+              </Link>
+            ))}
           </div>
-        </div>
+        </nav>
       )}
-    </nav>
+    </header>
   );
 }

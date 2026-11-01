@@ -1,7 +1,5 @@
 import Header from '../../components/Header';
 import Link from 'next/link';
-import { client } from '@/sanity/lib/client';
-import { starterStacksByFocusQuery } from '@/sanity/lib/queries';
 
 export const revalidate = 60;
 
@@ -10,14 +8,7 @@ export const metadata = {
   description: 'Modernize the plant without buying a Frankenstein stack. Prioritized roadmaps, vendor shortlists, and implementation approaches that work.',
 };
 
-async function getRelevantStacks() {
-  // Get stacks relevant to manufacturers (brownfield, mid-market)
-  const stacks = await client.fetch(starterStacksByFocusQuery, { focusTag: 'brownfield' });
-  return stacks.slice(0, 3);
-}
-
 export default async function ManufacturersPage() {
-  const relevantStacks = await getRelevantStacks();
   const whatYouGet = [
     {
       title: 'Prioritized roadmap',
@@ -253,87 +244,6 @@ export default async function ManufacturersPage() {
           </div>
         </section>
 
-        {/* Recommended Starter Stacks */}
-        {relevantStacks.length > 0 && (
-          <section className="px-4 sm:px-8 lg:px-16 py-16">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4">
-                Recommended Starter Stacks
-              </h2>
-              <p className="text-white/60 text-center mb-8 max-w-2xl mx-auto">
-                Pre-configured technology combinations for manufacturers like you.
-              </p>
-              <div className="grid md:grid-cols-3 gap-6">
-                {relevantStacks.map((stack) => (
-                  <Link
-                    key={stack._id}
-                    href={`/bench/stacks/${stack.slug}`}
-                    className="group rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1"
-                    style={{
-                      background: 'rgba(58, 58, 60, 0.6)',
-                      backdropFilter: 'blur(20px)',
-                    }}
-                  >
-                    {/* Solution Logos */}
-                    <div className="flex items-center gap-2 mb-4">
-                      {stack.solutions?.slice(0, 3).map((sol) => (
-                        <div
-                          key={sol.solution?._id}
-                          className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center overflow-hidden"
-                        >
-                          {sol.solution?.logo ? (
-                            <img
-                              src={sol.solution.logo}
-                              alt={sol.solution.name}
-                              className="w-full h-full object-contain"
-                            />
-                          ) : (
-                            <span className="text-xs font-bold text-white/50">
-                              {sol.solution?.name?.charAt(0)}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    <h3 className="font-bold mb-2 group-hover:text-blue-400 transition-colors">
-                      {stack.name}
-                    </h3>
-                    <p className="text-white/60 text-sm line-clamp-2">{stack.problemItSolves}</p>
-                  </Link>
-                ))}
-              </div>
-              <div className="text-center mt-8">
-                <Link
-                  href="/bench/stacks"
-                  className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  View all Starter Stacks
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Browse The Bench CTA */}
-        <section className="px-4 sm:px-8 lg:px-16 pb-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-white/60 mb-4">
-              Want to explore solutions on your own?
-            </p>
-            <Link
-              href="/bench"
-              className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              Browse The Bench
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
-        </section>
       </main>
     </div>
   );

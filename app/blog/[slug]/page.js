@@ -6,7 +6,7 @@ import { PortableText } from 'next-sanity';
 import { client, urlFor } from '../../../sanity/lib/client';
 import { postBySlugQuery } from '../../../sanity/lib/queries';
 import PDFViewer from '../../components/PDFViewer';
-import Header from '../../components/Header';
+import PageShell from '../../components/PageShell';
 import BlogContentRenderer from '../../components/BlogContentRenderer';
 
 async function getBlogPost(slug) {
@@ -92,13 +92,13 @@ export default async function BlogPostPage({ params }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header variant="light" />
+    <PageShell>
       <div className="py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <article className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="max-w-3xl mx-auto px-5">
+        <Link href="/blog" className="text-sm font-semibold" style={{ color: "var(--rc-muted)" }}>← All writing</Link>
+        <article className="mt-6 overflow-hidden">
           {post.mainImage && (
-             <div className="relative w-full h-96">
+             <div className="relative w-full h-72 sm:h-96 rounded-xl overflow-hidden mb-8">
                <Image
                  src={urlFor(post.mainImage).url()}
                  alt={post.title}
@@ -107,19 +107,19 @@ export default async function BlogPostPage({ params }) {
                />
              </div>
           )}
-          <div className="p-8">
-            <div className="border-b border-gray-200 pb-6 mb-8">
+          <div>
+            <div className="border-b pb-6 mb-8" style={{ borderColor: "var(--rc-rule)" }}>
               <div className="flex items-center justify-between mb-4">
-                <time className="text-sm text-gray-500">
+                <time className="rc-eyebrow">
                   {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
                 </time>
                 {post._updatedAt !== post.publishedAt && (
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm" style={{ color: "var(--rc-muted)" }}>
                     Updated: {format(new Date(post._updatedAt), 'MMMM d, yyyy')}
                   </span>
                 )}
               </div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">{post.title}</h1>
+              <h1 className="rc-serif text-4xl sm:text-5xl font-semibold tracking-tight leading-tight mb-5">{post.title}</h1>
               
               {post.author && (
                 <div className="flex items-center mb-4">
@@ -133,7 +133,7 @@ export default async function BlogPostPage({ params }) {
                       />
                     </div>
                   )}
-                  <span className="text-gray-700 font-medium">{post.author.name}</span>
+                  <span className="font-medium">{post.author.name}</span>
                 </div>
               )}
 
@@ -142,7 +142,7 @@ export default async function BlogPostPage({ params }) {
                   {post.categories.map((category, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full"
+                      className="inline-flex items-center px-3 py-1 text-sm rounded-full" style={{ background: "var(--rc-copper-soft)", color: "#7a4319" }}
                     >
                       {category.title}
                     </span>
@@ -152,7 +152,7 @@ export default async function BlogPostPage({ params }) {
             </div>
             
             {post.body ? (
-              <div className="prose prose-lg max-w-none">
+              <div className="prose prose-lg max-w-none prose-headings:font-[family-name:var(--font-serif)] prose-a:text-[var(--rc-teal)]">
                 <PortableText value={post.body} components={ptComponents} />
               </div>
             ) : (
@@ -177,16 +177,8 @@ export default async function BlogPostPage({ params }) {
           </div>
         </article>
         
-        <div className="mt-8">
-          <Link 
-            href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900"
-          >
-            ← Back to Blog
-          </Link>
-        </div>
       </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

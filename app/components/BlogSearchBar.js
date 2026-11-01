@@ -18,7 +18,7 @@ export default function BlogSearchBar({ onSearch }) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search blog posts..."
-          className="w-full px-4 py-3 pl-10 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          className="w-full px-4 py-3 pl-10 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--rc-copper)] focus:border-[var(--rc-copper)] bg-[var(--rc-sheet)] transition-colors"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg 
