@@ -18,6 +18,15 @@ async function getPosts() {
 }
 
 const Arrow = () => <span className="rc-arrow inline-block" aria-hidden="true">→</span>;
+const ST = { stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", fill: "none" };
+const HOW = [
+  { t: "Draw the map", b: "Boxes for the things that matter, arrows for what drives what. The people who run the process sketch it, because data alone can't. Anything that matters but isn't measured goes on the map too, as a hidden factor, since that's the usual reason a confident answer turns out to be wrong.",
+    pic: <svg viewBox="0 0 160 90"><path d="M40 24 72 44M40 66 72 48M92 46h30" {...ST} opacity=".45" /><path d="M116 40l7 6-7 6" {...ST} opacity=".45" /><path d="M80 10v22" {...ST} strokeDasharray="1 5" style={{ color: "var(--x-cap)" }} /><circle cx="30" cy="20" r="8" fill="currentColor" /><circle cx="30" cy="70" r="8" fill="currentColor" /><circle cx="82" cy="46" r="9" fill="currentColor" /><circle cx="80" cy="8" r="6" {...ST} style={{ color: "var(--x-cap)" }} /><circle cx="134" cy="46" r="9" fill="var(--x-loss)" /></svg> },
+  { t: "Add the history", b: "Months of how the line actually ran: speeds, temperatures, crews, maintenance and lots, under every condition it has seen. Each arrow gets tested against that history, and the ones it doesn't support come out of the map.",
+    pic: <svg viewBox="0 0 160 90">{[30, 44, 38, 52, 47, 60, 41, 55, 66, 50, 58, 70, 62, 48, 57].map((h, i) => <rect key={i} x={8 + i * 10} y={84 - h} width="6" height={h} rx="2" fill="currentColor" opacity={0.25 + (i % 5) * 0.12} />)}<path d="M8 40c20-10 34 6 52-4s30-14 48-2 28 4 44-6" {...ST} style={{ color: "var(--x-ctl)" }} /></svg> },
+  { t: "Ask what if", b: "Put the two together and you get how much each cause really matters, with a range instead of one confident number, and what should happen if you change it. The next few weeks then check whether it did.",
+    pic: <svg viewBox="0 0 160 90">{[["Line speed", 92, 18], ["Wear", 56, 14], ["Moisture", 28, 10]].map(([l, w, e], i) => <g key={l}><rect x="58" y={12 + i * 26} width={w} height="12" rx="3" fill={i ? "currentColor" : "var(--x-ctl)"} opacity={i ? 0.45 : 1} /><path d={`M${58 + w - e} ${18 + i * 26}h${e * 2}M${58 + w - e} ${13 + i * 26}v10M${58 + w + e} ${13 + i * 26}v10`} {...ST} strokeWidth="1.5" /><text x="52" y={22 + i * 26} textAnchor="end" fontSize="10" fill="currentColor" opacity=".7">{l}</text></g>)}</svg> },
+];
 const CAREER = ["GE", "Rockwell Automation", "OSIsoft", "Colfax", "LNS Research"];
 const LADDER = [
   { rung: "Rung 1", name: "See", q: "What moved together?", body: "A dashboard, a trend line, and most of the machine learning sold to plants today. Useful, right up until someone acts on it.", c: "var(--x-loss)", n: 1 },
@@ -44,7 +53,7 @@ export default async function Home() {
         <div className="x-grid" aria-hidden="true" />
         <div className="rc-wrap x-hero-in">
           <div className="grid gap-7">
-            <div className="x-chip"><span className="x-dot" />Causal AI for manufacturing operations</div>
+            <div className="x-chip">Causal AI for manufacturing operations</div>
             <h1 className="x-display x-h1">See the loss coming, and know <em>what&apos;s causing it.</em></h1>
             <p className="x-lede">OEE, yield and on-time delivery all report a loss after it has landed, and none of them can tell you why. The conditions behind them move first, sometimes by weeks. I map the causes between the two, so a plant can see the drift, pick the lever that actually moves it, and check a month later whether the fix held.</p>
             <div className="flex flex-wrap gap-3">
@@ -63,7 +72,7 @@ export default async function Home() {
             <div className="x-why">
               <div className="q">Why is scrap <i>up 1.6 points</i> this week?</div>
               <div className="chain"><span className="hot">Line speed set to 118</span>→<span className="hot">Temperature swing +0.9°C</span>→<span>Scrap</span></div>
-              <div className="chain" style={{ fontSize: 12 }}>The crews didn&apos;t change. The dashboard would still tell you faster shifts scrap less.</div>
+              <div className="chain" style={{ fontSize: 12 }}>Line speed accounts for about 1.1 of those points, give or take 0.3. The crews didn&apos;t change, and the dashboard would still tell you faster shifts scrap less.</div>
             </div>
           </div>
         </div>
@@ -76,6 +85,28 @@ export default async function Home() {
           {CAREER.map((c) => <span key={c} className="co">{c}</span>)}
         </div>
       </div>
+
+      {/* How it works, in three steps */}
+      <section className="x-sec">
+        <div className="rc-wrap">
+          <div className="x-head" data-rv>
+            <span className="x-eyebrow">How it works</span>
+            <h2 className="x-display x-h2">A map, the plant&apos;s history, and <em>one question.</em></h2>
+            <p className="x-lede">There&apos;s real math underneath, but the idea fits on a napkin, and it&apos;s a lot closer to how a good process engineer already thinks than to a chatbot.</p>
+          </div>
+          <ol className="x-how">
+            {HOW.map((h, i) => (
+              <li key={h.t} className="x-panel" style={{ "--d": `${i * 0.1}s` }} data-rv>
+                <div className="pic" aria-hidden="true">{h.pic}</div>
+                <span className="n">0{i + 1}</span>
+                <h3 className="x-display x-h3">{h.t}</h3>
+                <p>{h.b}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="x-how-foot" data-rv>A dashboard, a machine-learning model or an LLM finds patterns in what already happened. A causal model is built to say what happens when you change something, and how sure it is about that.</p>
+        </div>
+      </section>
 
       {/* The ladder */}
       <section className="x-sec">
@@ -128,7 +159,7 @@ export default async function Home() {
         <div className="rc-wrap">
           <div className="x-head" data-rv>
             <span className="x-eyebrow">Nine industries</span>
-            <h2 className="x-display x-h2">What stable means depends on <em>what you make.</em></h2>
+            <h2 className="x-display x-h2">Making the plan looks different <em>in every industry.</em></h2>
             <p className="x-lede">A steel mill worries about molten metal and the heat-to-coil record behind every certificate. A pharma plant worries about its registered design space. The causal map has the same layers in both, but the conditions, the systems and the standards are different, so each industry gets its own map.</p>
           </div>
           <div className="x-vert">
