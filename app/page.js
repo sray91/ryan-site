@@ -1,10 +1,15 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PageShell from "./components/PageShell";
+import CausalGraph from "./components/CausalGraph";
+import Reveal from "./components/Reveal";
+import DemoFrame from "./demos/[slug]/DemoFrame";
 import { client } from "../sanity/lib/client";
 import { postsQuery } from "../sanity/lib/queries";
 import { projects } from "../lib/projects";
-import { demos } from "../lib/demos";
+import { demos, STABILITY_SRC } from "../lib/demos";
+import { verticals, useCases } from "../lib/causal";
 
 export const revalidate = 300;
 
@@ -13,11 +18,16 @@ async function getPosts() {
 }
 
 const Arrow = () => <span className="rc-arrow inline-block" aria-hidden="true">→</span>;
+const CAREER = ["GE", "Rockwell Automation", "OSIsoft", "Colfax", "LNS Research"];
+const LADDER = [
+  { rung: "Rung 1", name: "See", q: "What moved together?", body: "A dashboard, a trend line, and most of the machine learning sold to plants today. Useful, right up until someone acts on it.", c: "var(--x-loss)", n: 1 },
+  { rung: "Rung 2", name: "Do", q: "What happens if we change it?", body: "Set a lever and follow it through the map, instead of hoping the correlation still holds once you touch it.", c: "var(--x-ctl)", n: 2 },
+  { rung: "Rung 3", name: "Imagine", q: "What would have happened if we had?", body: "Replay last month with a different maintenance plan, same crews and same material, and count what it would have saved.", c: "var(--x-cap)", n: 3 },
+];
 
 export default async function Home() {
   const posts = await getPosts();
   const latest = posts[0];
-  const featured = demos[0];
   const explore = [
     { href: "/blog", title: "Writing", count: posts.length ? `${posts.length} posts` : "Posts", body: "Operations, industrial software and the people stuck between them." },
     { href: "/projects-home", title: "Projects", count: `${projects.length} projects`, body: "Tools, games and experiments, from an AI advisory board to a children's book." },
@@ -26,85 +36,202 @@ export default async function Home() {
   ];
 
   return (
-    <PageShell>
-      <section className="rc-wrap pt-14 sm:pt-20 pb-16 grid lg:grid-cols-[1.25fr_1fr] gap-12 lg:gap-16 items-center">
-        <div>
-          <div className="rc-eyebrow mb-5">Manufacturing operations and the software sold to them</div>
-          <h1 className="rc-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.02]">Ryan Cahalane</h1>
-          <p className="rc-serif text-xl sm:text-2xl mt-4" style={{ color: "var(--rc-copper)" }}>Managing Director, LNS Research</p>
-          <div className="mt-7 text-[17px] leading-relaxed max-w-xl space-y-4" style={{ color: "#2b3640" }}>
-            <p>I&apos;ve spent twenty-five years between the plant floor and the software sold to it, at GE, Rockwell Automation, OSIsoft and Colfax, and running an integration firm through a pandemic. These days I&apos;m a managing director at LNS Research, where I work with operations leaders through The COO Council.</p>
-            <p>This site is where the writing, the side projects and the occasional late-night experiment end up. Some of them even work.</p>
+    <PageShell dark>
+      <Reveal />
+
+      {/* Hero */}
+      <section className="x-hero">
+        <div className="x-grid" aria-hidden="true" />
+        <div className="rc-wrap x-hero-in">
+          <div className="grid gap-7">
+            <div className="x-chip"><span className="x-dot" />Causal AI for manufacturing operations</div>
+            <h1 className="x-display x-h1">See the loss coming, and know <em>what&apos;s causing it.</em></h1>
+            <p className="x-lede">OEE, yield and on-time delivery all report a loss after it has landed, and none of them can tell you why. The conditions behind them move first, sometimes by weeks. I map the causes between the two, so a plant can see the drift, pick the lever that actually moves it, and check a month later whether the fix held.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/demos/causal-101" className="x-btn x-btn-1">Try it on a sample line <Arrow /></Link>
+              <Link href="#industries" className="x-btn x-btn-2">Find your industry</Link>
+            </div>
+            <div className="x-byline">
+              <div className="pic"><Image src="/ryan-pfp.png" alt="Ryan Cahalane" fill sizes="52px" className="object-cover" priority /></div>
+              <div><b>Ryan Cahalane</b><span>Managing Director, LNS Research · twenty-five years between the plant floor and the software sold to it</span></div>
+            </div>
           </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/blog" className="rc-btn rc-btn-solid">Read the writing</Link>
-            <Link href="/demos" className="rc-btn rc-btn-ghost">Try the demos</Link>
-            <a href="https://linkedin.com/in/ryancahalane" target="_blank" rel="noopener noreferrer" className="rc-btn rc-btn-ghost">LinkedIn <Arrow /></a>
+
+          <div className="x-graph" data-rv>
+            <div className="flex items-center justify-between mb-2"><span className="x-eyebrow">One sample line, mapped</span><span className="x-tag">Sample</span></div>
+            <CausalGraph />
+            <div className="x-why">
+              <div className="q">Why is scrap <i>up 1.6 points</i> this week?</div>
+              <div className="chain"><span className="hot">Line speed set to 118</span>→<span className="hot">Temperature swing +0.9°C</span>→<span>Scrap</span></div>
+              <div className="chain" style={{ fontSize: 12 }}>The crews didn&apos;t change. The dashboard would still tell you faster shifts scrap less.</div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="relative mx-auto w-full max-w-[420px] aspect-square">
-          {/* The monogram's loop, drawn large around the portrait */}
-          <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" aria-hidden="true">
-            <path d="M80.4 80.4A40.2 40.2 0 1 1 78 20.6" fill="none" stroke="var(--rc-copper)" strokeWidth="1.6" strokeLinecap="round" />
-            <path d="M82.3 23.6 81.5 15.9 74.9 20.3Z" fill="var(--rc-copper)" />
-            <circle cx="88" cy="50" r="2.2" fill="var(--rc-ink)" />
-          </svg>
-          <div className="absolute inset-[13%] rounded-full overflow-hidden shadow-xl" style={{ background: "var(--rc-copper-soft)" }}>
-            <Image src="/ryan-pfp.png" alt="Ryan Cahalane" fill sizes="(max-width: 1024px) 80vw, 400px" className="object-cover" priority />
+      {/* Career */}
+      <div className="x-strip">
+        <div className="rc-wrap in">
+          <span className="x-eyebrow">Twenty-five years at</span>
+          {CAREER.map((c) => <span key={c} className="co">{c}</span>)}
+        </div>
+      </div>
+
+      {/* The ladder */}
+      <section className="x-sec">
+        <div className="rc-wrap">
+          <div className="x-head" data-rv>
+            <span className="x-eyebrow">Causal 101</span>
+            <h2 className="x-display x-h2">Ice cream sales and drownings rise together <em>every summer.</em></h2>
+            <p className="x-lede">Nobody bans ice cream, because hot weather drives both. Plants make the same mistake with numbers that are a lot harder to see through. A dashboard answers the first question below. The other two are the ones a plant manager actually asks.</p>
+          </div>
+          <div className="x-lad">
+            {LADDER.map((l, i) => (
+              <article key={l.name} className="x-panel" style={{ "--c": l.c, "--d": `${i * 0.1}s`, minHeight: 300 + i * 40 }} data-rv>
+                <span className="rung">{l.rung}</span>
+                <h3 className="x-display">{l.name}</h3>
+                <div className="q">{l.q}</div>
+                <p>{l.body}</p>
+                <div className="bars" aria-hidden="true">{[1, 2, 3].map((n) => <i key={n} className={n <= l.n ? "on" : ""} style={{ height: `${n * 33}%` }} />)}</div>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-5 p-6 rounded-2xl border border-dashed" style={{ borderColor: "var(--x-rule2)" }} data-rv>
+            <p style={{ color: "var(--rc-muted)", maxWidth: "70ch" }}>Sixty shifts on one sample line, a factor the dashboard never recorded, and a maintenance plan you can replay. It takes about five minutes, and you can&apos;t break anything, which is more than I can say for most MES upgrades.</p>
+            <Link href="/demos/causal-101" className="x-btn x-btn-1">Walk all three rungs <Arrow /></Link>
           </div>
         </div>
       </section>
 
-      <section className="rc-wrap">
-        <div className="rc-rule pt-12 grid md:grid-cols-2 gap-6">
-          <Link href={`/demos/${featured.slug}`} className="rc-card p-7 group flex flex-col">
-            <div className="rc-eyebrow" style={{ color: "var(--rc-copper)" }}>New demo · {featured.eyebrow}</div>
-            <h2 className="rc-serif text-2xl sm:text-3xl font-semibold mt-3 leading-tight">{featured.title}</h2>
-            <p className="mt-3 leading-relaxed" style={{ color: "var(--rc-muted)" }}>{featured.description}</p>
-            <span className="mt-auto pt-5 font-semibold">Open the demo <Arrow /></span>
-          </Link>
-          {latest ? (
-            <Link href={`/blog/${latest.slug.current}`} className="rc-card p-7 group flex flex-col">
-              <div className="rc-eyebrow">Latest writing{latest.publishedAt ? ` · ${new Date(latest.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : ""}</div>
-              <h2 className="rc-serif text-2xl sm:text-3xl font-semibold mt-3 leading-tight">{latest.title}</h2>
-              {latest.excerpt && <p className="mt-3 leading-relaxed line-clamp-3" style={{ color: "var(--rc-muted)" }}>{latest.excerpt}</p>}
-              <span className="mt-auto pt-5 font-semibold">Read it <Arrow /></span>
-            </Link>
-          ) : (
-            <Link href="/blog" className="rc-card p-7 group flex flex-col">
-              <div className="rc-eyebrow">Writing</div>
-              <h2 className="rc-serif text-2xl sm:text-3xl font-semibold mt-3">All the writing</h2>
-              <span className="mt-auto pt-5 font-semibold">Browse <Arrow /></span>
-            </Link>
-          )}
-        </div>
-      </section>
-
-      <section className="rc-wrap mt-20">
-        <div className="rc-eyebrow mb-6">Explore</div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-xl overflow-hidden border" style={{ background: "var(--rc-rule)", borderColor: "var(--rc-rule)" }}>
-          {explore.map((x) => (
-            <Link key={x.title} href={x.href} target={x.ext ? "_blank" : undefined} rel={x.ext ? "noopener noreferrer" : undefined}
-              className="group p-6 flex flex-col transition-colors hover:bg-white" style={{ background: "var(--rc-sheet)" }}>
-              <h3 className="rc-serif text-2xl font-semibold">{x.title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed" style={{ color: "var(--rc-muted)" }}>{x.body}</p>
-              <div className="mt-auto pt-6 flex items-center justify-between text-sm font-semibold">
-                <span className="rc-eyebrow !tracking-[.12em]" style={{ color: "var(--rc-copper)" }}>{x.count}</span><Arrow />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="rc-wrap mt-20">
-        <div className="rounded-2xl px-6 sm:px-10 py-10 grid md:grid-cols-[1fr_1.1fr] gap-8 items-center" style={{ background: "var(--rc-ink)", color: "var(--rc-paper)" }}>
-          <div>
-            <div className="rc-eyebrow" style={{ color: "#c9b9a2" }}>The newsletter</div>
-            <h2 className="rc-serif text-3xl sm:text-4xl font-semibold mt-3">One note a week</h2>
-            <p className="mt-3 leading-relaxed" style={{ color: "#c8cfd4" }}>A note every week on operations, software and whatever I&apos;m building at the time. You can leave whenever you like, and I won&apos;t take it personally.</p>
+      {/* Live demo */}
+      <section className="x-sec">
+        <div className="rc-wrap">
+          <div className="x-head" data-rv>
+            <span className="x-eyebrow">Leading and lagging, live</span>
+            <h2 className="x-display x-h2">Thirty days of a fryer heat exchanger <em>fouling.</em></h2>
+            <p className="x-lede">Drag through the month. Approach temperature starts creeping on day four, the causal view flags it on day seven, and OEE barely moves until the fryer stops on day twenty-three.</p>
           </div>
-          <iframe src="https://embeds.beehiiv.com/6578c794-7b30-4330-aa9c-f2d57e32a0a0?slim=true" data-test-id="beehiiv-embed" height="52" frameBorder="0" scrolling="no" title="Subscribe to the newsletter" className="w-full" style={{ margin: 0, backgroundColor: "transparent" }} />
+          <div className="x-window" data-rv>
+            <div className="bar"><i /><i /><i /><span>look-ahead · sample plant</span><a href={`${STABILITY_SRC}#ahead`} target="_blank" rel="noopener noreferrer" className="x-link">Full screen ↗</a></div>
+            <DemoFrame src={`${STABILITY_SRC}?embed&theme=dark&view=ahead`} title="Why OEE can't see what's coming" dark />
+          </div>
+          <div className="x-facts">
+            {[["Day 7", "A drift in approach temperature gets flagged, sixteen days before anything breaks."], ["Day 12", "Maintenance books the clean into the planned sanitation window."], ["Day 23", "This is when the fryer would have stopped. With the loop closed, it keeps frying."]].map(([b, s], i) => (
+              <div key={b} className="x-panel" style={{ "--d": `${i * 0.1}s` }} data-rv><b>{b}</b><span>{s}</span></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Verticals */}
+      <section className="x-sec" id="industries" style={{ scrollMarginTop: 70 }}>
+        <div className="rc-wrap">
+          <div className="x-head" data-rv>
+            <span className="x-eyebrow">Nine industries</span>
+            <h2 className="x-display x-h2">What stable means depends on <em>what you make.</em></h2>
+            <p className="x-lede">A steel mill worries about molten metal and the heat-to-coil record behind every certificate. A pharma plant worries about its registered design space. The causal map has the same layers in both, but the conditions, the systems and the standards are different, so each industry gets its own map.</p>
+          </div>
+          <div className="x-vert">
+            {verticals.map((v, i) => (
+              <a key={v.code} href={`${STABILITY_SRC}#${v.code}`} target="_blank" rel="noopener noreferrer" className="x-vcard" style={{ "--c": v.color, "--d": `${(i % 3) * 0.08}s` }} data-rv>
+                <div className="pic">
+                  <Image src={`/verticals/${v.code}.jpg`} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1040px) 50vw, 600px" className="object-cover" />
+                  <div className="nm"><small>{String(i + 1).padStart(2, "0")} / 09</small><span className="x-display" style={{ fontSize: "clamp(24px,2.2vw,30px)" }}>{v.name}</span></div>
+                </div>
+                <div className="bd">
+                  <span className="out">{v.core}</span>
+                  <p>{v.sub}</p>
+                  <span className="x-link mt-2">Open the {v.name.toLowerCase()} map ↗</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Use cases */}
+      <section className="x-sec" id="use-cases">
+        <div className="rc-wrap">
+          <div className="x-head" data-rv>
+            <span className="x-eyebrow">Six problems every plant has</span>
+            <h2 className="x-display x-h2">Or start from the problem <em>instead.</em></h2>
+            <p className="x-lede">Each one is told as a causal chain, from whatever pushes the line off course to the number that finally shows it, usually a week or two after you could have done something.</p>
+          </div>
+          <div className="x-uses">
+            {useCases.map((u, i) => (
+              <a key={u.slug} href={`${STABILITY_SRC}#${u.slug}`} target="_blank" rel="noopener noreferrer" className="x-panel x-ucard" style={{ "--c": u.color, "--d": `${(i % 3) * 0.08}s` }} data-rv>
+                <div className="grid gap-2" style={{ position: "relative" }}>
+                  <h3 className="x-display x-h3">{u.name}</h3>
+                  <span className="tg">{u.tag}</span>
+                </div>
+                <div className="chain" style={{ position: "relative" }}>
+                  <div className="who">What pushes it off course</div>
+                  {u.bad.map((s, j) => <Fragment key={j}>{j > 0 && <i>→</i>}<span>{s}</span></Fragment>)}
+                </div>
+                <div className="fix" style={{ position: "relative" }}>{u.good[u.good.length - 1]}, once the loop is closed.</div>
+                <span className="x-link" style={{ position: "relative" }}>Read the chain ↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Value */}
+      <section className="x-sec">
+        <div className="rc-wrap x-value">
+          <div className="grid gap-5" data-rv>
+            <span className="x-eyebrow">Value</span>
+            <h2 className="x-display x-h2">What it&apos;s worth, in money <em>three budgets own.</em></h2>
+            <p className="x-lede">A plant that holds its conditions makes more margin, carries less inventory as a buffer, and finds capacity in lines it already owns. The calculator sizes all three. Every input starts as an example, so nobody has to admit their real scrap rate to a web page.</p>
+            <div><Link href="/demos/value" className="x-btn x-btn-1">Size it with your own numbers <Arrow /></Link></div>
+          </div>
+          <div className="x-money">
+            {[["01", "Annual margin", "Throughput, yield, maintenance, energy and the cost of quality, every year.", "var(--x-cap)"],
+              ["02", "One-time working capital", "Inventory held only because the process can't be trusted, released once it can.", "var(--x-ctl)"],
+              ["03", "Capital deferred or avoided", "The extra line nobody has to buy when the existing ones run at their own best day.", "var(--x-cond)"]].map(([n, b, s, c], i) => (
+              <div key={n} className="x-panel" style={{ "--c": c, "--d": `${i * 0.1}s` }} data-rv><i>{n}</i><div><b>{b}</b><span>{s}</span></div></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Writing and the rest */}
+      <section className="x-sec">
+        <div className="rc-wrap">
+          <div className="grid md:grid-cols-[1.2fr_1fr] gap-4">
+            {latest ? (
+              <Link href={`/blog/${latest.slug.current}`} className="x-panel p-8 flex flex-col group" data-rv>
+                <span className="x-eyebrow">Latest writing{latest.publishedAt ? ` · ${new Date(latest.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })}` : ""}</span>
+                <h2 className="x-display mt-4" style={{ fontSize: "clamp(26px,2.8vw,36px)", letterSpacing: "-.035em" }}>{latest.title}</h2>
+                {latest.excerpt && <p className="mt-4 leading-relaxed line-clamp-3" style={{ color: "var(--rc-muted)" }}>{latest.excerpt}</p>}
+                <span className="mt-auto pt-6 font-semibold">Read it <Arrow /></span>
+              </Link>
+            ) : (
+              <Link href="/blog" className="x-panel p-8 flex flex-col" data-rv>
+                <span className="x-eyebrow">Writing</span>
+                <h2 className="x-display mt-4" style={{ fontSize: 34 }}>All the writing</h2>
+                <span className="mt-auto pt-6 font-semibold">Browse <Arrow /></span>
+              </Link>
+            )}
+            <div className="x-panel p-8 grid gap-4 content-start" style={{ background: "linear-gradient(160deg, rgba(224,138,69,.12), var(--rc-sheet) 60%)" }} data-rv>
+              <span className="x-eyebrow" style={{ color: "var(--rc-copper)" }}>The newsletter</span>
+              <h2 className="x-display" style={{ fontSize: "clamp(26px,2.8vw,36px)", letterSpacing: "-.035em" }}>One note a week</h2>
+              <p style={{ color: "var(--rc-muted)" }}>Operations, software and whatever I&apos;m building at the time. You can leave whenever you like, and I won&apos;t take it personally.</p>
+              <iframe src="https://embeds.beehiiv.com/6578c794-7b30-4330-aa9c-f2d57e32a0a0?slim=true" data-test-id="beehiiv-embed" height="52" frameBorder="0" scrolling="no" title="Subscribe to the newsletter" className="w-full" style={{ margin: 0, backgroundColor: "transparent" }} />
+            </div>
+          </div>
+          <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {explore.map((x, i) => (
+              <Link key={x.title} href={x.href} target={x.ext ? "_blank" : undefined} rel={x.ext ? "noopener noreferrer" : undefined}
+                className="x-panel group p-6 flex flex-col transition-colors hover:border-[var(--x-rule2)]" style={{ "--d": `${i * 0.06}s` }} data-rv>
+                <h3 className="x-display x-h3">{x.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed" style={{ color: "var(--rc-muted)" }}>{x.body}</p>
+                <div className="mt-auto pt-6 flex items-center justify-between text-sm font-semibold">
+                  <span className="x-link" style={{ color: "var(--rc-copper)" }}>{x.count}</span><Arrow />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </PageShell>
