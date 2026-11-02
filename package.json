@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "node scripts/migrate-to-sanity.js"
+    "migrate": "node scripts/migrate-to-sanity.js",
+    "deploy:canoe": "bash scripts/deploy-canoe.sh"
   },
   "dependencies": {
     "@lexical/code": "^0.32.1",
