@@ -6,7 +6,7 @@ import { useState } from "react";
 import Monogram from "./Monogram";
 
 const NAV = [
-  { href: "/#industries", label: "Industries" },
+  { href: "/#work", label: "Work" },
   { href: "/blog", label: "Writing" },
   { href: "/projects-home", label: "Projects" },
   { href: "/demos", label: "Demos" },

@@ -467,3 +467,42 @@ a:hover .x-link, .x-link:hover { color: var(--rc-ink); }
   .rx *, .rx *::before, .rx *::after { animation: none !important; transition: none !important; }
   .rx-js [data-rv] { opacity: 1; transform: none; }
 }
+
+/* person-first home (2026-11-01, after sudeepkesh.com): who first, the work second */
+.x-me { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr); gap: clamp(32px, 6vw, 88px); align-items: center; min-height: calc(100svh - 74px); padding-block: 48px 80px; }
+.x-role { font-family: var(--font-display), sans-serif; font-weight: 500; font-size: clamp(20px, 2vw, 26px); letter-spacing: -.02em; color: var(--rc-copper); margin-top: -6px; }
+.x-me .x-lede { max-width: 58ch; }
+.x-portrait { position: relative; width: 100%; aspect-ratio: 4 / 5; border-radius: 24px; overflow: hidden; border: 1px solid var(--x-rule2); box-shadow: 0 50px 100px -40px rgba(0,0,0,.9), 0 0 0 10px rgba(255,255,255,.02); }
+.x-portrait img { object-position: 50% 30%; }
+.x-about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 88px); align-items: start; }
+.x-bio { font-family: var(--font-display), sans-serif; font-weight: 500; font-size: clamp(22px, 2.3vw, 30px); line-height: 1.35; letter-spacing: -.02em; color: var(--rc-ink); }
+.x-facts2 { margin: 0; display: grid; }
+.x-facts2 div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 20px; padding-block: 18px; border-top: 1px solid var(--rc-rule); }
+.x-facts2 div:last-child { border-bottom: 1px solid var(--rc-rule); }
+.x-facts2 dt { font: 500 11.5px/1.9 var(--font-mono), monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--x-dim); }
+.x-facts2 dd { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--rc-ink); }
+.x-feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; padding: clamp(24px, 4vw, 48px); position: relative; overflow: hidden; }
+.x-feature::before { content: ""; position: absolute; inset: 0; background: radial-gradient(50% 70% at 85% 40%, rgba(63,208,196,.09), transparent 70%); pointer-events: none; }
+.x-feature > * { position: relative; }
+.x-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.x-steps li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding-block: 14px; border-top: 1px solid var(--rc-rule); }
+.x-steps li > span { font: 500 11.5px/1.7 var(--font-mono), monospace; letter-spacing: .1em; color: var(--x-cap); }
+.x-steps b { font-family: var(--font-display), sans-serif; font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
+.x-steps p { margin-top: 2px; font-size: 14.5px; line-height: 1.5; color: var(--rc-muted); }
+.x-inds { margin-top: 28px; display: grid; gap: 14px; }
+.x-inds .row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+.x-inds .row::-webkit-scrollbar { display: none; }
+.x-ind { position: relative; flex: 0 0 auto; width: 168px; height: 96px; border-radius: 12px; overflow: hidden; border: 1px solid var(--rc-rule); }
+.x-ind img { filter: grayscale(.8) brightness(.7); transition: filter .4s, transform .6s; }
+.x-ind:hover img { filter: none; transform: scale(1.05); }
+.x-ind::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(5,7,10,.85)); }
+.x-ind span { position: absolute; left: 12px; bottom: 9px; z-index: 1; color: #fff; font: 600 14px/1.1 var(--font-display), sans-serif; letter-spacing: -.01em; }
+@media (max-width: 940px) {
+  .x-me, .x-about, .x-feature { grid-template-columns: minmax(0, 1fr); }
+  .x-me { min-height: 0; padding-block: 36px 64px; }
+  .x-portrait { max-width: 380px; order: -1; }
+}
+@media (max-width: 640px) {
+  .x-portrait { max-width: 200px; aspect-ratio: 1; border-radius: 20px; }
+}
+@media (max-width: 520px) { .x-facts2 div { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
